@@ -1,6 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [sub_resource type="GDScript" id=1]
+resource_name = "Generator"
 script/source = "extends Control
 
 const SUPPORTED_FORMATS = [\"bmp\", \"dds\", \"exr\", \"hdr\", \"jpg\", \"jpeg\", \"png\", \"tga\", \"svg\", \"svgz\", \"webp\"]
@@ -23,10 +24,10 @@ signal images_processed
 
 func _ready():
 	frame_prefab = PackedScene.new()
-	$CenterContainer/GridContainer/FramePrefab/MarginContainer.owner = $CenterContainer/GridContainer/FramePrefab
-	$CenterContainer/GridContainer/FramePrefab/MarginContainer/TextureRect.owner = $CenterContainer/GridContainer/FramePrefab
-	frame_prefab.pack($CenterContainer/GridContainer/FramePrefab)
-	$CenterContainer/GridContainer/FramePrefab.free()
+	grid.get_node(\"FramePrefab/MarginContainer\").owner = grid.get_node(\"FramePrefab\")
+	grid.get_node(\"FramePrefab/MarginContainer/TextureRect\").owner = grid.get_node(\"FramePrefab\")
+	frame_prefab.pack(grid.get_node(\"FramePrefab\"))
+	grid.get_node(\"FramePrefab\").free()
 	
 	$Status.text = $Status.text % PoolStringArray(SUPPORTED_FORMATS).join(\", \")
 	
@@ -45,6 +46,7 @@ func load_files(files: Array, screen):
 	if files.size() == 1:
 		var dir := Directory.new()
 		if dir.open(files[0]) != OK:
+			show_error(\"Can't open directory.\")
 			return
 		
 		output_name = str(files[0], \"/\", files[0].get_file(), \".png\")
@@ -57,12 +59,20 @@ func load_files(files: Array, screen):
 				file_list.append(str(dir.get_current_dir(), \"/\", file))
 			file = dir.get_next()
 	else:
+		var wrong_count: int
 		for file in files:
 			if file.get_extension() in SUPPORTED_FORMATS:
 				file_list.append(file)
+			else:
+				wrong_count += 1
+		
+		if wrong_count > 0:
+			show_error(\"Skipped %s file(s) with unsupported extension.\" % wrong_count)
 	
-	$MarginContainer/VBoxContainer/Columns.max_value = image_count
-	toggle_auto(auto)
+	if file_list.empty():
+		show_error(\"No valid files or directories to process.\")
+		return
+	
 	load_images()
 
 func load_images():
@@ -76,6 +86,7 @@ func load_images():
 	for file in file_list:
 		var image := Image.new()
 		image.load(file)
+		image.set_meta(\"path\", image.resource_path)
 		
 		if not image.get_size() in size_map:
 			size_map[image.get_size()] = []
@@ -90,6 +101,10 @@ func load_images():
 			most_common_count = size_map[size].size()
 	
 	for image in size_map[most_common_size]:
+		if output_name.empty():
+			var path: String = image.get_meta(\"path\")
+			output_name = str(path.get_base_dir(), \"/\", path.get_base_dir().get_file(), \".png\")
+		
 		images_to_process.append(image)
 	size_map.clear()
 	
@@ -103,7 +118,9 @@ func load_images():
 	
 	$Status.show()
 	$CenterContainer.hide()
+	
 	image_count = images_to_process.size()
+	$MarginContainer/VBoxContainer/Columns.max_value = image_count
 	
 	threshold = $MarginContainer/VBoxContainer/Threshold.value
 	min_x = INF
@@ -122,11 +139,11 @@ func load_images():
 		
 		var rect := frame_prefab.instance()
 		rect.set_texture(texture)
-		rect.set_background_color(Color(0, 0, 0, 0.2 if dark else 0.1))
-		rect.set_display_background($MarginContainer/VBoxContainer/Grid.pressed)
+		rect.set_display_background($MarginContainer/VBoxContainer/DisplayGrid.pressed)
 		rect.set_frame_margin(margin)
 		grid.add_child(rect)
 	
+	toggle_auto(auto)
 	refresh_margin()
 	
 	$Status.hide()
@@ -195,6 +212,7 @@ func toggle_auto(button_pressed: bool) -> void:
 		grid.columns = best
 	else:
 		grid.columns = $MarginContainer/VBoxContainer/Columns.value
+	refresh_grid()
 
 func hmargin_changed(value: float) -> void:
 	margin.x = value
@@ -209,6 +227,21 @@ func refresh_margin():
 
 func columns_changed(value: float) -> void:
 	grid.columns = value
+	refresh_grid()
+
+func refresh_grid():
+	var coord: Vector2
+	var dark = false
+	
+	for rect in grid.get_children():
+		rect.set_background_color(Color(0, 0, 0, 0.2 if dark else 0.1))
+		dark = not dark
+		coord.x += 1
+		
+		if coord.x == grid.columns:
+			coord.x = 0
+			coord.y += 1
+			dark = int(coord.y) % 2 == 1
 
 func save_png() -> void:
 	var image_size: Vector2 = grid.get_child(0).get_minimum_size()
@@ -220,7 +253,7 @@ func save_png() -> void:
 		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position())
 	
 	var name2 = $MarginContainer/VBoxContainer/HBoxContainer/LineEdit.text
-	image.save_png(output_name if name2.empty() else name2)
+	image.save_png(output_name if name2.empty() else str(output_name.get_base_dir(), \"/\", name2, \".png\"))
 
 func show_error(text: String):
 	if not $CanvasLayer/Error.visible:
@@ -244,6 +277,7 @@ resource_local_to_scene = true
 bg_color = Color( 0, 0.501961, 0.501961, 1 )
 
 [sub_resource type="GDScript" id=3]
+resource_name = "Prefab"
 script/source = "extends PanelContainer
 
 var odd: Vector2
@@ -278,6 +312,22 @@ func set_display_background(display: bool):
 
 func set_background_color(color: Color):
 	get_stylebox(\"panel\").bg_color = color
+
+func get_drag_data(position: Vector2):
+	var preview = TextureRect.new()
+	preview.texture = $MarginContainer/TextureRect.texture
+	preview.expand = true
+	preview.rect_size = Vector2(64, 64)
+	set_drag_preview(preview)
+	return {type = \"SpritesheetFrame\", node = self}
+
+func can_drop_data(position: Vector2, data) -> bool:
+	return data is Dictionary and data.get(\"type\", \"\") == \"SpritesheetFrame\"
+
+func drop_data(position: Vector2, data) -> void:
+	var index = get_index()
+	get_parent().move_child(self, data.node.get_index())
+	get_parent().move_child(data.node, index)
 "
 
 [node name="Main" type="HBoxContainer"]
@@ -410,7 +460,7 @@ margin_top = 326.0
 margin_right = 113.0
 margin_bottom = 330.0
 
-[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+[node name="DisplayGrid" type="CheckBox" parent="MarginContainer/VBoxContainer"]
 margin_top = 340.0
 margin_right = 113.0
 margin_bottom = 364.0
@@ -495,8 +545,10 @@ custom_styles/panel = SubResource( 2 )
 script = SubResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/GridContainer/FramePrefab"]
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer/GridContainer/FramePrefab/MarginContainer"]
+mouse_filter = 2
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -524,7 +576,7 @@ one_shot = true
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Grid" to="." method="toggle_auto"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginH" to="." method="hmargin_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginV" to="." method="vmargin_changed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/CheckBox2" to="." method="toggle_grid"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/DisplayGrid" to="." method="toggle_grid"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button2" to="." method="save_png"]
 [connection signal="hide" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
