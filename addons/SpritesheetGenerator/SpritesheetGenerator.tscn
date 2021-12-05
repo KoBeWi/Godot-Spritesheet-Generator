@@ -457,6 +457,7 @@ margin_top = 234.0
 margin_right = 113.0
 margin_bottom = 258.0
 value = 1.0
+suffix = " px"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -477,6 +478,7 @@ margin_right = 113.0
 margin_bottom = 316.0
 max_value = 128.0
 value = 1.0
+suffix = "px"
 __meta__ = {
 "_edit_use_anchors_": false
 }
