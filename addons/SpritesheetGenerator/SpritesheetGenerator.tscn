@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [sub_resource type="GDScript" id=1]
 resource_name = "Generator"
@@ -19,6 +19,9 @@ var image_count: int
 
 var auto := true
 var margin := Vector2.ONE
+
+var pan_origin: Vector2
+var pan_start: Vector2
 
 signal images_processed
 
@@ -265,7 +268,32 @@ func show_error(text: String):
 
 func error_hidden() -> void:
 	$CanvasLayer/Error.text = \"\"
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_MIDDLE:
+			if event.pressed:
+				pan_origin = get_local_mouse_position()
+				pan_start = $CenterContainer.rect_position
+			else:
+				pan_origin = Vector2()
+		
+		if event.button_index == BUTTON_WHEEL_DOWN:
+			$CenterContainer.rect_scale -= Vector2.ONE * 0.05
+		elif event.button_index == BUTTON_WHEEL_UP:
+			$CenterContainer.rect_scale += Vector2.ONE * 0.05
+	
+	if event is InputEventMouseMotion:
+		if pan_origin != Vector2():
+			$CenterContainer.rect_position = pan_start + (get_local_mouse_position() - pan_origin)
 "
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 0, 0, 0, 0.25098 )
 
 [sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 2.0
@@ -328,6 +356,7 @@ func drop_data(position: Vector2, data) -> void:
 	var index = get_index()
 	get_parent().move_child(self, data.node.get_index())
 	get_parent().move_child(data.node, index)
+	get_tree().current_scene.refresh_grid()
 "
 
 [node name="Main" type="HBoxContainer"]
@@ -338,13 +367,10 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="PanelContainer" parent="."]
 margin_right = 153.0
 margin_bottom = 600.0
-custom_constants/margin_right = 20
-custom_constants/margin_top = 20
-custom_constants/margin_left = 20
-custom_constants/margin_bottom = 20
+custom_styles/panel = SubResource( 5 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 20.0
@@ -519,6 +545,7 @@ valign = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 visible = false
+show_behind_parent = true
 margin_left = 1040.0
 margin_right = 1920.0
 margin_bottom = 1080.0
@@ -548,9 +575,6 @@ script = SubResource( 3 )
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer/GridContainer/FramePrefab/MarginContainer"]
-mouse_filter = 2
-
-[node name="Node2D" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
