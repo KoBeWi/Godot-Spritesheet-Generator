@@ -27,6 +27,8 @@ As mentioned, the generator is just a Godot scene. When you install the plugin, 
 
 To start, you need to drag and drop a couple of images or a single directory onto the generator's window. Your images will be then processed and you will see a preview of your spritesheet. The images need to be of equal size. Thanks to this requirement, they can be perfectly trimmed while keeping the relative offset of each image intact (normally when you trim images to minimal size, they don't have a common center point anymore).
 
+You can use the Alpha Threshold option to control how much the image is cropped. Any pixel that has alpha value lower than threshold will be subject to being trimmed out. If the value is 0, the frames will be packed with their original size.
+
 From there you have options to change the margins or number of columns. By default, the column count is auto-calculated. The algorithm makes sure that there's a least number of holes and the image layout is as close to square as possible, favoring vertical size over horizontal.
 
 By default, images are arranged alphabetically as in the directory/list you dropped, but you can use drag and drop to re-arrange them.
