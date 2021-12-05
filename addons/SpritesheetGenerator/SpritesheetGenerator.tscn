@@ -93,9 +93,16 @@ func load_images():
 		images_to_process.append(image)
 	size_map.clear()
 	
+	if images_to_process.size() < file_list.size():
+		show_error(\"Rejected %s image(s) due to size mismatch.\" % (file_list.size() - images_to_process.size()))
+	
 	if images_to_process.size() == 1:
 		images_to_process.clear()
+		show_error(\"Image count must be bigger than 0.\")
 		return
+	
+	$Status.show()
+	$CenterContainer.hide()
 	image_count = images_to_process.size()
 	
 	threshold = $MarginContainer/VBoxContainer/Threshold.value
@@ -216,8 +223,16 @@ func save_png() -> void:
 	image.save_png(output_name if name2.empty() else name2)
 
 func show_error(text: String):
-	$Status/Error.text = text
-	$Status/Timer.start()"
+	if not $CanvasLayer/Error.visible:
+		$CanvasLayer/Error.show()
+	else:
+		$CanvasLayer/Error.text += \"\\n\"
+	$CanvasLayer/Error.text += text
+	$CanvasLayer/Timer.start()
+
+func error_hidden() -> void:
+	$CanvasLayer/Error.text = \"\"
+"
 
 [sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 2.0
@@ -452,23 +467,6 @@ Supported formats: %s"
 align = 1
 valign = 1
 
-[node name="Error" type="Label" parent="Status"]
-modulate = Color( 1, 0, 0, 1 )
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -14.0
-grow_vertical = 0
-size_flags_vertical = 0
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Timer" type="Timer" parent="Status"]
-wait_time = 5.0
-one_shot = true
-
 [node name="CenterContainer" type="CenterContainer" parent="."]
 visible = false
 margin_left = 1040.0
@@ -500,6 +498,27 @@ script = SubResource( 3 )
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer/GridContainer/FramePrefab/MarginContainer"]
 
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Error" type="Label" parent="CanvasLayer"]
+modulate = Color( 1, 0, 0, 1 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -14.0
+grow_vertical = 0
+size_flags_vertical = 0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="CanvasLayer"]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="load_images"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Columns" to="." method="columns_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Grid" to="." method="toggle_auto"]
@@ -507,4 +526,5 @@ script = SubResource( 3 )
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginV" to="." method="vmargin_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/CheckBox2" to="." method="toggle_grid"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button2" to="." method="save_png"]
-[connection signal="timeout" from="Status/Timer" to="Status/Error" method="hide"]
+[connection signal="hide" from="CanvasLayer/Error" to="." method="error_hidden"]
+[connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
