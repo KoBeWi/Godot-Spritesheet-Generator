@@ -1,4 +1,4 @@
-# Godot Spritesheet Generator
+# <img src="https://github.com/KoBeWi/Godot-Spritesheet-Generator/blob/master/Media/Icon.png" width="64" height="64"> Godot Spritesheet Generator
 
 A spritesheet generator that takes a list of images and joins them into a single sheet. It also allows to configure number of columns, margin between frames and has a cropping capability which keeps relative offset between frames.
 
