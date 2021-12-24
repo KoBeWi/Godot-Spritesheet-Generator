@@ -1,4 +1,4 @@
-# Godot Spritesheet Generator
+# <img src="https://github.com/KoBeWi/Godot-Spritesheet-Generator/blob/master/Media/Icon.png" width="64" height="64"> Godot Spritesheet Generator
 
 A spritesheet generator that takes a list of images and joins them into a single sheet. It also allows to configure number of columns, margin between frames and has a cropping capability which keeps relative offset between frames.
 
@@ -26,6 +26,8 @@ They are automatically trimmed from the excessive border. You can change the spa
 As mentioned, the generator is just a Godot scene. When you install the plugin, you can use _Project -> Tools -> Open Spritesheet Generator_ option to run the scene. Note that it will use your project's default theme, but it shouldn't be a problem in most cases.
 
 To start, you need to drag and drop a couple of images or a single directory onto the generator's window. Your images will be then processed and you will see a preview of your spritesheet. The images need to be of equal size. Thanks to this requirement, they can be perfectly trimmed while keeping the relative offset of each image intact (normally when you trim images to minimal size, they don't have a common center point anymore).
+
+You can use the Alpha Threshold option to control how much the image is cropped. Any pixel that has alpha value lower than threshold will be subject to being trimmed out. If the value is 0, the frames will be packed with their original size.
 
 From there you have options to change the margins or number of columns. By default, the column count is auto-calculated. The algorithm makes sure that there's a least number of holes and the image layout is as close to square as possible, favoring vertical size over horizontal.
 
