@@ -43,6 +43,7 @@ func refresh_background():
 
 func load_files(files: Array, screen):
 	file_list.clear()
+	output_name = \"\"
 	$MarginContainer/VBoxContainer/Button.disabled = false
 	$MarginContainer/VBoxContainer/Button2.disabled = false
 	
@@ -51,8 +52,6 @@ func load_files(files: Array, screen):
 		if dir.open(files[0]) != OK:
 			show_error(\"Can't open directory.\")
 			return
-		
-		output_name = str(files[0], \"/\", files[0].get_file(), \".png\")
 		
 		dir.list_dir_begin(true)
 		
@@ -89,7 +88,7 @@ func load_images():
 	for file in file_list:
 		var image := Image.new()
 		image.load(file)
-		image.set_meta(\"path\", image.resource_path)
+		image.set_meta(\"path\", file)
 		
 		if not image.get_size() in size_map:
 			size_map[image.get_size()] = []
@@ -116,7 +115,7 @@ func load_images():
 	
 	if images_to_process.size() == 1:
 		images_to_process.clear()
-		show_error(\"Image count must be bigger than 0.\")
+		show_error(\"Image count must be bigger than 1.\")
 		return
 	
 	$Status.show()
