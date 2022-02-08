@@ -44,3 +44,8 @@ The reason why this tool was created is that there isn't really any good sprites
 It's easy to crop an image, but each frame has a different size and after you crop them all, your spritesheet will be a mess. My generator finds a "globally minimal size", so that frames are cropped, but don't "jump" when put into a spritesheet.
 
 This tool was created for a Godot project, but eventually I realized this is actually useful, so I made it into a plugin. End of story, hope someone finds it useful and worth the effort of making this asset xd
+
+___
+You can find all my addons on my [profile page](https://github.com/KoBeWi).
+
+<a href='https://ko-fi.com/W7W7AD4W4' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
