@@ -23,7 +23,7 @@ They are automatically trimmed from the excessive border. You can change the spa
 
 ## Instructions
 
-As mentioned, the generator is just a Godot scene. When you install the plugin, you can use _Project -> Tools -> Open Spritesheet Generator_ option to run the scene. Note that it will use your project's default theme, but it shouldn't be a problem in most cases.
+As mentioned, the generator is just a Godot scene. When you install the plugin, you can use _Project -> Tools -> Open Spritesheet Generator_ option to run the scene. You can also find it in the command palette. Note that it will use your project's default theme and resolution, but it shouldn't be a problem in most cases.
 
 To start, you need to drag and drop a couple of images or a single directory onto the generator's window. Your images will be then processed and you will see a preview of your spritesheet. The images need to be of equal size. Thanks to this requirement, they can be perfectly trimmed while keeping the relative offset of each image intact (normally when you trim images to minimal size, they don't have a common center point anymore).
 
