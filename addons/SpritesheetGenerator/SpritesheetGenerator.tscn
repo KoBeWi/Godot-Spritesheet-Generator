@@ -167,8 +167,7 @@ func _process(delta: float) -> void:
 		var image: Image = images_to_texturize.pop_front()
 		$Status.text = str(\"Creating texture \", image_count - images_to_texturize.size(), \"/\", image_count)
 		
-		var true_image := Image.new()
-		true_image.create(rect.size.x, rect.size.y, false, image.get_format())
+		var true_image := Image.create(rect.size.x, rect.size.y, false, image.get_format())
 		true_image.blit_rect(image, rect, Vector2())
 		
 		var texture := ImageTexture.create_from_image(true_image)
@@ -238,8 +237,7 @@ func refresh_grid():
 func save_png() -> void:
 	var image_size: Vector2 = grid.get_child(0).get_minimum_size()
 	
-	var image := Image.new()
-	image.create(image_size.x * grid.columns, image_size.y * (ceil(grid.get_child_count() / float(grid.columns))), false, Image.FORMAT_RGBA8)
+	var image := Image.create(image_size.x * grid.columns, image_size.y * (ceil(grid.get_child_count() / float(grid.columns))), false, Image.FORMAT_RGBA8)
 	
 	for rect in grid.get_children():
 		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position())
