@@ -240,7 +240,7 @@ func save_png() -> void:
 	var image := Image.create(image_size.x * grid.columns, image_size.y * (ceil(grid.get_child_count() / float(grid.columns))), false, Image.FORMAT_RGBA8)
 	
 	for rect in grid.get_children():
-		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position())
+		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position2())
 	
 	var name2 = %CustomName.text
 	image.save_png(output_name if name2.is_empty() else output_name.get_base_dir().path_join(name2) + \".png\")
@@ -308,31 +308,20 @@ script = SubResource("1")
 
 [node name="MarginContainer" type="PanelContainer" parent="."]
 layout_mode = 2
-offset_right = 180.0
-offset_bottom = 648.0
 theme_override_styles/panel = SubResource("5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 160.0
-offset_bottom = 628.0
 theme_override_constants/separation = 10
 
 [node name="Label5" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_right = 140.0
-offset_bottom = 26.0
 text = "Alpha Threshold"
 horizontal_alignment = 1
 
 [node name="Threshold" type="SpinBox" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 36.0
-offset_right = 140.0
-offset_bottom = 67.0
 max_value = 1.0
 step = 0.005
 value = 0.9
@@ -340,125 +329,78 @@ value = 0.9
 [node name="Reload" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 77.0
-offset_right = 140.0
-offset_bottom = 108.0
 disabled = true
 text = "Reload"
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 118.0
-offset_right = 140.0
-offset_bottom = 122.0
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 132.0
-offset_right = 140.0
-offset_bottom = 158.0
 text = "Columns"
 horizontal_alignment = 1
 
 [node name="Columns" type="SpinBox" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 168.0
-offset_right = 140.0
-offset_bottom = 199.0
 min_value = 1.0
 value = 1.0
 editable = false
 
 [node name="Grid" type="CheckButton" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 209.0
-offset_right = 140.0
-offset_bottom = 240.0
 button_pressed = true
 text = "Auto"
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 250.0
-offset_right = 140.0
-offset_bottom = 276.0
 text = "Horizontal Margin"
 horizontal_alignment = 1
 
 [node name="MarginH" type="SpinBox" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 286.0
-offset_right = 140.0
-offset_bottom = 317.0
 value = 1.0
 suffix = "px"
 
 [node name="Label4" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 327.0
-offset_right = 140.0
-offset_bottom = 353.0
 text = "Vertical Margin"
 horizontal_alignment = 1
 
 [node name="MarginV" type="SpinBox" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 363.0
-offset_right = 140.0
-offset_bottom = 394.0
 max_value = 128.0
 value = 1.0
 suffix = "px"
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 404.0
-offset_right = 140.0
-offset_bottom = 408.0
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 418.0
-offset_right = 140.0
-offset_bottom = 449.0
 text = "Recenter View
 "
 
 [node name="DisplayGrid" type="CheckBox" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 459.0
-offset_right = 140.0
-offset_bottom = 490.0
 button_pressed = true
 text = "Show Grid"
 
 [node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 500.0
-offset_right = 140.0
-offset_bottom = 504.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 514.0
-offset_right = 140.0
-offset_bottom = 545.0
 
 [node name="CustomName" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_right = 124.0
-offset_bottom = 31.0
 size_flags_horizontal = 3
 placeholder_text = "Custom Name"
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-offset_left = 128.0
-offset_right = 140.0
-offset_bottom = 31.0
 size_flags_vertical = 1
 tooltip_text = "Defaults to directory name if not provided."
 mouse_filter = 0
@@ -469,18 +411,11 @@ vertical_alignment = 1
 [node name="SavePNG" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 555.0
-offset_right = 140.0
-offset_bottom = 586.0
 disabled = true
 text = "Save PNG"
 
 [node name="Status" type="Label" parent="."]
-visible = false
 layout_mode = 2
-offset_left = 184.0
-offset_right = 1148.0
-offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Drop folder or image files here to start.
@@ -509,20 +444,12 @@ size_flags_horizontal = 3
 [node name="Background" type="ColorRect" parent="View/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 576.0
-offset_top = 324.0
-offset_right = 576.0
-offset_bottom = 324.0
 mouse_filter = 1
 color = Color(0, 0.501961, 0.501961, 1)
 
 [node name="GridContainer" type="GridContainer" parent="View/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 576.0
-offset_top = 324.0
-offset_right = 576.0
-offset_bottom = 324.0
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 3
