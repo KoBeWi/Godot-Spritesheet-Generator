@@ -31,9 +31,17 @@ You can use the Alpha Threshold option to control how much the image is cropped.
 
 From there you have options to change the margins or number of columns. By default, the column count is auto-calculated. The algorithm makes sure that there's a least number of holes and the image layout is as close to square as possible, favoring vertical size over horizontal.
 
-By default, images are arranged alphabetically as in the directory/list you dropped, but you can use drag and drop to re-arrange them.
+By default, images are arranged alphabetically as in the directory/list you dropped, but you can use drag and drop to re-arrange them. You can also delete images by right-clicking them. A deleted image goes into a dedicated stash (Image Stash button), from where you can re-add it if you change your mind.
 
 When you are ready, you can save the spritesheet to PNG. The spritesheet will be created inside the original frames' directory, using the name of the directory. You can provide a custom name for the spritesheet.
+
+## Spritesheet Editing
+
+The generator can alternatively edit existing spritesheets. If you drop only a single image, a dialog will be opened where you can specify number of rows and columns to cut.
+
+![](https://github.com/KoBeWi/Godot-Spritesheet-Generator/blob/master/Media/ReadmeEditSpritesheet.png)
+
+If you accept, the split images will be added and you will be able to edit the spritesheet as desribed in the instructions above.
 
 ## Origin
 

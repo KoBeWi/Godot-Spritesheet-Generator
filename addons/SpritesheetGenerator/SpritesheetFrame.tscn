@@ -55,6 +55,11 @@ func _drop_data(p: Vector2, data) -> void:
 	get_parent().move_child(self, data.node.get_index())
 	get_parent().move_child(data.node, index)
 	get_tree().current_scene.refresh_grid()
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+			get_tree().current_scene.remove_frame.call_deferred(self)
 "
 
 [node name="FramePrefab" type="PanelContainer" groups=["frame"]]

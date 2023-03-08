@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=6 format=3 uid="uid://bf3b0i8scthbm"]
+
+[ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://addons/SpritesheetGenerator/Checker.png" id="1_hs1uu"]
 
 [sub_resource type="GDScript" id="1"]
 resource_name = "Generator"
@@ -9,6 +11,7 @@ const SUPPORTED_FORMATS: PackedStringArray = [\"bmp\", \"dds\", \"exr\", \"hdr\"
 @onready var grid := %GridContainer
 
 var file_list: Array
+var image_list: Array
 var texture_list: Array
 var output_name: String
 
@@ -27,6 +30,8 @@ signal images_processed
 
 func _ready():
 	$Status.text = $Status.text % \", \".join(SUPPORTED_FORMATS)
+	$SplitDialog.hide()
+	$StashDialog.hide()
 	
 	get_viewport().files_dropped.connect(load_files)
 	grid.minimum_size_changed.connect(refresh_background)
@@ -41,13 +46,10 @@ func load_files(files: PackedStringArray):
 	%Reload.disabled = false
 	%SavePNG.disabled = false
 	
-	if files.size() == 1:
+	if files.size() == 1 and not FileAccess.file_exists(files[0]):
 		var dir := DirAccess.open(files[0])
 		if not dir:
-			if FileAccess.file_exists(files[0]):
-				show_error(\"Need more than 1 file.\")
-			else:
-				show_error(\"Can't open directory.\")
+			show_error(\"Can't open directory.\")
 			return
 		
 		for file in dir.get_files():
@@ -78,12 +80,16 @@ func load_images():
 	
 	var size_map: Dictionary
 	
-	for file in file_list:
-		var image := Image.load_from_file(file)
+	if not file_list.is_empty():
+		image_list = file_list.map(func(file: String):
+			var image := Image.load_from_file(file)
+			if image:
+				image.set_meta(&\"path\", file)
+			return image)
+	
+	for image in image_list:
 		if not image:
 			continue
-		
-		image.set_meta(&\"path\", file)
 		
 		if not image.get_size() in size_map:
 			size_map[image.get_size()] = []
@@ -109,8 +115,14 @@ func load_images():
 		show_error(\"Rejected %s image(s) due to size mismatch.\" % (file_list.size() - images_to_process.size()))
 	
 	if images_to_process.size() == 1:
-		images_to_process.clear()
-		show_error(\"Image count must be bigger than 1.\")
+		if file_list.size() > 1:
+			images_to_process.clear()
+			show_error(\"Only one dropped image was valid.\")
+		else:
+			%SplitPreview.texture = ImageTexture.create_from_image(images_to_process[0])
+			$SplitDialog.reset_size()
+			$SplitDialog.popup_centered()
+		
 		return
 	
 	$Status.show()
@@ -130,11 +142,7 @@ func load_images():
 	await images_processed
 	
 	for texture in texture_list:
-		var rect := preload(\"res://addons/SpritesheetGenerator/SpritesheetFrame.tscn\").instantiate()
-		rect.set_texture(texture)
-		rect.set_display_background(%DisplayGrid.button_pressed)
-		rect.set_frame_margin(margin)
-		grid.add_child(rect)
+		add_frame(texture)
 	
 	toggle_auto(auto)
 	refresh_margin()
@@ -283,6 +291,79 @@ func _input(event: InputEvent) -> void:
 func recenter() -> void:
 	%CenterContainer.position = get_viewport().size / 2 - Vector2i(%CenterContainer.size) / 2
 	%CenterContainer.scale = Vector2.ONE
+
+func update_split_preview():
+	%SplitPreview.queue_redraw()
+
+func draw_split_preview() -> void:
+	var preview: TextureRect = %SplitPreview
+	var frame_count := Vector2(%SplitX.value, %SplitY.value)
+	var frame_size := preview.size / frame_count
+	
+	for x in range(1, frame_count.x):
+		for y in int(frame_count.y):
+			preview.draw_line(frame_size * Vector2(x, y), frame_size * Vector2(x, y + 1), Color.WHITE)
+			preview.draw_line(frame_size * Vector2(x, y) + Vector2.RIGHT, frame_size * Vector2(x, y + 1) + Vector2.RIGHT, Color.BLACK)
+	
+	for y in range(1, frame_count.y):
+		for x in int(frame_count.x):
+			preview.draw_line(frame_size * Vector2(x, y), frame_size * Vector2(x + 1, y), Color.WHITE)
+			preview.draw_line(frame_size * Vector2(x, y) + Vector2.DOWN, frame_size * Vector2(x + 1, y) + Vector2.DOWN, Color.BLACK)
+
+func split_spritesheet() -> void:
+	file_list.clear()
+	image_list.clear()
+	
+	var image: Image = images_to_process[0]
+	var sub_image_size := image.get_size() / Vector2i(%SplitX.value, %SplitY.value)
+	
+	for x in %SplitX.value:
+		for y in %SplitY.value:
+			image_list.append(image.get_region(Rect2i(Vector2i(x, y) * sub_image_size, sub_image_size)))
+	
+	images_to_process.clear()
+	load_images()
+
+func remove_frame(frame):
+	var image: Image = frame.get_texture_data()
+	var texture := ImageTexture.create_from_image(image)
+	
+	var button := TextureButton.new()
+	button.texture_normal = texture
+	button.custom_minimum_size = Vector2(128, 128)
+	button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	button.ignore_texture_size = true
+	button.pressed.connect(re_add_image.bind(button), CONNECT_DEFERRED)
+	%StashImages.add_child(button)
+	
+	var ref := ReferenceRect.new()
+	button.add_child(ref)
+	ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	ref.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ref.editor_only = false
+	
+	frame.free()
+	refresh_grid()
+	update_stash()
+
+func update_stash():
+	%Stash.disabled = %StashImages.get_child_count() == 0
+
+func re_add_image(tb: TextureButton):
+	add_frame(tb.texture_normal)
+	tb.free()
+	refresh_grid()
+	update_stash()
+	
+	if %Stash.disabled:
+		$StashDialog.hide()
+
+func add_frame(texture: Texture2D):
+	var rect := preload(\"res://addons/SpritesheetGenerator/SpritesheetFrame.tscn\").instantiate()
+	rect.set_texture(texture)
+	rect.set_display_background(%DisplayGrid.button_pressed)
+	rect.set_frame_margin(margin)
+	grid.add_child(rect)
 "
 
 [sub_resource type="StyleBoxFlat" id="5"]
@@ -296,6 +377,11 @@ bg_color = Color(0, 0, 0, 0.25098)
 content_margin_left = 2.0
 content_margin_right = 2.0
 bg_color = Color(0.172549, 0.164706, 0.196078, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kjgn5"]
+texture = ExtResource("1_hs1uu")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="Main" type="HBoxContainer"]
 anchors_preset = 15
@@ -373,6 +459,12 @@ max_value = 128.0
 value = 1.0
 suffix = "px"
 
+[node name="Stash" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Image Stash"
+
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -424,7 +516,9 @@ Images should be of the same size. If their sizes don't match, the generator wil
 
 The images will be automatically cropped based on the Alpha Threshold value. Greater value means more exact crop.
 
-Supported formats: %s"
+Supported formats: %s
+
+If you drop a single image, the generator will instead edit it as spritesheet."
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -454,6 +548,55 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 3
 
+[node name="VBoxContainer" type="GridContainer" parent="View"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+columns = 3
+
+[node name="Label" type="Label" parent="View/VBoxContainer"]
+layout_mode = 2
+text = "LMB"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="View/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="View/VBoxContainer"]
+layout_mode = 2
+text = "rearrange images"
+
+[node name="Label3" type="Label" parent="View/VBoxContainer"]
+layout_mode = 2
+text = "RMB"
+horizontal_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="View/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="View/VBoxContainer"]
+layout_mode = 2
+text = "delete images"
+
+[node name="Label5" type="Label" parent="View/VBoxContainer"]
+layout_mode = 2
+text = "MMB"
+horizontal_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="View/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="View/VBoxContainer"]
+layout_mode = 2
+text = "pan view"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Error" type="Label" parent="CanvasLayer"]
@@ -474,13 +617,92 @@ unique_name_in_owner = true
 wait_time = 5.0
 one_shot = true
 
+[node name="SplitDialog" type="ConfirmationDialog" parent="."]
+title = "Edit Spritesheet"
+position = Vector2i(-500, 0)
+size = Vector2i(272, 343)
+visible = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SplitDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 264.0
+offset_bottom = 294.0
+
+[node name="Label" type="Label" parent="SplitDialog/VBoxContainer"]
+layout_mode = 2
+text = "Split Frames"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SplitDialog/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SplitX" type="SpinBox" parent="SplitDialog/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="SplitDialog/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "x"
+
+[node name="SplitY" type="SpinBox" parent="SplitDialog/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+select_all_on_focus = true
+
+[node name="CenterContainer" type="CenterContainer" parent="SplitDialog/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="SplitDialog/VBoxContainer/CenterContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_kjgn5")
+
+[node name="SplitPreview" type="TextureRect" parent="SplitDialog/VBoxContainer/CenterContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StashDialog" type="AcceptDialog" parent="."]
+title = "Image Stash"
+position = Vector2i(-500, 500)
+size = Vector2i(309, 100)
+visible = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StashDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 301.0
+offset_bottom = 51.0
+
+[node name="Label" type="Label" parent="StashDialog/VBoxContainer"]
+layout_mode = 2
+text = "Click frame to re-add it to spritesheet."
+horizontal_alignment = 1
+
+[node name="StashImages" type="HFlowContainer" parent="StashDialog/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Reload" to="." method="load_images"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Columns" to="." method="columns_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Grid" to="." method="toggle_auto"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginH" to="." method="hmargin_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginV" to="." method="vmargin_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="recenter"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/DisplayGrid" to="." method="toggle_grid"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
+[connection signal="confirmed" from="SplitDialog" to="." method="split_spritesheet"]
+[connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitX" to="." method="update_split_preview" unbinds=1]
+[connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitY" to="." method="update_split_preview" unbinds=1]
+[connection signal="draw" from="SplitDialog/VBoxContainer/CenterContainer/PanelContainer/SplitPreview" to="." method="draw_split_preview"]
