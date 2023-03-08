@@ -33,7 +33,7 @@ From there you have options to change the margins or number of columns. By defau
 
 By default, images are arranged alphabetically as in the directory/list you dropped, but you can use drag and drop to re-arrange them. You can also delete images by right-clicking them. A deleted image goes into a dedicated stash (Image Stash button), from where you can re-add it if you change your mind.
 
-When you are ready, you can save the spritesheet to PNG. The spritesheet will be created inside the original frames' directory, using the name of the directory. You can provide a custom name for the spritesheet.
+When you are ready, you can save the spritesheet to PNG. The spritesheet will be created inside the original frames' directory, using the provided name (it defaults to the same name as the directory).
 
 ## Spritesheet Editing
 

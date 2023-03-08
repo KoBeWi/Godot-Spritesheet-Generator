@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=5 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://addons/SpritesheetGenerator/Checker.png" id="1_hs1uu"]
 
@@ -13,12 +13,12 @@ const SUPPORTED_FORMATS: PackedStringArray = [\"bmp\", \"dds\", \"exr\", \"hdr\"
 var file_list: Array
 var image_list: Array
 var texture_list: Array
-var output_name: String
 
 var images_to_process: Array
 var images_to_texturize: Array
 var first_time := true
 var image_count: int
+var output_path: String
 
 var auto := true
 var margin := Vector2.ONE
@@ -28,10 +28,12 @@ var pan_start: Vector2
 
 signal images_processed
 
-func _ready():
-	$Status.text = $Status.text % \", \".join(SUPPORTED_FORMATS)
+func _enter_tree() -> void:
 	$SplitDialog.hide()
 	$StashDialog.hide()
+
+func _ready():
+	$Status.text = $Status.text % \", \".join(SUPPORTED_FORMATS)
 	
 	get_viewport().files_dropped.connect(load_files)
 	grid.minimum_size_changed.connect(refresh_background)
@@ -42,7 +44,9 @@ func refresh_background():
 
 func load_files(files: PackedStringArray):
 	file_list.clear()
-	output_name = \"\"
+	image_list.clear()
+	
+	%CustomName.text = \"\"
 	%Reload.disabled = false
 	%SavePNG.disabled = false
 	
@@ -78,6 +82,10 @@ func load_images():
 	for image in grid.get_children():
 		image.free()
 	
+	for image in %StashImages.get_children():
+		image.free()
+	update_stash()
+	
 	var size_map: Dictionary
 	
 	if not file_list.is_empty():
@@ -95,6 +103,7 @@ func load_images():
 			size_map[image.get_size()] = []
 		size_map[image.get_size()].append(image)
 	
+	var output_name: String
 	var most_common_size: Vector2i
 	var most_common_count: int
 	
@@ -104,12 +113,17 @@ func load_images():
 			most_common_count = size_map[size].size()
 	
 	for image in size_map[most_common_size]:
-		if output_name.is_empty():
-			var path: String = image.get_meta(&\"path\")
-			output_name = str(path.get_base_dir(), \"/\", path.get_base_dir().get_file(), \".png\")
+		if output_path.is_empty():
+			var path: String = image.get_meta(&\"path\", \"\")
+			output_path = path.get_base_dir()
+			output_name = path.get_base_dir().get_file()
 		
 		images_to_process.append(image)
 	size_map.clear()
+	
+	if not output_name.is_empty() and %CustomName.text.is_empty():
+		%CustomName.text = output_name
+	update_save_button()
 	
 	if images_to_process.size() < file_list.size():
 		show_error(\"Rejected %s image(s) due to size mismatch.\" % (file_list.size() - images_to_process.size()))
@@ -250,8 +264,7 @@ func save_png() -> void:
 	for rect in grid.get_children():
 		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position2())
 	
-	var name2 = %CustomName.text
-	image.save_png(output_name if name2.is_empty() else output_name.get_base_dir().path_join(name2) + \".png\")
+	image.save_png(output_path.path_join(%CustomName.text) + \".png\")
 
 func show_error(text: String):
 	if not %Error.visible:
@@ -278,6 +291,9 @@ func _input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			var lm = cc.get_local_mouse_position()
 			cc.scale -= Vector2.ONE * 0.05
+			if cc.scale.x <= 0:
+				cc.scale = Vector2.ONE * 0.05
+			
 			cc.position -= (lm - cc.get_local_mouse_position()) * cc.scale
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			var lm = cc.get_local_mouse_position()
@@ -317,8 +333,8 @@ func split_spritesheet() -> void:
 	var image: Image = images_to_process[0]
 	var sub_image_size := image.get_size() / Vector2i(%SplitX.value, %SplitY.value)
 	
-	for x in %SplitX.value:
-		for y in %SplitY.value:
+	for y in %SplitY.value:
+		for x in %SplitX.value:
 			image_list.append(image.get_region(Rect2i(Vector2i(x, y) * sub_image_size, sub_image_size)))
 	
 	images_to_process.clear()
@@ -364,6 +380,9 @@ func add_frame(texture: Texture2D):
 	rect.set_display_background(%DisplayGrid.button_pressed)
 	rect.set_frame_margin(margin)
 	grid.add_child(rect)
+
+func update_save_button() -> void:
+	%SavePNG.disabled = %CustomName.text.is_empty()
 "
 
 [sub_resource type="StyleBoxFlat" id="5"]
@@ -372,11 +391,6 @@ content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
 bg_color = Color(0, 0, 0, 0.25098)
-
-[sub_resource type="StyleBoxFlat" id="4"]
-content_margin_left = 2.0
-content_margin_right = 2.0
-bg_color = Color(0.172549, 0.164706, 0.196078, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kjgn5"]
 texture = ExtResource("1_hs1uu")
@@ -489,16 +503,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Custom Name"
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-tooltip_text = "Defaults to directory name if not provided."
-mouse_filter = 0
-theme_override_styles/normal = SubResource("4")
-text = "?"
-vertical_alignment = 1
+placeholder_text = "Image Name"
 
 [node name="SavePNG" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -699,6 +704,7 @@ layout_mode = 2
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="recenter"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/DisplayGrid" to="." method="toggle_grid"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
