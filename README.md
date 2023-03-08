@@ -2,7 +2,7 @@
 
 A spritesheet generator that takes a list of images and joins them into a single sheet. It also allows to configure number of columns, margin between frames and has a cropping capability which keeps relative offset between frames.
 
-This is not a stand-alone app, it's a single-scene plugin that you can add to your Godot project.
+It's a single-scene plugin that you can add to your Godot project. A stand-alone version can be found in Releases tab on this repository.
 
 ## Example usage
 
