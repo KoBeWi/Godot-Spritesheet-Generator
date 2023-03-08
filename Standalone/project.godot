@@ -1,0 +1,33 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="DeleteMe"
+run/main_scene="res://addons/SpritesheetGenerator/SpritesheetGenerator.tscn"
+config/features=PackedStringArray("4.0")
+
+[debug]
+
+gdscript/warnings/unused_parameter=0
+
+[display]
+
+window/size/viewport_width=1200
+window/size/viewport_height=800
+window/subwindows/embed_subwindows=false
+
+[editor]
+
+script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "tscn")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SpritesheetGenerator/plugin.cfg")
