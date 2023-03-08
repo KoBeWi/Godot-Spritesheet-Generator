@@ -45,6 +45,7 @@ func refresh_background():
 func load_files(files: PackedStringArray):
 	file_list.clear()
 	image_list.clear()
+	images_to_process.clear()
 	
 	%CustomName.text = \"\"
 	%Reload.disabled = false

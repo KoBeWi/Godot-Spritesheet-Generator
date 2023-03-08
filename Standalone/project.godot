@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="DeleteMe"
+config/name="Spritesheet Generator"
 run/main_scene="res://addons/SpritesheetGenerator/SpritesheetGenerator.tscn"
 config/features=PackedStringArray("4.0")
 
@@ -31,3 +31,7 @@ script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "tscn")
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/SpritesheetGenerator/plugin.cfg")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
