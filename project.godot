@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Spritesheet Generator"
-run/main_scene="res://addons/SpritesheetGenerator/SpritesheetGenerator.tscn"
-config/features=PackedStringArray("4.0")
+config/name="Spritesheet-inator"
+run/main_scene="res://Source/Main.tscn"
+config/features=PackedStringArray("4.2")
+config/icon="res://Icon.png"
 
 [debug]
 

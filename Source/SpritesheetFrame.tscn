@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cd5wndu01c1sn"]
+
+[ext_resource type="Script" path="res://Source/SpritesheetFrame.gd" id="1_je5p5"]
+
+[sub_resource type="StyleBoxFlat" id="2"]
+resource_local_to_scene = true
+bg_color = Color(0, 0.501961, 0.501961, 1)
+
+[node name="SpritesheetFrame" type="PanelContainer" groups=["frame"]]
+theme_override_styles/panel = SubResource("2")
+script = ExtResource("1_je5p5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+stretch_mode = 4

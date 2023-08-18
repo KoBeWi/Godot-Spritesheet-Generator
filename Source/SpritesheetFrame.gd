@@ -1,23 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://cd5wndu01c1sn"]
-
-[sub_resource type="StyleBoxFlat" id="2"]
-resource_local_to_scene = true
-bg_color = Color(0, 0.501961, 0.501961, 1)
-
-[sub_resource type="GDScript" id="3"]
-resource_name = "Prefab"
-script/source = "extends PanelContainer
+extends PanelContainer
 
 var odd: Vector2
 
 func set_frame_margin(margin: Vector2):
-	$MarginContainer.add_theme_constant_override(&\"margin_left\", margin.x)
-	$MarginContainer.add_theme_constant_override(&\"margin_top\", margin.y)
+	$MarginContainer.add_theme_constant_override(&"margin_left", margin.x)
+	$MarginContainer.add_theme_constant_override(&"margin_top", margin.y)
 	
 	margin += odd
 	
-	$MarginContainer.add_theme_constant_override(&\"margin_right\", margin.x)
-	$MarginContainer.add_theme_constant_override(&\"margin_bottom\", margin.y)
+	$MarginContainer.add_theme_constant_override(&"margin_right", margin.x)
+	$MarginContainer.add_theme_constant_override(&"margin_bottom", margin.y)
 
 func set_texture(texture: Texture2D):
 	%TextureRect.texture = texture
@@ -36,10 +28,10 @@ func get_texture_data() -> Image:
 	return %TextureRect.texture.get_image()
 
 func set_display_background(display: bool):
-	get_theme_stylebox(&\"panel\").draw_center = display
+	get_theme_stylebox(&"panel").draw_center = display
 
 func set_background_color(color: Color):
-	get_theme_stylebox(&\"panel\").bg_color = color
+	get_theme_stylebox(&"panel").bg_color = color
 
 func _get_drag_data(p: Vector2):
 	var preview = TextureRect.new()
@@ -48,10 +40,10 @@ func _get_drag_data(p: Vector2):
 	preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	preview.size = Vector2(64, 64)
 	set_drag_preview(preview)
-	return {type = \"SpritesheetFrame\", node = self}
+	return {type = "SpritesheetFrame", node = self}
 
 func _can_drop_data(p: Vector2, data) -> bool:
-	return data is Dictionary and data.get(\"type\", \"\") == \"SpritesheetFrame\"
+	return data is Dictionary and data.get("type", "") == "SpritesheetFrame"
 
 func _drop_data(p: Vector2, data) -> void:
 	var index = get_index()
@@ -63,18 +55,3 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 			get_tree().current_scene.remove_frame.call_deferred(self)
-"
-
-[node name="FramePrefab" type="PanelContainer" groups=["frame"]]
-theme_override_styles/panel = SubResource("2")
-script = SubResource("3")
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
-unique_name_in_owner = true
-texture_filter = 1
-layout_mode = 2
-stretch_mode = 4

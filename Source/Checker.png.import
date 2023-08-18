@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnkl8rujlgv0h"
-path="res://.godot/imported/Checker.png-95b82ca4c05ab143e1e16c56d598421b.ctex"
+path="res://.godot/imported/Checker.png-8c8945e5f7df3f17e0f526a4dea0621a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/SpritesheetGenerator/Checker.png"
-dest_files=["res://.godot/imported/Checker.png-95b82ca4c05ab143e1e16c56d598421b.ctex"]
+source_file="res://Source/Checker.png"
+dest_files=["res://.godot/imported/Checker.png-8c8945e5f7df3f17e0f526a4dea0621a.ctex"]
 
 [params]
 
