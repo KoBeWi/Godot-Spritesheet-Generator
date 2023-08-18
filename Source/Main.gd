@@ -2,8 +2,6 @@ extends Control
 
 const SUPPORTED_FORMATS: PackedStringArray = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
 
-@onready var grid := %GridContainer
-
 var file_list: Array
 var image_list: Array
 var texture_list: Array
@@ -17,9 +15,6 @@ var output_path: String
 var auto := true
 var margin := Vector2.ONE
 
-var pan_origin: Vector2
-var pan_start: Vector2
-
 signal images_processed
 
 func _enter_tree() -> void:
@@ -31,11 +26,7 @@ func _ready():
 	$Status.text = $Status.text % ", ".join(SUPPORTED_FORMATS)
 	
 	get_viewport().files_dropped.connect(load_files)
-	grid.minimum_size_changed.connect(refresh_background)
 	set_process(false)
-
-func refresh_background():
-	%Background.custom_minimum_size = grid.get_minimum_size()
 
 func load_files(files: PackedStringArray):
 	file_list.clear()
@@ -75,7 +66,7 @@ func load_files(files: PackedStringArray):
 func load_images():
 	texture_list.clear()
 	
-	for image in grid.get_children():
+	for image in %Grid.get_children():
 		image.free()
 	
 	for image in %StashImages.get_children():
@@ -137,7 +128,7 @@ func load_images():
 		return
 	
 	$Status.show()
-	%CenterContainer.hide()
+	%Spritesheet.hide()
 	
 	image_count = images_to_process.size()
 	%Columns.max_value = image_count
@@ -159,7 +150,7 @@ func load_images():
 	refresh_margin()
 	
 	$Status.hide()
-	%CenterContainer.show()
+	%Spritesheet.show()
 
 var threshold: float
 var min_x: int
@@ -219,9 +210,9 @@ func toggle_auto(button_pressed: bool) -> void:
 				best = i
 				best_score = score
 		
-		grid.columns = best
+		%Grid.columns = best
 	else:
-		grid.columns = %Columns.value
+		%Grid.columns = %Columns.value
 	refresh_grid()
 
 func hmargin_changed(value: float) -> void:
@@ -236,29 +227,29 @@ func refresh_margin():
 	get_tree().call_group(&"frame", &"set_frame_margin", margin)
 
 func columns_changed(value: float) -> void:
-	grid.columns = value
+	%Grid.columns = value
 	refresh_grid()
 
 func refresh_grid():
 	var coord: Vector2
 	var dark = false
 	
-	for rect in grid.get_children():
+	for rect in %Grid.get_children():
 		rect.set_background_color(Color(0, 0, 0, 0.2 if dark else 0.1))
 		dark = not dark
 		coord.x += 1
 		
-		if coord.x == grid.columns:
+		if coord.x == %Grid.columns:
 			coord.x = 0
 			coord.y += 1
 			dark = int(coord.y) % 2 == 1
 
 func save_png() -> void:
-	var image_size: Vector2 = grid.get_child(0).get_minimum_size()
+	var image_size: Vector2 = %Grid.get_child(0).get_minimum_size()
 	
-	var image := Image.create(image_size.x * grid.columns, image_size.y * (ceil(grid.get_child_count() / float(grid.columns))), false, Image.FORMAT_RGBA8)
+	var image := Image.create(image_size.x * %Grid.columns, image_size.y * (ceil(%Grid.get_child_count() / float(%Grid.columns))), false, Image.FORMAT_RGBA8)
 	
-	for rect in grid.get_children():
+	for rect in %Grid.get_children():
 		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position2())
 	
 	image.save_png(output_path.path_join(%CustomName.text) + ".png")
@@ -274,36 +265,9 @@ func show_error(text: String):
 func error_hidden() -> void:
 	%Error.text = ""
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		var cc: Control = %CenterContainer
-		
-		if event.button_index == MOUSE_BUTTON_MIDDLE:
-			if event.pressed:
-				pan_origin = get_local_mouse_position()
-				pan_start = cc.position
-			else:
-				pan_origin = Vector2()
-		
-		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			var lm = cc.get_local_mouse_position()
-			cc.scale -= Vector2.ONE * 0.05
-			if cc.scale.x <= 0:
-				cc.scale = Vector2.ONE * 0.05
-			
-			cc.position -= (lm - cc.get_local_mouse_position()) * cc.scale
-		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			var lm = cc.get_local_mouse_position()
-			cc.scale += Vector2.ONE * 0.05
-			cc.position -= (lm - cc.get_local_mouse_position()) * cc.scale
-	
-	if event is InputEventMouseMotion:
-		if pan_origin != Vector2():
-			%CenterContainer.position = pan_start + (get_local_mouse_position() - pan_origin)
-
 func recenter() -> void:
-	%CenterContainer.position = get_viewport().size / 2 - Vector2i(%CenterContainer.size) / 2
-	%CenterContainer.scale = Vector2.ONE
+	%Spritesheet.position = get_viewport().size / 2 - Vector2i(%Spritesheet.size) / 2
+	%Spritesheet.scale = Vector2.ONE
 
 func update_split_preview():
 	%SplitPreview.queue_redraw()
@@ -372,11 +336,11 @@ func re_add_image(tb: TextureButton):
 		$StashDialog.hide()
 
 func add_frame(texture: Texture2D):
-	var rect := preload("res://addons/SpritesheetGenerator/SpritesheetFrame.tscn").instantiate()
+	var rect := preload("res://Source/SpritesheetFrame.tscn").instantiate()
 	rect.set_texture(texture)
 	rect.set_display_background(%DisplayGrid.button_pressed)
 	rect.set_frame_margin(margin)
-	grid.add_child(rect)
+	%Grid.add_child(rect)
 
 func update_save_button() -> void:
 	%SavePNG.disabled = %CustomName.text.is_empty()

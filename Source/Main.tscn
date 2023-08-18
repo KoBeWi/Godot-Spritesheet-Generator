@@ -1,14 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=7 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
 [ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://Source/Checker.png" id="1_wvj2f"]
+[ext_resource type="Script" path="res://Source/SpritesheetView.gd" id="2_eepvq"]
 [ext_resource type="Script" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
 
 [sub_resource type="StyleBoxFlat" id="5"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.25098)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kjgn5"]
@@ -25,109 +26,121 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_uvcat")
 
-[node name="MarginContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
 theme_override_styles/panel = SubResource("5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Import" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Import"]
 layout_mode = 2
 text = "Alpha Threshold"
 horizontal_alignment = 1
 
-[node name="Threshold" type="SpinBox" parent="MarginContainer/VBoxContainer"]
+[node name="Threshold" type="SpinBox" parent="PanelContainer/VBoxContainer/Import"]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 1.0
 step = 0.005
 value = 0.9
 
-[node name="Reload" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Reload" type="Button" parent="PanelContainer/VBoxContainer/Import"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Reload"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Spritesheet" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Spritesheet"]
 layout_mode = 2
 text = "Columns"
 horizontal_alignment = 1
 
-[node name="Columns" type="SpinBox" parent="MarginContainer/VBoxContainer"]
+[node name="Columns" type="SpinBox" parent="PanelContainer/VBoxContainer/Spritesheet"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 value = 1.0
 editable = false
 
-[node name="Grid" type="CheckButton" parent="MarginContainer/VBoxContainer"]
+[node name="Grid" type="CheckButton" parent="PanelContainer/VBoxContainer/Spritesheet"]
 layout_mode = 2
 button_pressed = true
 text = "Auto"
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/Spritesheet"]
 layout_mode = 2
 text = "Horizontal Margin"
 horizontal_alignment = 1
 
-[node name="MarginH" type="SpinBox" parent="MarginContainer/VBoxContainer"]
+[node name="MarginH" type="SpinBox" parent="PanelContainer/VBoxContainer/Spritesheet"]
 layout_mode = 2
 value = 1.0
 suffix = "px"
 
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="PanelContainer/VBoxContainer/Spritesheet"]
 layout_mode = 2
 text = "Vertical Margin"
 horizontal_alignment = 1
 
-[node name="MarginV" type="SpinBox" parent="MarginContainer/VBoxContainer"]
+[node name="MarginV" type="SpinBox" parent="PanelContainer/VBoxContainer/Spritesheet"]
 layout_mode = 2
 max_value = 128.0
 value = 1.0
 suffix = "px"
 
-[node name="Stash" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Stash" type="Button" parent="PanelContainer/VBoxContainer/Spritesheet"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Image Stash"
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Display" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
-text = "Recenter View"
 
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/Display"]
 layout_mode = 2
 text = "Preview"
 
-[node name="DisplayGrid" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/Display"]
+layout_mode = 2
+text = "Recenter View"
+
+[node name="DisplayGrid" type="CheckBox" parent="PanelContainer/VBoxContainer/Display"]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Show Grid"
 
-[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Export" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CustomName" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Export"]
+layout_mode = 2
+
+[node name="CustomName" type="LineEdit" parent="PanelContainer/VBoxContainer/Export/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Image Name"
 
-[node name="SavePNG" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="SavePNG" type="Button" parent="PanelContainer/VBoxContainer/Export"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
@@ -145,14 +158,15 @@ The images will be automatically cropped based on the Alpha Threshold value. Gre
 
 Supported formats: %s
 
-If you drop a single image, the generator will instead edit it as spritesheet."
+If you drop a single image, it will be edited as a spritesheet instead."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="View" type="CanvasLayer" parent="."]
+[node name="SpritesheetView" type="CanvasLayer" parent="."]
 layer = -1
+script = ExtResource("2_eepvq")
 
-[node name="CenterContainer" type="CenterContainer" parent="View"]
+[node name="Spritesheet" type="CenterContainer" parent="SpritesheetView"]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 15
@@ -162,20 +176,20 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="Background" type="ColorRect" parent="View/CenterContainer"]
+[node name="Background" type="ColorRect" parent="SpritesheetView/Spritesheet"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 color = Color(0, 0.501961, 0.501961, 1)
 
-[node name="GridContainer" type="GridContainer" parent="View/CenterContainer"]
+[node name="Grid" type="GridContainer" parent="SpritesheetView/Spritesheet"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 3
 
-[node name="VBoxContainer" type="GridContainer" parent="View"]
+[node name="GridContainer" type="GridContainer" parent="SpritesheetView"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -188,39 +202,39 @@ grow_vertical = 0
 mouse_filter = 2
 columns = 3
 
-[node name="Label" type="Label" parent="View/VBoxContainer"]
+[node name="Label" type="Label" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 text = "LMB"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="View/VBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="View/VBoxContainer"]
+[node name="Label2" type="Label" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 text = "rearrange images"
 
-[node name="Label3" type="Label" parent="View/VBoxContainer"]
+[node name="Label3" type="Label" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 text = "RMB"
 horizontal_alignment = 1
 
-[node name="VSeparator2" type="VSeparator" parent="View/VBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 
-[node name="Label4" type="Label" parent="View/VBoxContainer"]
+[node name="Label4" type="Label" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 text = "delete images"
 
-[node name="Label5" type="Label" parent="View/VBoxContainer"]
+[node name="Label5" type="Label" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 text = "MMB"
 horizontal_alignment = 1
 
-[node name="VSeparator3" type="VSeparator" parent="View/VBoxContainer"]
+[node name="VSeparator3" type="VSeparator" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 
-[node name="Label6" type="Label" parent="View/VBoxContainer"]
+[node name="Label6" type="Label" parent="SpritesheetView/GridContainer"]
 layout_mode = 2
 text = "pan view"
 
@@ -373,7 +387,7 @@ text = "FPS"
 [node name="FPS" type="SpinBox" parent="PreviewDialog/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-value = 60.0
+value = 30.0
 
 [node name="Loop" type="CheckBox" parent="PreviewDialog/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
@@ -386,17 +400,17 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Play/Pause"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Reload" to="." method="load_images"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/Columns" to="." method="columns_changed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/Grid" to="." method="toggle_auto"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginH" to="." method="hmargin_changed"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginV" to="." method="vmargin_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="recenter"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Button2" to="PreviewDialog" method="appear"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/DisplayGrid" to="." method="toggle_grid"]
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/CustomName" to="." method="update_save_button" unbinds=1]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/SavePNG" to="." method="save_png"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Reload" to="." method="load_images"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Spritesheet/Columns" to="." method="columns_changed"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Spritesheet/Grid" to="." method="toggle_auto"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Spritesheet/MarginH" to="." method="hmargin_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Spritesheet/MarginV" to="." method="vmargin_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Spritesheet/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button2" to="PreviewDialog" method="appear"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="." method="recenter"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="." method="toggle_grid"]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/HBoxContainer/CustomName" to="." method="update_save_button" unbinds=1]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
 [connection signal="canceled" from="SplitDialog" to="." method="split_spritesheet"]

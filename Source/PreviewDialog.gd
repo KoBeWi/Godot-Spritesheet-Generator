@@ -8,15 +8,15 @@ func _ready() -> void:
 
 func appear():
 	%FrameValue.value = 0
-	%FrameValue.max_value = %GridContainer.get_child_count() - 1
-	%FrameValue.tick_count = %GridContainer.get_child_count()
+	%FrameValue.max_value = %Grid.get_child_count() - 1
+	%FrameValue.tick_count = %Grid.get_child_count()
 	update_fps(%FPS.value)
 	time = 0
 	popup_centered()
 
 func update_frame(value: float) -> void:
 	%FrameLabel.text = str(value)
-	%PreviewTexture.texture = %GridContainer.get_child(value).get_texture()
+	%PreviewTexture.texture = %Grid.get_child(value).get_texture()
 
 func play() -> void:
 	if not is_processing():
