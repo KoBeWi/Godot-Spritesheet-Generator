@@ -26,6 +26,9 @@ func set_texture(texture: Texture2D):
 func get_texture_size() -> Vector2:
 	return %TextureRect.texture.get_size()
 
+func get_texture() -> Texture2D:
+	return %TextureRect.texture
+
 func get_position2() -> Vector2:
 	return position + %TextureRect.position
 
@@ -52,7 +55,7 @@ func _can_drop_data(p: Vector2, data) -> bool:
 
 func _drop_data(p: Vector2, data) -> void:
 	var index = get_index()
-	get_parent().move_child(self, data.node.get_index())
+	#get_parent().move_child(self, data.node.get_index())
 	get_parent().move_child(data.node, index)
 	get_tree().current_scene.refresh_grid()
 

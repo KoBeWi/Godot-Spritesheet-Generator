@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=6 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://addons/SpritesheetGenerator/Checker.png" id="1_hs1uu"]
 
@@ -31,6 +31,7 @@ signal images_processed
 func _enter_tree() -> void:
 	$SplitDialog.hide()
 	$StashDialog.hide()
+	$PreviewDialog.hide()
 
 func _ready():
 	$Status.text = $Status.text % \", \".join(SUPPORTED_FORMATS)
@@ -134,6 +135,7 @@ func load_images():
 			images_to_process.clear()
 			show_error(\"Only one dropped image was valid.\")
 		else:
+			%CustomName.text = file_list[0].get_file().get_basename()
 			%SplitPreview.texture = ImageTexture.create_from_image(images_to_process[0])
 			$SplitDialog.reset_size()
 			$SplitDialog.popup_centered()
@@ -398,6 +400,49 @@ texture = ExtResource("1_hs1uu")
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
+[sub_resource type="GDScript" id="GDScript_boolj"]
+resource_name = "PreviewDialog"
+script/source = "extends AcceptDialog
+
+var time: float
+var fps: float
+
+func _ready() -> void:
+	set_process(false)
+
+func appear():
+	%FrameValue.value = 0
+	%FrameValue.max_value = %GridContainer.get_child_count() - 1
+	%FrameValue.tick_count = %GridContainer.get_child_count()
+	update_fps(%FPS.value)
+	time = 0
+	popup_centered()
+
+func update_frame(value: float) -> void:
+	%FrameLabel.text = str(value)
+	%PreviewTexture.texture = %GridContainer.get_child(value).get_texture()
+
+func play() -> void:
+	if not is_processing():
+		%FrameValue.value = 0
+	set_process(not is_processing())
+
+func _process(delta: float) -> void:
+	time += delta
+	if time >= fps:
+		time -= fps
+		if %FrameValue.value < %FrameValue.max_value or %Loop.button_pressed:
+			if %FrameValue.value == %FrameValue.max_value:
+				%FrameValue.value = 0
+			else:
+				%FrameValue.value += 1
+		else:
+			set_process(false)
+
+func update_fps(value: float) -> void:
+	fps = 1.0 / value
+"
+
 [node name="Main" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -485,8 +530,11 @@ layout_mode = 2
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Recenter View
-"
+text = "Recenter View"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Preview"
 
 [node name="DisplayGrid" type="CheckBox" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -625,9 +673,8 @@ one_shot = true
 
 [node name="SplitDialog" type="ConfirmationDialog" parent="."]
 title = "Edit Spritesheet"
-position = Vector2i(-500, 0)
+position = Vector2i(0, 36)
 size = Vector2i(272, 343)
-visible = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SplitDialog"]
 offset_left = 8.0
@@ -678,9 +725,8 @@ layout_mode = 2
 
 [node name="StashDialog" type="AcceptDialog" parent="."]
 title = "Image Stash"
-position = Vector2i(-500, 500)
+position = Vector2i(0, 500)
 size = Vector2i(309, 100)
-visible = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="StashDialog"]
 offset_left = 8.0
@@ -697,6 +743,76 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="PreviewDialog" type="AcceptDialog" parent="."]
+position = Vector2i(0, 36)
+size = Vector2i(300, 300)
+script = SubResource("GDScript_boolj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PreviewDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 292.0
+offset_bottom = 251.0
+
+[node name="CenterContainer" type="CenterContainer" parent="PreviewDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="PreviewTexture" type="TextureRect" parent="PreviewDialog/VBoxContainer/CenterContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PreviewDialog/VBoxContainer/CenterContainer/PreviewTexture"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+editor_only = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PreviewDialog/VBoxContainer"]
+layout_mode = 2
+
+[node name="FrameValue" type="HSlider" parent="PreviewDialog/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tick_count = 23
+
+[node name="FrameLabel" type="Label" parent="PreviewDialog/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "999"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PreviewDialog/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="PreviewDialog/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "FPS"
+
+[node name="FPS" type="SpinBox" parent="PreviewDialog/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 60.0
+
+[node name="Loop" type="CheckBox" parent="PreviewDialog/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Loop"
+
+[node name="Button" type="Button" parent="PreviewDialog/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Play/Pause"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Reload" to="." method="load_images"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Columns" to="." method="columns_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Grid" to="." method="toggle_auto"]
@@ -704,12 +820,17 @@ layout_mode = 2
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/MarginV" to="." method="vmargin_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="recenter"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button2" to="PreviewDialog" method="appear"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/DisplayGrid" to="." method="toggle_grid"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
+[connection signal="canceled" from="SplitDialog" to="." method="split_spritesheet"]
 [connection signal="confirmed" from="SplitDialog" to="." method="split_spritesheet"]
 [connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitX" to="." method="update_split_preview" unbinds=1]
 [connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitY" to="." method="update_split_preview" unbinds=1]
 [connection signal="draw" from="SplitDialog/VBoxContainer/CenterContainer/PanelContainer/SplitPreview" to="." method="draw_split_preview"]
+[connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer/FrameValue" to="PreviewDialog" method="update_frame"]
+[connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer2/FPS" to="PreviewDialog" method="update_fps"]
+[connection signal="pressed" from="PreviewDialog/VBoxContainer/Button" to="PreviewDialog" method="play"]
