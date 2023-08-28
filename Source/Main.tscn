@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=8 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
 [ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://Source/Checker.png" id="1_wvj2f"]
@@ -11,6 +11,17 @@ content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.25098)
+
+[sub_resource type="GDScript" id="GDScript_dtuo0"]
+resource_name = "DragHint"
+script/source = "extends HBoxContainer
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		show()
+	elif what == NOTIFICATION_DRAG_END:
+		hide()
+"
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kjgn5"]
 texture = ExtResource("1_wvj2f")
@@ -158,7 +169,7 @@ The images will be automatically cropped based on the Alpha Threshold value. Gre
 
 Supported formats: %s
 
-If you drop a single image, it will be edited as a spritesheet instead."
+If you drop a single image, it will be loaded as a spritesheet and allow you to edit it."
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -189,52 +200,75 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 3
 
-[node name="GridContainer" type="GridContainer" parent="SpritesheetView"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SpritesheetView"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -196.0
+offset_top = -104.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
-columns = 3
+alignment = 2
 
-[node name="Label" type="Label" parent="SpritesheetView/GridContainer"]
+[node name="DragHint" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_dtuo0")
+
+[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/DragHint"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Hold Shift to swap"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 text = "LMB"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/GridContainer"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="SpritesheetView/GridContainer"]
+[node name="Label2" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "rearrange images"
 
-[node name="Label3" type="Label" parent="SpritesheetView/GridContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 text = "RMB"
 horizontal_alignment = 1
 
-[node name="VSeparator2" type="VSeparator" parent="SpritesheetView/GridContainer"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
-[node name="Label4" type="Label" parent="SpritesheetView/GridContainer"]
+[node name="Label2" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "delete images"
 
-[node name="Label5" type="Label" parent="SpritesheetView/GridContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 text = "MMB"
 horizontal_alignment = 1
 
-[node name="VSeparator3" type="VSeparator" parent="SpritesheetView/GridContainer"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 
-[node name="Label6" type="Label" parent="SpritesheetView/GridContainer"]
+[node name="Label2" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "pan view"
 

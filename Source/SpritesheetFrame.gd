@@ -47,7 +47,8 @@ func _can_drop_data(p: Vector2, data) -> bool:
 
 func _drop_data(p: Vector2, data) -> void:
 	var index = get_index()
-	#get_parent().move_child(self, data.node.get_index())
+	if Input.is_key_pressed(KEY_SHIFT):
+		get_parent().move_child(self, data.node.get_index())
 	get_parent().move_child(data.node, index)
 	get_tree().current_scene.refresh_grid()
 
