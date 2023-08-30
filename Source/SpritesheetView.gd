@@ -38,3 +38,7 @@ func get_mouse_position() -> Vector2:
 
 func refresh_background():
 	%Background.custom_minimum_size = %Grid.get_minimum_size()
+
+func recenter() -> void: ## TODO: widok całości?
+	%Spritesheet.position = get_viewport().size / 2 - Vector2i(%Spritesheet.size) / 2
+	%Spritesheet.scale = Vector2.ONE

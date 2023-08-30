@@ -107,7 +107,12 @@ func process():
 			var image := image_list[current_index]
 			
 			status_label.text = "Creating textures (%d/%d)" % [current_index + 1, image_list.size()]
-			texture_list[current_index] = ImageTexture.create_from_image(image)
+			
+			var rect := Rect2i(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
+			
+			var true_image := Image.create(rect.size.x, rect.size.y, false, image.get_format())
+			true_image.blit_rect(image, rect, Vector2())
+			texture_list[current_index] = ImageTexture.create_from_image(true_image)
 			
 			current_index += 1
 			progress_bar.value += 1

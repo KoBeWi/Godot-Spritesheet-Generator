@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=12 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
 [ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://Source/Checker.png" id="1_wvj2f"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
 [ext_resource type="Script" path="res://Source/ProcessDialog.gd" id="3_muoun"]
 [ext_resource type="Script" path="res://Source/SplitDialog.gd" id="3_sd37f"]
+[ext_resource type="Script" path="res://Source/Spritesheet.gd" id="3_svww0"]
+[ext_resource type="Script" path="res://Source/StashDialog.gd" id="7_phrwa"]
 
 [sub_resource type="StyleBoxFlat" id="5"]
 content_margin_left = 10.0
@@ -71,48 +73,49 @@ text = "Reload"
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Spritesheet" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="SpritesheetSettings" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 layout_mode = 2
 text = "Columns"
 horizontal_alignment = 1
 
-[node name="Columns" type="SpinBox" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="Columns" type="SpinBox" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 value = 1.0
 editable = false
 
-[node name="Grid" type="CheckButton" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="Auto" type="CheckButton" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
+unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Auto"
 
-[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 layout_mode = 2
 text = "Horizontal Margin"
 horizontal_alignment = 1
 
-[node name="MarginH" type="SpinBox" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="MarginH" type="SpinBox" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 layout_mode = 2
 value = 1.0
 suffix = "px"
 
-[node name="Label3" type="Label" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="Label3" type="Label" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 layout_mode = 2
 text = "Vertical Margin"
 horizontal_alignment = 1
 
-[node name="MarginV" type="SpinBox" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="MarginV" type="SpinBox" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 layout_mode = 2
 max_value = 128.0
 value = 1.0
 suffix = "px"
 
-[node name="Stash" type="Button" parent="PanelContainer/VBoxContainer/Spritesheet"]
+[node name="Stash" type="Button" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
@@ -159,7 +162,7 @@ layout_mode = 2
 disabled = true
 text = "Save PNG"
 
-[node name="Status" type="Label" parent="."]
+[node name="Welcome" type="Label" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -188,6 +191,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+script = ExtResource("3_svww0")
 
 [node name="Background" type="ColorRect" parent="SpritesheetView/Spritesheet"]
 unique_name_in_owner = true
@@ -272,7 +276,7 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer3"]
 layout_mode = 2
-text = "pan view"
+text = "pan/zoom view"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -369,9 +373,11 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="StashDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
 title = "Image Stash"
 position = Vector2i(0, 500)
 size = Vector2i(309, 100)
+script = ExtResource("7_phrwa")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="StashDialog"]
 offset_left = 8.0
@@ -459,13 +465,13 @@ size_flags_horizontal = 4
 text = "Play/Pause"
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Reload" to="." method="load_images"]
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/Spritesheet/Columns" to="." method="columns_changed"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/Spritesheet/Grid" to="." method="toggle_auto"]
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/Spritesheet/MarginH" to="." method="hmargin_changed"]
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/Spritesheet/MarginV" to="." method="vmargin_changed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Spritesheet/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Columns" to="." method="columns_changed"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/SpritesheetSettings/Auto" to="." method="toggle_auto"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginH" to="SpritesheetView/Spritesheet" method="hmargin_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginV" to="SpritesheetView/Spritesheet" method="vmargin_changed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button2" to="PreviewDialog" method="appear"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="." method="recenter"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="SpritesheetView" method="recenter"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="." method="toggle_grid"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/HBoxContainer/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]

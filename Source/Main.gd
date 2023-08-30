@@ -12,9 +12,6 @@ var first_time := true
 var image_count: int
 var output_path: String
 
-var auto := true
-var margin := Vector2.ONE
-
 signal images_processed
 
 func _enter_tree() -> void:
@@ -24,16 +21,10 @@ func _enter_tree() -> void:
 	$PreviewDialog.hide()
 
 func _ready():
-	$Status.text = $Status.text % ", ".join(SUPPORTED_FORMATS)
+	$Welcome.text = $Welcome.text % ", ".join(SUPPORTED_FORMATS)
 	
 	get_viewport().files_dropped.connect(process_files)
 	set_process(false)
-
-var threshold: float
-var min_x: int
-var min_y: int
-var max_x: int
-var max_y: int
 
 func process_files(files: PackedStringArray):
 	%CustomName.text = ""
@@ -104,93 +95,18 @@ func process_files(files: PackedStringArray):
 		show_error("Single image left, aborting.")
 		return
 	
-	$ProcessDialog.create_textures_from_image_list.call_deferred()
+	reload_textures.call_deferred()
 
-func _process(delta: float) -> void:
-	if not images_to_process.is_empty():
-		var image: Image = images_to_process.pop_front()
-		$Status.text = str("Preprocessing image ", image_count - images_to_process.size(), "/", image_count)
-		
-		for x in image.get_width():
-			for y in image.get_height():
-				if image.get_pixel(x, y).a >= threshold:
-					min_x = mini(min_x, x)
-					min_y = mini(min_y, y)
-					max_x = maxi(max_x, x)
-					max_y = maxi(max_y, y)
-		
-		images_to_texturize.append(image)
-	elif not images_to_texturize.is_empty():
-		var rect := Rect2i(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
-		var image: Image = images_to_texturize.pop_front()
-		$Status.text = str("Creating texture ", image_count - images_to_texturize.size(), "/", image_count)
-		
-		var true_image := Image.create(rect.size.x, rect.size.y, false, image.get_format())
-		true_image.blit_rect(image, rect, Vector2())
-		
-		var texture := ImageTexture.create_from_image(true_image)
-		texture_list.append(texture)
-		
-		if images_to_texturize.is_empty():
-			set_process(false)
-			images_processed.emit()
-			if first_time:
-				recenter()
-				first_time = false
-
-func toggle_grid(show: bool) -> void:
-	get_tree().call_group(&"frame", &"set_display_background", show)
-
-func toggle_auto(button_pressed: bool) -> void:
-	%Columns.editable = not button_pressed
-	auto = button_pressed
+func reload_textures():
+	$ProcessDialog.create_textures_from_image_list()
+	await $ProcessDialog.finished
 	
-	if button_pressed:
-		var best: int
-		var best_score = -9999999
-		
-		for i in range(1, image_count + 1):
-			var cols = i
-			var rows = ceili(image_count / float(i))
-			
-			var score = image_count - cols * rows - maxi(cols, rows) - rows
-			if score > best_score:
-				best = i
-				best_score = score
-		
-		%Grid.columns = best
-	else:
-		%Grid.columns = %Columns.value
-	refresh_grid()
-
-func hmargin_changed(value: float) -> void:
-	margin.x = value
-	refresh_margin()
-
-func vmargin_changed(value: float) -> void:
-	margin.y = value
-	refresh_margin()
-
-func refresh_margin():
-	get_tree().call_group(&"frame", &"set_frame_margin", margin)
-
-func columns_changed(value: float) -> void:
-	%Grid.columns = value
-	refresh_grid()
-
-func refresh_grid():
-	var coord: Vector2
-	var dark = false
+	for texture in texture_list:
+		%Spritesheet.add_frame(texture)
 	
-	for rect in %Grid.get_children():
-		rect.set_background_color(Color(0, 0, 0, 0.2 if dark else 0.1))
-		dark = not dark
-		coord.x += 1
-		
-		if coord.x == %Grid.columns:
-			coord.x = 0
-			coord.y += 1
-			dark = int(coord.y) % 2 == 1
+	$Welcome.hide()
+	%Spritesheet.update_columns()
+	$SpritesheetView.show()
 
 func save_png() -> void:
 	var image_size: Vector2 = %Grid.get_child(0).get_minimum_size()
@@ -212,51 +128,6 @@ func show_error(text: String):
 
 func error_hidden() -> void:
 	%Error.text = ""
-
-func recenter() -> void: ## TODO: widok całości?
-	%Spritesheet.position = get_viewport().size / 2 - Vector2i(%Spritesheet.size) / 2
-	%Spritesheet.scale = Vector2.ONE
-
-func remove_frame(frame):
-	var image: Image = frame.get_texture_data()
-	var texture := ImageTexture.create_from_image(image)
-	
-	var button := TextureButton.new()
-	button.texture_normal = texture
-	button.custom_minimum_size = Vector2(128, 128)
-	button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
-	button.ignore_texture_size = true
-	button.pressed.connect(re_add_image.bind(button), CONNECT_DEFERRED)
-	%StashImages.add_child(button)
-	
-	var ref := ReferenceRect.new()
-	button.add_child(ref)
-	ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ref.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	ref.editor_only = false
-	
-	frame.free()
-	refresh_grid()
-	update_stash()
-
-func update_stash():
-	%Stash.disabled = %StashImages.get_child_count() == 0
-
-func re_add_image(tb: TextureButton):
-	add_frame(tb.texture_normal)
-	tb.free()
-	refresh_grid()
-	update_stash()
-	
-	if %Stash.disabled:
-		$StashDialog.hide()
-
-func add_frame(texture: Texture2D):
-	var rect := preload("res://Source/SpritesheetFrame.tscn").instantiate()
-	rect.set_texture(texture)
-	rect.set_display_background(%DisplayGrid.button_pressed)
-	rect.set_frame_margin(margin)
-	%Grid.add_child(rect)
 
 func update_save_button() -> void:
 	%SavePNG.disabled = %CustomName.text.is_empty()

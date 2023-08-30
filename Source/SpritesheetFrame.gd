@@ -50,9 +50,9 @@ func _drop_data(p: Vector2, data) -> void:
 	if Input.is_key_pressed(KEY_SHIFT):
 		get_parent().move_child(self, data.node.get_index())
 	get_parent().move_child(data.node, index)
-	get_tree().current_scene.refresh_grid()
+	owner.get_node(^"%Spritesheet").refresh_grid()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-			get_tree().current_scene.remove_frame.call_deferred(self)
+			owner.get_node(^"%StashDialog").stash_frame.call_deferred(self)
