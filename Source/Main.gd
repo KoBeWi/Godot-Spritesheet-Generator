@@ -2,9 +2,9 @@ extends Control
 
 const SUPPORTED_FORMATS: PackedStringArray = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
 
-var file_list: Array
-var image_list: Array
-var texture_list: Array
+var file_list: Array[String]
+var image_list: Array[Image]
+var texture_list: Array[Texture2D]
 
 var images_to_process: Array
 var images_to_texturize: Array
@@ -18,6 +18,7 @@ var margin := Vector2.ONE
 signal images_processed
 
 func _enter_tree() -> void:
+	$ProcessDialog.hide()
 	$SplitDialog.hide()
 	$StashDialog.hide()
 	$PreviewDialog.hide()
@@ -25,17 +26,21 @@ func _enter_tree() -> void:
 func _ready():
 	$Status.text = $Status.text % ", ".join(SUPPORTED_FORMATS)
 	
-	get_viewport().files_dropped.connect(load_files)
+	get_viewport().files_dropped.connect(process_files)
 	set_process(false)
 
-func load_files(files: PackedStringArray):
-	file_list.clear()
-	image_list.clear()
-	images_to_process.clear()
-	
+var threshold: float
+var min_x: int
+var min_y: int
+var max_x: int
+var max_y: int
+
+func process_files(files: PackedStringArray):
 	%CustomName.text = ""
-	%Reload.disabled = false
-	%SavePNG.disabled = false
+	%Reload.disabled = true
+	%SavePNG.disabled = true
+	
+	file_list.clear()
 	
 	if files.size() == 1 and not FileAccess.file_exists(files[0]):
 		var dir := DirAccess.open(files[0])
@@ -61,27 +66,15 @@ func load_files(files: PackedStringArray):
 		show_error("No valid files or directories to process.")
 		return
 	
-	load_images()
-
-func load_images():
-	texture_list.clear()
+	if file_list.size() == 1:
+		$SplitDialog.start_split(file_list[0])
+		return
 	
-	for image in %Grid.get_children():
-		image.free()
-	
-	for image in %StashImages.get_children():
-		image.free()
-	update_stash()
+	$ProcessDialog.load_images_from_file_list()
+	await $ProcessDialog.finished
 	
 	var size_map: Dictionary
-	
-	if not file_list.is_empty():
-		image_list = file_list.map(func(file: String):
-			var image := Image.load_from_file(file)
-			if image:
-				image.set_meta(&"path", file)
-			return image)
-	
+
 	for image in image_list:
 		if not image:
 			continue
@@ -90,7 +83,10 @@ func load_images():
 			size_map[image.get_size()] = []
 		size_map[image.get_size()].append(image)
 	
-	var output_name: String
+	if size_map.is_empty():
+		show_error("Failed to load any image.")
+		return
+	
 	var most_common_size: Vector2i
 	var most_common_count: int
 	
@@ -99,64 +95,16 @@ func load_images():
 			most_common_size = size
 			most_common_count = size_map[size].size()
 	
-	for image in size_map[most_common_size]:
-		if output_path.is_empty():
-			var path: String = image.get_meta(&"path", "")
-			output_path = path.get_base_dir()
-			output_name = path.get_base_dir().get_file()
-		
-		images_to_process.append(image)
-	size_map.clear()
+	image_list.assign(size_map[most_common_size])
 	
-	if not output_name.is_empty() and %CustomName.text.is_empty():
-		%CustomName.text = output_name
-	update_save_button()
+	if image_list.size() < file_list.size():
+		show_error("Rejected %d image(s) due to size mismatch or invalid data." % (file_list.size() - image_list.size()))
 	
-	if images_to_process.size() < file_list.size():
-		show_error("Rejected %s image(s) due to size mismatch." % (file_list.size() - images_to_process.size()))
-	
-	if images_to_process.size() == 1:
-		if file_list.size() > 1:
-			images_to_process.clear()
-			show_error("Only one dropped image was valid.")
-		else:
-			%CustomName.text = file_list[0].get_file().get_basename()
-			%SplitPreview.texture = ImageTexture.create_from_image(images_to_process[0])
-			$SplitDialog.reset_size()
-			$SplitDialog.popup_centered()
-		
+	if image_list.size() == 1:
+		show_error("Single image left, aborting.")
 		return
 	
-	$Status.show()
-	%Spritesheet.hide()
-	
-	image_count = images_to_process.size()
-	%Columns.max_value = image_count
-	
-	threshold = %Threshold.value
-	min_x = 9999999
-	min_y = 9999999
-	max_x = -9999999
-	max_y = -9999999
-	
-	set_process(true)
-	
-	await images_processed
-	
-	for texture in texture_list:
-		add_frame(texture)
-	
-	toggle_auto(auto)
-	refresh_margin()
-	
-	$Status.hide()
-	%Spritesheet.show()
-
-var threshold: float
-var min_x: int
-var min_y: int
-var max_x: int
-var max_y: int
+	$ProcessDialog.create_textures_from_image_list.call_deferred()
 
 func _process(delta: float) -> void:
 	if not images_to_process.is_empty():
@@ -265,41 +213,9 @@ func show_error(text: String):
 func error_hidden() -> void:
 	%Error.text = ""
 
-func recenter() -> void:
+func recenter() -> void: ## TODO: widok całości?
 	%Spritesheet.position = get_viewport().size / 2 - Vector2i(%Spritesheet.size) / 2
 	%Spritesheet.scale = Vector2.ONE
-
-func update_split_preview():
-	%SplitPreview.queue_redraw()
-
-func draw_split_preview() -> void:
-	var preview: TextureRect = %SplitPreview
-	var frame_count := Vector2(%SplitX.value, %SplitY.value)
-	var frame_size := preview.size / frame_count
-	
-	for x in range(1, frame_count.x):
-		for y in int(frame_count.y):
-			preview.draw_line(frame_size * Vector2(x, y), frame_size * Vector2(x, y + 1), Color.WHITE)
-			preview.draw_line(frame_size * Vector2(x, y) + Vector2.RIGHT, frame_size * Vector2(x, y + 1) + Vector2.RIGHT, Color.BLACK)
-	
-	for y in range(1, frame_count.y):
-		for x in int(frame_count.x):
-			preview.draw_line(frame_size * Vector2(x, y), frame_size * Vector2(x + 1, y), Color.WHITE)
-			preview.draw_line(frame_size * Vector2(x, y) + Vector2.DOWN, frame_size * Vector2(x + 1, y) + Vector2.DOWN, Color.BLACK)
-
-func split_spritesheet() -> void:
-	file_list.clear()
-	image_list.clear()
-	
-	var image: Image = images_to_process[0]
-	var sub_image_size := image.get_size() / Vector2i(%SplitX.value, %SplitY.value)
-	
-	for y in %SplitY.value:
-		for x in %SplitX.value:
-			image_list.append(image.get_region(Rect2i(Vector2i(x, y) * sub_image_size, sub_image_size)))
-	
-	images_to_process.clear()
-	load_images()
 
 func remove_frame(frame):
 	var image: Image = frame.get_texture_data()
@@ -344,3 +260,96 @@ func add_frame(texture: Texture2D):
 
 func update_save_button() -> void:
 	%SavePNG.disabled = %CustomName.text.is_empty()
+
+
+
+
+#func load_images_from_file_list():
+	#texture_list.clear()
+	#image_list.clear()
+#
+	#for image in %Grid.get_children():
+		#image.free()
+#
+	#for image in %StashImages.get_children():
+		#image.free()
+	#update_stash()
+#
+	#var size_map: Dictionary
+#
+	#if not file_list.is_empty():
+		#image_list = file_list.map(func(file: String):
+			#var image := Image.load_from_file(file)
+			#if image:
+				#image.set_meta(&"path", file)
+			#return image)
+#
+	#for image in image_list:
+		#if not image:
+			#continue
+#
+		#if not image.get_size() in size_map:
+			#size_map[image.get_size()] = []
+		#size_map[image.get_size()].append(image)
+#
+	#var output_name: String
+	#var most_common_size: Vector2i
+	#var most_common_count: int
+#
+	#for size in size_map:
+		#if size_map[size].size() > most_common_count:
+			#most_common_size = size
+			#most_common_count = size_map[size].size()
+#
+	#for image in size_map[most_common_size]:
+		#if output_path.is_empty():
+			#var path: String = image.get_meta(&"path", "")
+			#output_path = path.get_base_dir()
+			#output_name = path.get_base_dir().get_file()
+#
+		#images_to_process.append(image)
+	#size_map.clear()
+#
+	#if not output_name.is_empty():# and %CustomName.text.is_empty():
+		#%CustomName.text = output_name
+	#update_save_button() ## źle
+#
+	#if images_to_process.size() < file_list.size():
+		#show_error("Rejected %s image(s) due to size mismatch." % (file_list.size() - images_to_process.size()))
+#
+	#if images_to_process.size() == 1:
+		#if file_list.size() > 1:
+			#images_to_process.clear()
+			#show_error("Only one dropped image was valid.")
+		#else:
+			#%CustomName.text = file_list[0].get_file().get_basename()
+			#%SplitPreview.texture = ImageTexture.create_from_image(images_to_process[0])
+			#$SplitDialog.reset_size()
+			#$SplitDialog.popup_centered()
+#
+		#return
+#
+	#$Status.show()
+	#%Spritesheet.hide()
+#
+	#image_count = images_to_process.size()
+	#%Columns.max_value = image_count
+#
+	#threshold = %Threshold.value
+	#min_x = 9999999
+	#min_y = 9999999
+	#max_x = -9999999
+	#max_y = -9999999
+#
+	#set_process(true)
+#
+	#await images_processed
+#
+	#for texture in texture_list:
+		#add_frame(texture)
+#
+	#toggle_auto(auto)
+	#refresh_margin()
+#
+	#$Status.hide()
+	#%Spritesheet.show()

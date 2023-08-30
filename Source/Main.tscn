@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=10 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
 [ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://Source/Checker.png" id="1_wvj2f"]
 [ext_resource type="Script" path="res://Source/SpritesheetView.gd" id="2_eepvq"]
 [ext_resource type="Script" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
+[ext_resource type="Script" path="res://Source/ProcessDialog.gd" id="3_muoun"]
+[ext_resource type="Script" path="res://Source/SplitDialog.gd" id="3_sd37f"]
 
 [sub_resource type="StyleBoxFlat" id="5"]
 content_margin_left = 10.0
@@ -175,11 +177,11 @@ vertical_alignment = 1
 
 [node name="SpritesheetView" type="CanvasLayer" parent="."]
 layer = -1
+visible = false
 script = ExtResource("2_eepvq")
 
 [node name="Spritesheet" type="CenterContainer" parent="SpritesheetView"]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -200,7 +202,7 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SpritesheetView"]
+[node name="Help" type="VBoxContainer" parent="SpritesheetView"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -213,62 +215,62 @@ grow_vertical = 0
 mouse_filter = 2
 alignment = 2
 
-[node name="DragHint" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+[node name="DragHint" type="HBoxContainer" parent="SpritesheetView/Help"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 script = SubResource("GDScript_dtuo0")
 
-[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/DragHint"]
+[node name="Label" type="Label" parent="SpritesheetView/Help/DragHint"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Hold Shift to swap"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SpritesheetView/Help"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="SpritesheetView/Help/HBoxContainer"]
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 text = "LMB"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/VBoxContainer/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/Help/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer"]
 layout_mode = 2
 text = "rearrange images"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="SpritesheetView/Help"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="SpritesheetView/Help/HBoxContainer2"]
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 text = "RMB"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/VBoxContainer/HBoxContainer2"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/Help/HBoxContainer2"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer2"]
 layout_mode = 2
 text = "delete images"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="SpritesheetView/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="SpritesheetView/Help"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="SpritesheetView/Help/HBoxContainer3"]
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
 text = "MMB"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/VBoxContainer/HBoxContainer3"]
+[node name="VSeparator" type="VSeparator" parent="SpritesheetView/Help/HBoxContainer3"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="SpritesheetView/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer3"]
 layout_mode = 2
 text = "pan view"
 
@@ -292,10 +294,32 @@ unique_name_in_owner = true
 wait_time = 5.0
 one_shot = true
 
+[node name="ProcessDialog" type="AcceptDialog" parent="."]
+title = "Please Wait..."
+size = Vector2i(416, 111)
+dialog_close_on_escape = false
+script = ExtResource("3_muoun")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ProcessDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 408.0
+offset_bottom = 62.0
+
+[node name="StatusLabel" type="Label" parent="ProcessDialog/VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="ProgressBar" type="ProgressBar" parent="ProcessDialog/VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
 [node name="SplitDialog" type="ConfirmationDialog" parent="."]
 title = "Edit Spritesheet"
 position = Vector2i(0, 36)
 size = Vector2i(272, 343)
+script = ExtResource("3_sd37f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SplitDialog"]
 offset_left = 8.0
@@ -447,11 +471,10 @@ text = "Play/Pause"
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
-[connection signal="canceled" from="SplitDialog" to="." method="split_spritesheet"]
-[connection signal="confirmed" from="SplitDialog" to="." method="split_spritesheet"]
-[connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitX" to="." method="update_split_preview" unbinds=1]
-[connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitY" to="." method="update_split_preview" unbinds=1]
-[connection signal="draw" from="SplitDialog/VBoxContainer/CenterContainer/PanelContainer/SplitPreview" to="." method="draw_split_preview"]
+[connection signal="confirmed" from="SplitDialog" to="SplitDialog" method="split_spritesheet"]
+[connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitX" to="SplitDialog" method="update_split_preview" unbinds=1]
+[connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitY" to="SplitDialog" method="update_split_preview" unbinds=1]
+[connection signal="draw" from="SplitDialog/VBoxContainer/CenterContainer/PanelContainer/SplitPreview" to="SplitDialog" method="draw_split_preview"]
 [connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer/FrameValue" to="PreviewDialog" method="update_frame"]
 [connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer2/FPS" to="PreviewDialog" method="update_fps"]
 [connection signal="pressed" from="PreviewDialog/VBoxContainer/Button" to="PreviewDialog" method="play"]

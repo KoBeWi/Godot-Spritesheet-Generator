@@ -17,6 +17,7 @@ config/icon="res://Icon.png"
 
 [debug]
 
+gdscript/warnings/enable=false
 gdscript/warnings/unused_parameter=0
 
 [display]
