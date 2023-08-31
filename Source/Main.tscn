@@ -81,18 +81,19 @@ layout_mode = 2
 text = "Columns"
 horizontal_alignment = 1
 
+[node name="Auto" type="CheckButton" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+button_pressed = true
+text = "Auto"
+
 [node name="Columns" type="SpinBox" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 value = 1.0
 editable = false
-
-[node name="Auto" type="CheckButton" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
-unique_name_in_owner = true
-layout_mode = 2
-button_pressed = true
-text = "Auto"
 
 [node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/SpritesheetSettings"]
 layout_mode = 2
@@ -138,6 +139,7 @@ text = "Recenter View"
 [node name="DisplayGrid" type="CheckBox" parent="PanelContainer/VBoxContainer/Display"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 button_pressed = true
 text = "Show Grid"
 
@@ -147,10 +149,7 @@ layout_mode = 2
 [node name="Export" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Export"]
-layout_mode = 2
-
-[node name="CustomName" type="LineEdit" parent="PanelContainer/VBoxContainer/Export/HBoxContainer"]
+[node name="CustomName" type="LineEdit" parent="PanelContainer/VBoxContainer/Export"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -465,15 +464,15 @@ size_flags_horizontal = 4
 text = "Play/Pause"
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Reload" to="." method="load_images"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/SpritesheetSettings/Auto" to="SpritesheetView/Spritesheet" method="toggle_auto"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Columns" to="." method="columns_changed"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/SpritesheetSettings/Auto" to="." method="toggle_auto"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginH" to="SpritesheetView/Spritesheet" method="hmargin_changed"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginV" to="SpritesheetView/Spritesheet" method="vmargin_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button2" to="PreviewDialog" method="appear"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="SpritesheetView" method="recenter"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="." method="toggle_grid"]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/HBoxContainer/CustomName" to="." method="update_save_button" unbinds=1]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
 [connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]

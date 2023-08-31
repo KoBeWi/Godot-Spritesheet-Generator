@@ -67,3 +67,7 @@ func update_columns():
 		%Grid.columns = %Columns.value
 	
 	refresh_grid()
+
+func clear():
+	for frame in %Grid.get_children():
+		frame.free()

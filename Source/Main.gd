@@ -39,6 +39,9 @@ func process_files(files: PackedStringArray):
 			show_error("Can't open directory.")
 			return
 		
+		output_path = files[0]
+		%CustomName.text = output_path.get_file()
+		
 		for file in dir.get_files():
 			if file.get_extension() in SUPPORTED_FORMATS:
 				file_list.append(str(dir.get_current_dir().path_join(file)))
@@ -98,25 +101,25 @@ func process_files(files: PackedStringArray):
 	reload_textures.call_deferred()
 
 func reload_textures():
+	%Reload.disabled = true
+	%SavePNG.disabled = true
+	
 	$ProcessDialog.create_textures_from_image_list()
 	await $ProcessDialog.finished
 	
+	%Spritesheet.clear()
 	for texture in texture_list:
 		%Spritesheet.add_frame(texture)
 	
 	$Welcome.hide()
 	%Spritesheet.update_columns()
 	$SpritesheetView.show()
+	
+	%Reload.disabled = false
+	%SavePNG.disabled = false ## TODO: jakiś check czy wszystko w porządku
 
 func save_png() -> void:
-	var image_size: Vector2 = %Grid.get_child(0).get_minimum_size()
-	
-	var image := Image.create(image_size.x * %Grid.columns, image_size.y * (ceil(%Grid.get_child_count() / float(%Grid.columns))), false, Image.FORMAT_RGBA8)
-	
-	for rect in %Grid.get_children():
-		image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), image_size), rect.get_position2())
-	
-	image.save_png(output_path.path_join(%CustomName.text) + ".png")
+	$ProcessDialog.save_spritesheet()
 
 func show_error(text: String):
 	if not %Error.visible:

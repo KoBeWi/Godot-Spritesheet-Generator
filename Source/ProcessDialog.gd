@@ -4,20 +4,22 @@ enum { MODE_LOAD_IMAGES, MODE_CROP_IMAGES, MODE_CREATE_TEXTURES, MODE_SPLIT_SPRI
 
 @onready var status_label: Label = $VBoxContainer/StatusLabel
 @onready var progress_bar: ProgressBar = $VBoxContainer/ProgressBar
-
+@onready var grid: GridContainer = %Grid
 
 var file_list: Array[String]
 var image_list: Array[Image]
 var texture_list: Array[Texture2D]
 
 var work_mode: int
-
 var current_index: int
 
 var min_x: int
 var min_y: int
 var max_x: int
 var max_y: int
+
+var frame_size: Vector2i
+var saving_image: Image
 
 signal finished
 
@@ -48,6 +50,13 @@ func create_textures_from_image_list():
 	progress_bar.max_value = image_list.size()
 	start_work(MODE_CROP_IMAGES)
 
+func save_spritesheet():
+	frame_size = grid.get_child(0).get_minimum_size()
+	saving_image = Image.create(frame_size.x * grid.columns, frame_size.y * (ceil(grid.get_child_count() / float(grid.columns))), false, Image.FORMAT_RGBA8)
+	
+	progress_bar.max_value = grid.get_child_count() + 1
+	start_work(MODE_SAVE)
+
 func start_work(work_type: int):
 	work_mode = work_type
 	current_index = 0
@@ -60,7 +69,9 @@ func start_work(work_type: int):
 func _process(delta: float) -> void:
 	while delta > 0:
 		var time := Time.get_ticks_msec()
-		process()
+		if not process():
+			break
+		
 		delta -= (Time.get_ticks_msec() - time) * 0.001
 		
 		if current_index == -1:
@@ -69,7 +80,7 @@ func _process(delta: float) -> void:
 			hide()
 			return
 
-func process():
+func process() -> bool:
 	match work_mode:
 		MODE_LOAD_IMAGES:
 			var path := file_list[current_index]
@@ -119,6 +130,25 @@ func process():
 			
 			if current_index == image_list.size():
 				current_index = -1
+		
+		MODE_SAVE:
+			if current_index < grid.get_child_count():
+				status_label.text = "Creating spritesheet (%d/%d)" % [current_index + 1, grid.get_child_count()]
+				
+				var rect := grid.get_child(current_index)
+				saving_image.blit_rect(rect.get_texture_data(), Rect2(Vector2(), frame_size), rect.get_position2())
+				
+				current_index += 1
+				progress_bar.value += 1
+			elif current_index == grid.get_child_count():
+				status_label.text = "Saving spritehseet"
+				current_index += 1
+				return false
+			else:
+				saving_image.save_png(owner.output_path.path_join(%CustomName.text) + ".png")
+				current_index = -1
+	
+	return true
 
 func show_error(error: String):
 	owner.show_error(error)
