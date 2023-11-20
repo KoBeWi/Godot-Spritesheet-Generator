@@ -52,6 +52,17 @@ theme_override_constants/separation = 10
 [node name="Import" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="Load" type="MenuButton" parent="PanelContainer/VBoxContainer/Import"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load..."
+flat = false
+item_count = 2
+popup/item_0/text = "Files"
+popup/item_0/id = 0
+popup/item_1/text = "Directory"
+popup/item_1/id = 1
+
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Import"]
 layout_mode = 2
 text = "Alpha Threshold"

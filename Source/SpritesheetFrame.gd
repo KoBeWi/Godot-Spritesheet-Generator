@@ -2,6 +2,12 @@ extends PanelContainer
 
 var odd: Vector2
 
+func _ready() -> void:
+	update_index()
+
+func update_index():
+	%Index.text = str(get_index())
+
 func set_frame_margin(margin: Vector2):
 	$MarginContainer.add_theme_constant_override(&"margin_left", margin.x)
 	$MarginContainer.add_theme_constant_override(&"margin_top", margin.y)

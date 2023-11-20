@@ -22,6 +22,7 @@ func _enter_tree() -> void:
 
 func _ready():
 	$Welcome.text = $Welcome.text % ", ".join(SUPPORTED_FORMATS)
+	%Load.get_popup().index_pressed.connect(load_dialog_option)
 	
 	get_viewport().files_dropped.connect(process_files)
 	set_process(false)
@@ -117,6 +118,7 @@ func reload_textures():
 	
 	%Reload.disabled = false
 	%SavePNG.disabled = false ## TODO: jakiś check czy wszystko w porządku
+	$SpritesheetView.recenter()
 
 func save_png() -> void:
 	$ProcessDialog.save_spritesheet()
@@ -135,7 +137,15 @@ func error_hidden() -> void:
 func update_save_button() -> void:
 	%SavePNG.disabled = %CustomName.text.is_empty()
 
-
+func load_dialog_option(option: int) -> void:
+	var files_selected = func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
+		if status:
+			process_files(selected_paths)
+	
+	var format_filters: Array[String] # TODO cachować to
+	format_filters.assign(Array(SUPPORTED_FORMATS).map(func(format: String) -> String: return "*.%s" % format))
+	#DisplayServer.file_dialog_show("Select Images", "res://", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_ANY, format_filters, files_selected)
+	DisplayServer.file_dialog_show("Select Images", "res://", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES if option == 0 else DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], files_selected)
 
 
 #func load_images_from_file_list():

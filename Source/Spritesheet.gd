@@ -28,6 +28,7 @@ func refresh_grid():
 	
 	for rect in %Grid.get_children():
 		rect.set_background_color(Color(0, 0, 0, 0.2 if dark else 0.1))
+		rect.update_index()
 		dark = not dark
 		coord.x += 1
 
