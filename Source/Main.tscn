@@ -81,6 +81,12 @@ layout_mode = 2
 disabled = true
 text = "Reload"
 
+[node name="Close" type="Button" parent="PanelContainer/VBoxContainer/Import"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Close"
+
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -141,6 +147,7 @@ layout_mode = 2
 
 [node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/Display"]
 layout_mode = 2
+disabled = true
 text = "Preview"
 
 [node name="Button" type="Button" parent="PanelContainer/VBoxContainer/Display"]
@@ -441,6 +448,8 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
 tick_count = 23
 
 [node name="FrameLabel" type="Label" parent="PreviewDialog/VBoxContainer/HBoxContainer"]
@@ -462,6 +471,7 @@ text = "FPS"
 unique_name_in_owner = true
 layout_mode = 2
 value = 30.0
+select_all_on_focus = true
 
 [node name="Loop" type="CheckBox" parent="PreviewDialog/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
@@ -475,6 +485,7 @@ size_flags_horizontal = 4
 text = "Play/Pause"
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Reload" to="." method="load_images"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Close" to="." method="close_spritesheet"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/SpritesheetSettings/Auto" to="SpritesheetView/Spritesheet" method="toggle_auto"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Columns" to="." method="columns_changed"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginH" to="SpritesheetView/Spritesheet" method="hmargin_changed"]

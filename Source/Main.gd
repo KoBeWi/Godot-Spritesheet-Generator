@@ -118,6 +118,7 @@ func reload_textures():
 	
 	%Reload.disabled = false
 	%SavePNG.disabled = false ## TODO: jakiś check czy wszystko w porządku
+	%Close.disabled = false
 	$SpritesheetView.recenter()
 
 func save_png() -> void:
@@ -146,6 +147,10 @@ func load_dialog_option(option: int) -> void:
 	format_filters.assign(Array(SUPPORTED_FORMATS).map(func(format: String) -> String: return "*.%s" % format))
 	#DisplayServer.file_dialog_show("Select Images", "res://", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_ANY, format_filters, files_selected)
 	DisplayServer.file_dialog_show("Select Images", "res://", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES if option == 0 else DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], files_selected)
+
+func close_spritesheet() -> void:
+	# TODO
+	pass # Replace with function body.
 
 
 #func load_images_from_file_list():

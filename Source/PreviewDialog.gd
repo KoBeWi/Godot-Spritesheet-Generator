@@ -5,12 +5,16 @@ var fps: float
 
 func _ready() -> void:
 	set_process(false)
+	visibility_changed.connect(func():
+		if not visible:
+			set_process(false))
 
 func appear():
 	%FrameValue.value = 0
 	%FrameValue.max_value = %Grid.get_child_count() - 1
 	%FrameValue.tick_count = %Grid.get_child_count()
 	update_fps(%FPS.value)
+	update_frame(0)
 	time = 0
 	popup_centered()
 
