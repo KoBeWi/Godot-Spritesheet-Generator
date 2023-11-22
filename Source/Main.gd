@@ -8,7 +8,6 @@ var texture_list: Array[Texture2D]
 
 var images_to_process: Array
 var images_to_texturize: Array
-var first_time := true
 var image_count: int
 var output_path: String
 
@@ -21,11 +20,22 @@ func _enter_tree() -> void:
 	$PreviewDialog.hide()
 
 func _ready():
+	set_spritesheet_visible(false)
+	
 	$Welcome.text = $Welcome.text % ", ".join(SUPPORTED_FORMATS)
 	%Load.get_popup().index_pressed.connect(load_dialog_option)
 	
 	get_viewport().files_dropped.connect(process_files)
 	set_process(false)
+
+func set_spritesheet_visible(vis: bool):
+	$Welcome.visible = not vis
+	$SpritesheetView.visible = vis
+	$Controls.visible = vis
+	
+	%Reload.disabled = not vis
+	%Close.disabled = not vis
+	%PreviewButton.disabled = not vis
 
 func process_files(files: PackedStringArray):
 	%CustomName.text = ""
@@ -112,9 +122,8 @@ func reload_textures():
 	for texture in texture_list:
 		%Spritesheet.add_frame(texture)
 	
-	$Welcome.hide()
 	%Spritesheet.update_columns()
-	$SpritesheetView.show()
+	set_spritesheet_visible(true)
 	
 	%Reload.disabled = false
 	%SavePNG.disabled = false ## TODO: jakiś check czy wszystko w porządku
@@ -145,13 +154,14 @@ func load_dialog_option(option: int) -> void:
 	
 	var format_filters: Array[String] # TODO cachować to
 	format_filters.assign(Array(SUPPORTED_FORMATS).map(func(format: String) -> String: return "*.%s" % format))
-	#DisplayServer.file_dialog_show("Select Images", "res://", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_ANY, format_filters, files_selected)
-	DisplayServer.file_dialog_show("Select Images", "res://", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES if option == 0 else DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], files_selected)
+	DisplayServer.file_dialog_show("Select Images", "", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES if option == 0 else DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], files_selected)
 
 func close_spritesheet() -> void:
-	# TODO
-	pass # Replace with function body.
-
+	file_list.clear()
+	image_list.clear()
+	texture_list.clear()
+	
+	set_spritesheet_visible(false)
 
 #func load_images_from_file_list():
 	#texture_list.clear()

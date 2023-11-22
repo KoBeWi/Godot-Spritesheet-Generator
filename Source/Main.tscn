@@ -78,7 +78,6 @@ value = 0.9
 [node name="Reload" type="Button" parent="PanelContainer/VBoxContainer/Import"]
 unique_name_in_owner = true
 layout_mode = 2
-disabled = true
 text = "Reload"
 
 [node name="Close" type="Button" parent="PanelContainer/VBoxContainer/Import"]
@@ -145,9 +144,9 @@ layout_mode = 2
 [node name="Display" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/Display"]
+[node name="PreviewButton" type="Button" parent="PanelContainer/VBoxContainer/Display"]
+unique_name_in_owner = true
 layout_mode = 2
-disabled = true
 text = "Preview"
 
 [node name="Button" type="Button" parent="PanelContainer/VBoxContainer/Display"]
@@ -180,10 +179,11 @@ disabled = true
 text = "Save PNG"
 
 [node name="Welcome" type="Label" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Drop folder or image files here to start.
+text = "Drop folder or image files here, or use the Load button.
 
 Images should be of the same size. If their sizes don't match, the generator will try to use the dominating size.
 
@@ -191,9 +191,124 @@ The images will be automatically cropped based on the Alpha Threshold value. Gre
 
 Supported formats: %s
 
-If you drop a single image, it will be loaded as a spritesheet and allow you to edit it."
+If you drop a single image, it will be loaded as a spritesheet and allow you to split and edit it."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Controls" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Controls"]
+layout_mode = 2
+alignment = 2
+
+[node name="Error" type="Label" parent="Controls/VBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+size_flags_vertical = 0
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Controls/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ZoomLabel" type="Label" parent="Controls/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.00x"
+
+[node name="ZoomSlider" type="HSlider" parent="Controls/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+size_flags_stretch_ratio = 2.0
+min_value = 0.01
+max_value = 9.99
+step = 0.01
+value = 1.0
+tick_count = 10
+
+[node name="Control2" type="Control" parent="Controls/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Help" type="VBoxContainer" parent="Controls"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+alignment = 2
+
+[node name="DragHint" type="HBoxContainer" parent="Controls/Help"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_dtuo0")
+
+[node name="Label" type="Label" parent="Controls/Help/DragHint"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Hold Shift to swap"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls/Help"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Help/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+text = "LMB"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Controls/Help/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Controls/Help/HBoxContainer"]
+layout_mode = 2
+text = "rearrange images"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Controls/Help"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Help/HBoxContainer2"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+text = "RMB"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Controls/Help/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Controls/Help/HBoxContainer2"]
+layout_mode = 2
+text = "delete images"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Controls/Help"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Help/HBoxContainer3"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+text = "MMB"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Controls/Help/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Controls/Help/HBoxContainer3"]
+layout_mode = 2
+text = "pan/zoom view"
+
+[node name="Timer" type="Timer" parent="Controls"]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
 
 [node name="SpritesheetView" type="CanvasLayer" parent="."]
 layer = -1
@@ -223,97 +338,7 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 3
 
-[node name="Help" type="VBoxContainer" parent="SpritesheetView"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -196.0
-offset_top = -104.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
-alignment = 2
-
-[node name="DragHint" type="HBoxContainer" parent="SpritesheetView/Help"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-script = SubResource("GDScript_dtuo0")
-
-[node name="Label" type="Label" parent="SpritesheetView/Help/DragHint"]
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Hold Shift to swap"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SpritesheetView/Help"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="SpritesheetView/Help/HBoxContainer"]
-custom_minimum_size = Vector2(48, 0)
-layout_mode = 2
-text = "LMB"
-horizontal_alignment = 1
-
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/Help/HBoxContainer"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer"]
-layout_mode = 2
-text = "rearrange images"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="SpritesheetView/Help"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="SpritesheetView/Help/HBoxContainer2"]
-custom_minimum_size = Vector2(48, 0)
-layout_mode = 2
-text = "RMB"
-horizontal_alignment = 1
-
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/Help/HBoxContainer2"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer2"]
-layout_mode = 2
-text = "delete images"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="SpritesheetView/Help"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="SpritesheetView/Help/HBoxContainer3"]
-custom_minimum_size = Vector2(48, 0)
-layout_mode = 2
-text = "MMB"
-horizontal_alignment = 1
-
-[node name="VSeparator" type="VSeparator" parent="SpritesheetView/Help/HBoxContainer3"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="SpritesheetView/Help/HBoxContainer3"]
-layout_mode = 2
-text = "pan/zoom view"
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Error" type="Label" parent="CanvasLayer"]
-unique_name_in_owner = true
-modulate = Color(1, 0, 0, 1)
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -14.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_vertical = 0
-horizontal_alignment = 1
-
-[node name="Timer" type="Timer" parent="CanvasLayer"]
-unique_name_in_owner = true
-wait_time = 5.0
-one_shot = true
 
 [node name="ProcessDialog" type="AcceptDialog" parent="."]
 title = "Please Wait..."
@@ -491,13 +516,14 @@ text = "Play/Pause"
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginH" to="SpritesheetView/Spritesheet" method="hmargin_changed"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/SpritesheetSettings/MarginV" to="SpritesheetView/Spritesheet" method="vmargin_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button2" to="PreviewDialog" method="appear"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/PreviewButton" to="PreviewDialog" method="appear"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="SpritesheetView" method="recenter"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="." method="toggle_grid"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
-[connection signal="hidden" from="CanvasLayer/Error" to="." method="error_hidden"]
-[connection signal="timeout" from="CanvasLayer/Timer" to="CanvasLayer/Error" method="hide"]
+[connection signal="hidden" from="Controls/VBoxContainer/Error" to="." method="error_hidden"]
+[connection signal="value_changed" from="Controls/VBoxContainer/HBoxContainer/ZoomSlider" to="SpritesheetView" method="set_zoom"]
+[connection signal="timeout" from="Controls/Timer" to="Controls/VBoxContainer/Error" method="hide"]
 [connection signal="confirmed" from="SplitDialog" to="SplitDialog" method="split_spritesheet"]
 [connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitX" to="SplitDialog" method="update_split_preview" unbinds=1]
 [connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitY" to="SplitDialog" method="update_split_preview" unbinds=1]

@@ -7,6 +7,7 @@ func _ready() -> void:
 
 func update_index():
 	%Index.text = str(get_index())
+	%Index.scale = Vector2.ONE * (%TextureRect.size.y / 4.0) / %Index.size.y
 
 func set_frame_margin(margin: Vector2):
 	$MarginContainer.add_theme_constant_override(&"margin_left", margin.x)
