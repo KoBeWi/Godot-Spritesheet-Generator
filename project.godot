@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Spritesheet-inator"
 run/main_scene="res://Source/Main.tscn"
-config/features=PackedStringArray("4.2")
+config/features=PackedStringArray("4.3")
 config/icon="res://Icon.png"
 
 [debug]

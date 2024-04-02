@@ -57,6 +57,14 @@ func save_spritesheet():
 	progress_bar.max_value = grid.get_child_count() + 1
 	start_work(MODE_SAVE)
 
+func split_image(img: Image, fs: Vector2i):
+	image_list.clear()
+	saving_image = img
+	frame_size = fs
+	
+	progress_bar.max_value = frame_size.x * frame_size.y
+	start_work(MODE_SPLIT_SPRITESHEET)
+
 func start_work(work_type: int):
 	work_mode = work_type
 	current_index = 0
@@ -147,6 +155,18 @@ func process() -> bool:
 			else:
 				saving_image.save_png(owner.output_path.path_join(%CustomName.text) + ".png")
 				current_index = -1
+		
+		MODE_SPLIT_SPRITESHEET:
+			var frame_image_size := saving_image.get_size() / frame_size
+			var rect := Rect2i(Vector2i(current_index % frame_size.x, current_index / frame_size.x) * frame_image_size, frame_image_size)
+			var sub := saving_image.get_region(rect)
+			image_list.append(sub)
+			
+			current_index += 1
+			progress_bar.value += 1
+			
+			if current_index == frame_size.x * frame_size.y:
+				create_textures_from_image_list()
 	
 	return true
 

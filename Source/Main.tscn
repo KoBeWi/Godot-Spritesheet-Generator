@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=10 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
-[ext_resource type="Texture2D" uid="uid://bnkl8rujlgv0h" path="res://Source/Checker.png" id="1_wvj2f"]
 [ext_resource type="Script" path="res://Source/SpritesheetView.gd" id="2_eepvq"]
 [ext_resource type="Script" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
 [ext_resource type="Script" path="res://Source/ProcessDialog.gd" id="3_muoun"]
@@ -26,11 +25,6 @@ func _notification(what: int) -> void:
 	elif what == NOTIFICATION_DRAG_END:
 		hide()
 "
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kjgn5"]
-texture = ExtResource("1_wvj2f")
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
 
 [node name="Main" type="HBoxContainer"]
 anchors_preset = 15
@@ -202,6 +196,7 @@ mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Controls"]
 layout_mode = 2
+mouse_filter = 2
 alignment = 2
 
 [node name="Error" type="Label" parent="Controls/VBoxContainer"]
@@ -341,6 +336,7 @@ columns = 3
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ProcessDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
 title = "Please Wait..."
 size = Vector2i(416, 111)
 dialog_close_on_escape = false
@@ -365,6 +361,7 @@ layout_mode = 2
 title = "Edit Spritesheet"
 position = Vector2i(0, 36)
 size = Vector2i(272, 343)
+visible = true
 script = ExtResource("3_sd37f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SplitDialog"]
@@ -402,17 +399,11 @@ max_value = 1000.0
 value = 1.0
 select_all_on_focus = true
 
-[node name="CenterContainer" type="CenterContainer" parent="SplitDialog/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PanelContainer" type="PanelContainer" parent="SplitDialog/VBoxContainer/CenterContainer"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_kjgn5")
-
-[node name="SplitPreview" type="TextureRect" parent="SplitDialog/VBoxContainer/CenterContainer/PanelContainer"]
+[node name="SplitPreview" type="ColorRect" parent="SplitDialog/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
 
 [node name="StashDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
@@ -502,6 +493,7 @@ select_all_on_focus = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+button_pressed = true
 text = "Loop"
 
 [node name="Button" type="Button" parent="PreviewDialog/VBoxContainer"]
@@ -527,7 +519,7 @@ text = "Play/Pause"
 [connection signal="confirmed" from="SplitDialog" to="SplitDialog" method="split_spritesheet"]
 [connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitX" to="SplitDialog" method="update_split_preview" unbinds=1]
 [connection signal="value_changed" from="SplitDialog/VBoxContainer/HBoxContainer/SplitY" to="SplitDialog" method="update_split_preview" unbinds=1]
-[connection signal="draw" from="SplitDialog/VBoxContainer/CenterContainer/PanelContainer/SplitPreview" to="SplitDialog" method="draw_split_preview"]
+[connection signal="draw" from="SplitDialog/VBoxContainer/SplitPreview" to="SplitDialog" method="draw_split_preview"]
 [connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer/FrameValue" to="PreviewDialog" method="update_frame"]
 [connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer2/FPS" to="PreviewDialog" method="update_fps"]
 [connection signal="pressed" from="PreviewDialog/VBoxContainer/Button" to="PreviewDialog" method="play"]
