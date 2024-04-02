@@ -1,9 +1,9 @@
-extends AcceptDialog
+extends Window
 
 enum { MODE_LOAD_IMAGES, MODE_CROP_IMAGES, MODE_CREATE_TEXTURES, MODE_SPLIT_SPRITESHEET, MODE_SAVE }
 
-@onready var status_label: Label = $VBoxContainer/StatusLabel
-@onready var progress_bar: ProgressBar = $VBoxContainer/ProgressBar
+@onready var status_label: Label = %ProcessStatusLabel
+@onready var progress_bar: ProgressBar = %ProcessProgressBar
 @onready var grid: GridContainer = %Grid
 
 var file_list: Array[String]
@@ -24,7 +24,6 @@ var saving_image: Image
 signal finished
 
 func _ready() -> void:
-	get_ok_button().hide()
 	set_process(false)
 	
 	file_list = owner.file_list

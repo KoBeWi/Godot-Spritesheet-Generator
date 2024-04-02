@@ -335,25 +335,40 @@ columns = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ProcessDialog" type="AcceptDialog" parent="."]
+[node name="ProcessDialog" type="Window" parent="."]
 unique_name_in_owner = true
 title = "Please Wait..."
-size = Vector2i(416, 111)
-dialog_close_on_escape = false
+size = Vector2i(464, 118)
+visible = false
+wrap_controls = true
+exclusive = true
+borderless = true
 script = ExtResource("3_muoun")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ProcessDialog"]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 408.0
-offset_bottom = 62.0
+[node name="PanelContainer" type="PanelContainer" parent="ProcessDialog"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 424.0
+offset_bottom = 78.0
 
-[node name="StatusLabel" type="Label" parent="ProcessDialog/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ProcessDialog/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ProcessDialog/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ProcessStatusLabel" type="Label" parent="ProcessDialog/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 text_overrun_behavior = 3
 
-[node name="ProgressBar" type="ProgressBar" parent="ProcessDialog/VBoxContainer"]
+[node name="ProcessProgressBar" type="ProgressBar" parent="ProcessDialog/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
@@ -428,14 +443,14 @@ layout_mode = 2
 
 [node name="PreviewDialog" type="AcceptDialog" parent="."]
 position = Vector2i(0, 36)
-size = Vector2i(300, 300)
+size = Vector2i(300, 354)
 script = ExtResource("3_bojkk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PreviewDialog"]
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 292.0
-offset_bottom = 251.0
+offset_bottom = 305.0
 
 [node name="CenterContainer" type="CenterContainer" parent="PreviewDialog/VBoxContainer"]
 layout_mode = 2
@@ -463,7 +478,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-min_value = 1.0
 value = 1.0
 tick_count = 23
 
@@ -511,6 +525,7 @@ text = "Play/Pause"
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="SpritesheetView" method="recenter"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="SpritesheetView/Spritesheet" method="toggle_grid"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="update_save_button" unbinds=1]
+[connection signal="text_submitted" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="save_png" unbinds=1]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="Controls/VBoxContainer/Error" to="." method="error_hidden"]
 [connection signal="value_changed" from="Controls/VBoxContainer/HBoxContainer/ZoomSlider" to="SpritesheetView" method="set_zoom"]
