@@ -36,6 +36,7 @@ func get_texture_data() -> Image:
 
 func set_display_background(display: bool):
 	get_theme_stylebox(&"panel").draw_center = display
+	%Index.visible = display
 
 func set_background_color(color: Color):
 	get_theme_stylebox(&"panel").bg_color = color

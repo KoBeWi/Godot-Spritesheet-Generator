@@ -361,7 +361,6 @@ layout_mode = 2
 title = "Edit Spritesheet"
 position = Vector2i(0, 36)
 size = Vector2i(272, 343)
-visible = true
 script = ExtResource("3_sd37f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SplitDialog"]
@@ -510,7 +509,7 @@ text = "Play/Pause"
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/PreviewButton" to="PreviewDialog" method="appear"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="SpritesheetView" method="recenter"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="." method="toggle_grid"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="SpritesheetView/Spritesheet" method="toggle_grid"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
 [connection signal="hidden" from="Controls/VBoxContainer/Error" to="." method="error_hidden"]
