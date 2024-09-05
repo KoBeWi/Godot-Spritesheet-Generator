@@ -1,12 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://bf3b0i8scthbm"]
+[gd_scene load_steps=12 format=3 uid="uid://bf3b0i8scthbm"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
+[ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Source/Tools.svg" id="2_6rwcx"]
 [ext_resource type="Script" path="res://Source/SpritesheetView.gd" id="2_eepvq"]
 [ext_resource type="Script" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
 [ext_resource type="Script" path="res://Source/ProcessDialog.gd" id="3_muoun"]
 [ext_resource type="Script" path="res://Source/SplitDialog.gd" id="3_sd37f"]
 [ext_resource type="Script" path="res://Source/Spritesheet.gd" id="3_svww0"]
 [ext_resource type="Script" path="res://Source/StashDialog.gd" id="7_phrwa"]
+[ext_resource type="Script" path="res://Source/SettingsDialog.gd" id="9_b44fi"]
 
 [sub_resource type="StyleBoxFlat" id="5"]
 content_margin_left = 10.0
@@ -53,7 +55,6 @@ text = "Load..."
 flat = false
 item_count = 2
 popup/item_0/text = "Files"
-popup/item_0/id = 0
 popup/item_1/text = "Directory"
 popup/item_1/id = 1
 
@@ -147,12 +148,22 @@ text = "Preview"
 layout_mode = 2
 text = "Recenter View"
 
-[node name="DisplayGrid" type="CheckBox" parent="PanelContainer/VBoxContainer/Display"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Display"]
+layout_mode = 2
+alignment = 1
+
+[node name="DisplayGrid" type="CheckBox" parent="PanelContainer/VBoxContainer/Display/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 button_pressed = true
 text = "Show Grid"
+
+[node name="SettingsButton" type="Button" parent="PanelContainer/VBoxContainer/Display/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+icon = ExtResource("2_6rwcx")
 
 [node name="HSeparator3" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -514,6 +525,46 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Play/Pause"
 
+[node name="SettingsDialog" type="PopupPanel" parent="."]
+size = Vector2i(287, 78)
+script = ExtResource("9_b44fi")
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsDialog"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 283.0
+offset_bottom = 74.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="SettingsDialog/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+columns = 2
+
+[node name="Label" type="Label" parent="SettingsDialog/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Background Color"
+
+[node name="BackgroundPicker" type="ColorPickerButton" parent="SettingsDialog/MarginContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="SettingsDialog/MarginContainer/GridContainer"]
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+text = "Grid Color"
+
+[node name="ColorPickerButton2" type="ColorPickerButton" parent="SettingsDialog/MarginContainer/GridContainer"]
+auto_translate_mode = 1
+visible = false
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Reload" to="." method="load_images"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Import/Close" to="." method="close_spritesheet"]
 [connection signal="toggled" from="PanelContainer/VBoxContainer/SpritesheetSettings/Auto" to="SpritesheetView/Spritesheet" method="toggle_auto"]
@@ -523,7 +574,8 @@ text = "Play/Pause"
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SpritesheetSettings/Stash" to="StashDialog" method="popup_centered_ratio" binds= [0.5]]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/PreviewButton" to="PreviewDialog" method="appear"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Display/Button" to="SpritesheetView" method="recenter"]
-[connection signal="toggled" from="PanelContainer/VBoxContainer/Display/DisplayGrid" to="SpritesheetView/Spritesheet" method="toggle_grid"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Display/HBoxContainer/DisplayGrid" to="SpritesheetView/Spritesheet" method="toggle_grid"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Display/HBoxContainer/SettingsButton" to="SettingsDialog" method="show_settings"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="update_save_button" unbinds=1]
 [connection signal="text_submitted" from="PanelContainer/VBoxContainer/Export/CustomName" to="." method="save_png" unbinds=1]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Export/SavePNG" to="." method="save_png"]
@@ -537,3 +589,4 @@ text = "Play/Pause"
 [connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer/FrameValue" to="PreviewDialog" method="update_frame"]
 [connection signal="value_changed" from="PreviewDialog/VBoxContainer/HBoxContainer2/FPS" to="PreviewDialog" method="update_fps"]
 [connection signal="pressed" from="PreviewDialog/VBoxContainer/Button" to="PreviewDialog" method="play"]
+[connection signal="color_changed" from="SettingsDialog/MarginContainer/GridContainer/BackgroundPicker" to="SettingsDialog" method="_on_background_picker_color_changed"]

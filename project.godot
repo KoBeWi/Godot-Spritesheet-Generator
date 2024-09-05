@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Spritesheet-inator"
+config/tags=PackedStringArray("tool")
 run/main_scene="res://Source/Main.tscn"
 config/features=PackedStringArray("4.3")
 config/icon="res://Icon.png"

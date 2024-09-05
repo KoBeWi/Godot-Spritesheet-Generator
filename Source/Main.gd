@@ -162,3 +162,6 @@ func close_spritesheet() -> void:
 	texture_list.clear()
 	
 	set_spritesheet_visible(false)
+
+func columns_changed(value: float) -> void:
+	%Spritesheet.update_columns()

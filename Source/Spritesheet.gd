@@ -31,7 +31,7 @@ func refresh_grid():
 		rect.update_index()
 		dark = not dark
 		coord.x += 1
-
+		
 		if coord.x == columns:
 			coord.x = 0
 			coord.y += 1
