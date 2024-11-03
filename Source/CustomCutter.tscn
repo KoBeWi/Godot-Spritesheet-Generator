@@ -1,0 +1,218 @@
+[gd_scene load_steps=7 format=3 uid="uid://77bc7fjlq7m1"]
+
+[ext_resource type="Texture2D" uid="uid://n5wolqm3u7x2" path="res://Icon.png" id="1_ttl5q"]
+
+[sub_resource type="GDScript" id="GDScript_s60r3"]
+script/source = "extends PanelContainer
+
+class Frame:
+	var image: Image
+	var texture: Texture2D
+	var pivot: Vector2i
+
+var frames: Array[Frame]
+var edited_frame: Frame
+
+func _paste_image() -> void:
+	var image := DisplayServer.clipboard_get_image()
+	if not image:
+		return
+	
+	var min_x := 9999999
+	var min_y := 9999999
+	var max_x := -9999999
+	var max_y := -9999999
+	
+	var threshold: float = %Threshold.value
+	for x in image.get_width():
+		for y in image.get_height():
+			if image.get_pixel(x, y).a >= threshold:
+				min_x = mini(min_x, x)
+				min_y = mini(min_y, y)
+				max_x = maxi(max_x, x)
+				max_y = maxi(max_y, y)
+	
+	image = image.get_region(Rect2i(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1))
+	
+	var frame := Frame.new()
+	frame.image = image
+	frame.texture = ImageTexture.create_from_image(image)
+	frames.append(frame)
+	
+	var button: Button = $Button.duplicate()
+	button.show()##
+	button.icon = frame.texture
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	%ImageContainer.add_child(button)
+	button.pressed.connect(edit_frame.bind(frame))
+
+func edit_frame(frame: Frame):
+	edited_frame = frame
+	%Editor.texture = frame.texture
+	%Editor.custom_minimum_size = frame.texture.get_size() * 8
+	%Editor.queue_redraw()
+
+func _on_editor_gui_input(event: InputEvent) -> void:
+	if not edited_frame:
+		return
+	
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			edited_frame.pivot = event.position / 8
+			%Editor.queue_redraw()
+	elif event is InputEventMouseMotion:
+		if event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+			edited_frame.pivot = event.position / 8
+			%Editor.queue_redraw()
+
+func _on_editor_draw() -> void:
+	if not edited_frame:
+		return
+	
+	var center := Vector2(edited_frame.pivot * 8)  + Vector2(4, 4)
+	%Editor.draw_line(center + Vector2(0, -4), center + Vector2(0, 4), Color.RED)
+	%Editor.draw_line(center + Vector2(-4, 0), center + Vector2(4, 0), Color.RED)
+
+func _save() -> void:
+	var min_pivot := Vector2i.MAX
+	var max_pivot: Vector2i
+	var min_bounds: Vector2i
+	var max_bounds: Vector2i
+	var frame_size: Vector2i
+	
+	for frame in frames:
+		print(frame.pivot)
+		var image_size := frame.image.get_size()
+		frame_size = frame_size.max(frame.image.get_size())
+		min_bounds.x = maxi(min_bounds.x, frame.pivot.x)
+		min_bounds.y = maxi(min_bounds.y, frame.pivot.y)
+		max_bounds.x = maxi(max_bounds.x, image_size.x - frame.pivot.x)
+		max_bounds.y = maxi(max_bounds.y, image_size.y - frame.pivot.y)
+		min_pivot = min_pivot.min(frame.pivot)
+		max_pivot = max_pivot.max(frame.pivot)
+	
+	
+	#print(frame_size)
+	#frame_size += max_pivot - min_pivot
+	#frame_size *= 2
+	frame_size = min_bounds + max_bounds# + Vector2i.ONE
+	
+	#prints(frame_size, max_pivot, min_pivot, max_pivot - min_pivot)
+	var final := Image.create(frame_size.x * frames.size(), frame_size.y, false, Image.FORMAT_RGBA8)
+	
+	var x: int
+	for frame in frames:
+		var image_size := frame.image.get_size()
+		var pos := Vector2i(x * frame_size.x, 0)
+		pos += max_pivot - frame.pivot
+		#pos += frame_size / 2 - image_size / 2
+		#pos += image_size / 2 - frame.pivot
+		#pos += frame_size / 2 - (frame.pivot - image_size / 2)
+		#print(frame.pivot - min_pivot)
+		
+		final.blit_rect(frame.image, Rect2i(Vector2i(), image_size), pos)
+		x += 1
+	
+	final.save_png(\"res://CutterTest.png\")
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ti8je"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gm1it"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0x4c1"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1awiq"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="CustomCutter" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_s60r3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Save"
+
+[node name="ImageContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Alpha Threshold"
+horizontal_alignment = 1
+
+[node name="Threshold" type="SpinBox" parent="VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.005
+value = 0.9
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Paste"
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="ReferenceRect" type="ReferenceRect" parent="VBoxContainer/CenterContainer/MarginContainer"]
+layout_mode = 2
+editor_only = false
+
+[node name="Editor" type="TextureRect" parent="VBoxContainer/CenterContainer/MarginContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+
+[node name="Button" type="Button" parent="."]
+visible = false
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_ti8je")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gm1it")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0x4c1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1awiq")
+icon = ExtResource("1_ttl5q")
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_save"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/Button" to="." method="_paste_image"]
+[connection signal="draw" from="VBoxContainer/CenterContainer/MarginContainer/Editor" to="." method="_on_editor_draw"]
+[connection signal="gui_input" from="VBoxContainer/CenterContainer/MarginContainer/Editor" to="." method="_on_editor_gui_input"]
