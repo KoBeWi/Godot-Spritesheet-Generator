@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6ce0mrlnw0ui"]
+
+[ext_resource type="Script" path="res://Rework/FrameContainer.gd" id="1_ed2o7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lf3nw"]
+bg_color = Color(1, 1, 1, 0.12549)
+
+[node name="FrameContainer" type="MarginContainer"]
+offset_right = 100.0
+offset_bottom = 100.0
+script = ExtResource("1_ed2o7")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="."]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lf3nw")

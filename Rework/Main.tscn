@@ -1,0 +1,174 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmt0o8ktplo4k"]
+
+[ext_resource type="Script" path="res://Rework/Main.gd" id="1_2hksu"]
+[ext_resource type="Script" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e06dd"]
+content_margin_top = 4.0
+
+[sub_resource type="GDScript" id="GDScript_0amvt"]
+script/source = "@tool
+extends TabContainer
+
+func _validate_property(property: Dictionary) -> void:
+	if property[\"name\"] == \"current_tab\":
+		property[\"usage\"] = PROPERTY_USAGE_EDITOR
+"
+
+[node name="Main" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+script = ExtResource("1_2hksu")
+metadata/_edit_lock_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Tabs" type="TabContainer" parent="PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
+script = SubResource("GDScript_0amvt")
+
+[node name="SpriteSheet" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Button5" type="Button" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+layout_mode = 2
+text = "Create New"
+
+[node name="Button6" type="Button" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+layout_mode = 2
+text = "Save"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+layout_mode = 2
+text = "[Pick]"
+
+[node name="Control" type="Control" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Frame List" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Button2" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+layout_mode = 2
+text = "Add Files"
+
+[node name="Button3" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+layout_mode = 2
+text = "Add Directory"
+
+[node name="Button" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+layout_mode = 2
+text = "Repack Spritesheet"
+
+[node name="Button4" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+layout_mode = 2
+text = "Paste From Clipboard"
+
+[node name="Layout" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Preview" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="SpriteSheetView" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SpriteSheetGrid" type="GridContainer" parent="SpriteSheetView"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_npgqu")
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="Navigation" type="HBoxContainer" parent="PanelContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Button" type="Button" parent="PanelContainer2/Navigation"]
+layout_mode = 2
+text = "Reset View"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/Navigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="Label2" type="Label" parent="PanelContainer2/Navigation/HBoxContainer"]
+layout_mode = 2
+text = "1x"
+
+[node name="HSlider" type="HSlider" parent="PanelContainer2/Navigation/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Spacer" type="Control" parent="PanelContainer2/Navigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button2" type="Button" parent="PanelContainer2/Navigation"]
+layout_mode = 2
+toggle_mode = true
+text = "?"
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/Navigation/Button2"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.0
+offset_top = -82.3856
+offset_right = -3.0
+offset_bottom = -33.3856
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="PanelContainer2/Navigation/Button2/PanelContainer"]
+layout_mode = 2
+text = "MMB: Move around
+Wheel: Zoom"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="." method="_new_spritesheet"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/Tabs/Frame List/Button4" to="." method="_paste_image_from_clipboard"]
+[connection signal="toggled" from="PanelContainer2/Navigation/Button2" to="PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
