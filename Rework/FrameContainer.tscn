@@ -1,9 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6ce0mrlnw0ui"]
+[gd_scene load_steps=6 format=3 uid="uid://c6ce0mrlnw0ui"]
 
 [ext_resource type="Script" path="res://Rework/FrameContainer.gd" id="1_ed2o7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lf3nw"]
 bg_color = Color(1, 1, 1, 0.12549)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dq8w2"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.821741, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_i7qgq"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fn708"]
+gradient = SubResource("Gradient_i7qgq")
+width = 8
+height = 8
 
 [node name="FrameContainer" type="MarginContainer"]
 offset_right = 100.0
@@ -17,3 +32,21 @@ layout_mode = 2
 modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lf3nw")
+
+[node name="Selection" type="Panel" parent="."]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dq8w2")
+
+[node name="ModifiedIndicator" type="TextureRect" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("GradientTexture2D_fn708")
+
+[node name="TODO" type="Node" parent="ModifiedIndicator"]
+editor_description = "Pokazuje, czy klatka jest oryginalna (nieprzycięta itp)
+Może niepotrzebne
+W sumie można reset/reload
+I dać original image w Frame??"

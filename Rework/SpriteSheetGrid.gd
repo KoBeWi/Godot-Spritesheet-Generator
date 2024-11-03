@@ -3,7 +3,7 @@ extends GridContainer
 const FrameContainer = preload("res://Rework/FrameContainer.gd")
 
 func update_frame_list():
-	var missing_frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames
+	var missing_frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames.duplicate()
 	
 	# coś tu nie działa jak się wkleja wielokrotnie
 	for container: FrameContainer in get_children():

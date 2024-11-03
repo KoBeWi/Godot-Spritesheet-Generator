@@ -25,8 +25,8 @@ func _paste_image_from_clipboard() -> void:
 		return
 	
 	var frame := SpriteSheet.Frame.new()
-	frame.image = DisplayServer.clipboard_get_image()
-	frame.texture = ImageTexture.create_from_image(frame.image)
+	frame.source_image = DisplayServer.clipboard_get_image()
+	frame.initialize()
 	spritesheet.frames.append(frame)
 	
 	sprite_sheet_grid.update_frame_list()
