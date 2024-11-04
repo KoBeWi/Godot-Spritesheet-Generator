@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmt0o8ktplo4k"]
+[gd_scene load_steps=10 format=3 uid="uid://cmt0o8ktplo4k"]
 
 [ext_resource type="Script" path="res://Rework/Main.gd" id="1_2hksu"]
 [ext_resource type="Script" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
+[ext_resource type="Script" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
+[ext_resource type="Script" path="res://Rework/Repack.gd" id="3_jmhy2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e06dd"]
 content_margin_top = 4.0
@@ -15,104 +17,133 @@ func _validate_property(property: Dictionary) -> void:
 		property[\"usage\"] = PROPERTY_USAGE_EDITOR
 "
 
-[node name="Main" type="VBoxContainer"]
+[sub_resource type="GDScript" id="GDScript_nn27c"]
+resource_name = "ZoomLabel"
+script/source = "extends Label
+
+@export var slider: Range
+
+func _ready() -> void:
+	slider.value_changed.connect(update_text)
+
+func update_text(value: float):
+	text = str(value, \"x\")
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pq08m"]
+bg_color = Color(0.160567, 0.160567, 0.160567, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8iort"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[node name="Main" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 0
 script = ExtResource("1_2hksu")
-metadata/_edit_lock_ = true
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Tabs" type="TabContainer" parent="PanelContainer/MarginContainer"]
+[node name="Tabs" type="TabContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
-[node name="SpriteSheet" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
-visible = false
+[node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Button5" type="Button" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 text = "Create New"
 
-[node name="Button6" type="Button" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="Button6" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 text = "Save"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 text = "[Pick]"
 
-[node name="Control" type="Control" parent="PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Frame List" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
+[node name="Import Frames" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Button2" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+[node name="Button2" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
 layout_mode = 2
 text = "Add Files"
 
-[node name="Button3" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+[node name="Button3" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
 layout_mode = 2
 text = "Add Directory"
 
-[node name="Button" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
 layout_mode = 2
 text = "Repack SpriteSheet"
 
-[node name="Button4" type="Button" parent="PanelContainer/MarginContainer/Tabs/Frame List"]
+[node name="Button4" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
 layout_mode = 2
 text = "Paste From Clipboard"
 
-[node name="Customize" type="HBoxContainer" parent="PanelContainer/MarginContainer/Tabs"]
+[node name="Customize" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Button5" type="Button" parent="PanelContainer/MarginContainer/Tabs/Customize"]
+[node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
 layout_mode = 2
 text = "Group Crop"
 
-[node name="TODO" type="Node" parent="PanelContainer/MarginContainer/Tabs/Customize/Button5"]
+[node name="TODO" type="Node" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Button5"]
 editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
+[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HSplitContainer" parent="VSplitContainer"]
+[node name="HBoxContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="SpriteSheetView" type="Control" parent="VSplitContainer/HBoxContainer"]
+[node name="SpriteSheetView" type="Control" parent="VBoxContainer/VSplitContainer/HBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("3_fslw6")
+move_target = NodePath("SpriteSheetGrid")
+zoom_slider = NodePath("../../../PanelContainer2/Navigation/HBoxContainer/HSlider")
+recenter_button = NodePath("../../../PanelContainer2/Navigation/Button")
 
-[node name="SpriteSheetGrid" type="GridContainer" parent="VSplitContainer/HBoxContainer/SpriteSheetView"]
+[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -128,67 +159,73 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_npgqu")
 
-[node name="Preview" type="PanelContainer" parent="VSplitContainer/HBoxContainer"]
+[node name="Preview" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/HBoxContainer/Preview"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Preview"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/HBoxContainer/Preview/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Preview/VBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="VSplitContainer/HBoxContainer/Preview/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/VSplitContainer/HBoxContainer/Preview/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Play"
 
-[node name="Edit" type="PanelContainer" parent="VSplitContainer"]
+[node name="Edit" type="PanelContainer" parent="VBoxContainer/VSplitContainer"]
 visible = false
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="."]
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="Navigation" type="HBoxContainer" parent="PanelContainer2"]
+[node name="Navigation" type="HBoxContainer" parent="VBoxContainer/PanelContainer2"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Button" type="Button" parent="PanelContainer2/Navigation"]
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer2/Navigation"]
 layout_mode = 2
 text = "Reset View"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer2/Navigation"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer2/Navigation"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label2" type="Label" parent="PanelContainer2/Navigation/HBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/PanelContainer2/Navigation/HBoxContainer" node_paths=PackedStringArray("slider")]
 layout_mode = 2
 text = "1x"
+script = SubResource("GDScript_nn27c")
+slider = NodePath("../HSlider")
 
-[node name="HSlider" type="HSlider" parent="PanelContainer2/Navigation/HBoxContainer"]
+[node name="HSlider" type="HSlider" parent="VBoxContainer/PanelContainer2/Navigation/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+min_value = 0.01
+max_value = 10.0
+step = 0.01
+value = 1.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer2/Navigation"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer2/Navigation"]
 layout_mode = 2
 
-[node name="Button3" type="Button" parent="PanelContainer2/Navigation/HBoxContainer2"]
+[node name="Button3" type="Button" parent="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2"]
 layout_mode = 2
 toggle_mode = true
 text = "Edit"
 
-[node name="Button4" type="Button" parent="PanelContainer2/Navigation/HBoxContainer2"]
+[node name="Button4" type="Button" parent="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2"]
 layout_mode = 2
 toggle_mode = true
 text = "Preview"
 
-[node name="Button2" type="Button" parent="PanelContainer2/Navigation"]
+[node name="Button2" type="Button" parent="VBoxContainer/PanelContainer2/Navigation"]
 layout_mode = 2
 toggle_mode = true
 text = "?"
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/Navigation/Button2"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer2/Navigation/Button2"]
 visible = false
 layout_mode = 1
 anchors_preset = 3
@@ -203,13 +240,143 @@ offset_bottom = -33.3856
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Label" type="Label" parent="PanelContainer2/Navigation/Button2/PanelContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer"]
 layout_mode = 2
 text = "MMB: Move around
 Wheel: Zoom"
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="." method="_new_spritesheet"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/Tabs/Frame List/Button4" to="." method="_paste_image_from_clipboard"]
-[connection signal="toggled" from="PanelContainer2/Navigation/HBoxContainer2/Button3" to="VSplitContainer/Edit" method="set_visible"]
-[connection signal="toggled" from="PanelContainer2/Navigation/HBoxContainer2/Button4" to="VSplitContainer/HBoxContainer/Preview" method="set_visible"]
-[connection signal="toggled" from="PanelContainer2/Navigation/Button2" to="PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
+[node name="Repack" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pq08m")
+script = ExtResource("3_jmhy2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Repack"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Repack/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Repack/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Columns"
+
+[node name="RepackColumns" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="Label2" type="Label" parent="Repack/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Rows"
+
+[node name="RepackRows" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="Control" type="VSeparator" parent="Repack/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Repack/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Confirm"
+
+[node name="Button2" type="Button" parent="Repack/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Control" type="Control" parent="Repack/VBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_fslw6")
+move_target = NodePath("MarginContainer")
+zoom_slider = NodePath("../Navigation/HBoxContainer/HSlider")
+recenter_button = NodePath("../Navigation/Button")
+
+[node name="MarginContainer" type="PanelContainer" parent="Repack/VBoxContainer/Control"]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 345.0
+offset_right = 620.0
+offset_bottom = 385.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_8iort")
+
+[node name="RepackPreview" type="TextureRect" parent="Repack/VBoxContainer/Control/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Navigation" type="HBoxContainer" parent="Repack/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Button" type="Button" parent="Repack/VBoxContainer/Navigation"]
+layout_mode = 2
+text = "Reset View"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Repack/VBoxContainer/Navigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="Repack/VBoxContainer/Navigation/HBoxContainer" node_paths=PackedStringArray("slider")]
+layout_mode = 2
+text = "1x"
+script = SubResource("GDScript_nn27c")
+slider = NodePath("../HSlider")
+
+[node name="HSlider" type="HSlider" parent="Repack/VBoxContainer/Navigation/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 0.01
+max_value = 10.0
+step = 0.01
+value = 1.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Repack/VBoxContainer/Navigation"]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="Repack/VBoxContainer/Navigation"]
+layout_mode = 2
+toggle_mode = true
+text = "?"
+
+[node name="PanelContainer" type="PanelContainer" parent="Repack/VBoxContainer/Navigation/Button2"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.0
+offset_top = -82.3856
+offset_right = -3.0
+offset_bottom = -33.3856
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="Repack/VBoxContainer/Navigation/Button2/PanelContainer"]
+layout_mode = 2
+text = "MMB: Move around
+Wheel: Zoom"
+
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="VBoxContainer" method="_new_spritesheet"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button2" to="." method="_add_files"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HBoxContainer/Preview" method="set_visible"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/Button" to="Repack" method="_confirm"]
+[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
+[connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
+[connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]

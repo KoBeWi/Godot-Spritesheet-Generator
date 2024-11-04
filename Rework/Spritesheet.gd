@@ -7,6 +7,9 @@ class Frame:
 	var texture: Texture
 	
 	func initialize():
+		if not source_image and file_path:
+			source_image = Image.load_from_file(file_path)
+		
 		image = source_image.duplicate()
 		texture = ImageTexture.create_from_image(image)
 
