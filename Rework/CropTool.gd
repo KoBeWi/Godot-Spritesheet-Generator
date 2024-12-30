@@ -11,8 +11,12 @@ class CropData:
 		min_y = mini(min_y, y)
 		max_x = maxi(max_x, x)
 		max_y = maxi(max_y, y)
+	
+	func get_rect() -> Rect2i:
+		return Rect2i(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
 
 @onready var threshold: SpinBox = %Threshold
+@onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 
 var crop_data: CropData
 
@@ -20,12 +24,21 @@ func _pressed() -> void:
 	crop_images()
 
 func crop_images():
-	var cut := threshold.value
 	crop_data = CropData.new()
+	var cut := threshold.value
 	
-	for frame: SpriteSheet.Frame in owner.spritesheet:
+	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
 		var image := frame.source_image
 		for x in image.get_width():
 			for y in image.get_height():
 				if image.get_pixel(x, y).a >= cut:
 					crop_data.add_point(x, y)
+	
+	var rect := crop_data.get_rect()
+	
+	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+		var new_image := Image.create(rect.size.x, rect.size.y, false, frame.source_image.get_format())
+		new_image.blit_rect(frame.source_image, rect, Vector2())
+		frame.texture = ImageTexture.create_from_image(new_image)
+	
+	sprite_sheet_grid.update_frame_list()

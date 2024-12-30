@@ -25,10 +25,10 @@ offset_right = 100.0
 offset_bottom = 100.0
 script = ExtResource("1_ed2o7")
 
-[node name="Control" type="MarginContainer" parent="."]
+[node name="Margins" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="Texture" type="TextureRect" parent="Control"]
+[node name="Texture" type="TextureRect" parent="Margins"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

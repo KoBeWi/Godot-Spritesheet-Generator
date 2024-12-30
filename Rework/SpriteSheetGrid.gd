@@ -4,6 +4,8 @@ const FrameContainer = preload("res://Rework/FrameContainer.gd")
 
 @onready var column_count: SpinBox = %ColumnCount
 @onready var auto_columns: CheckBox = %AutoColumns
+@onready var horizontal_margin: SpinBox = %HorizontalMargin
+@onready var vertical_margin: SpinBox = %VerticalMargin
 
 func update_frame_list():
 	var missing_frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames.duplicate()
@@ -15,6 +17,7 @@ func update_frame_list():
 			container.queue_free()
 		else:
 			missing_frames.remove_at(idx)
+			container.texture.texture = container.frame.texture
 	
 	for frame in missing_frames:
 		var new_container := FrameContainer.SCENE.instantiate()
@@ -49,3 +52,7 @@ func on_columns_changed(value: float) -> void:
 func on_auto_toggled(toggled_on: bool) -> void:
 	column_count.editable = not toggled_on
 	update_columns()
+
+func margin_changed(value: float) -> void:
+	for container: FrameContainer in get_children():
+		container.update_margins(horizontal_margin.value, vertical_margin.value)

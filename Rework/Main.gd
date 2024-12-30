@@ -98,3 +98,15 @@ func create_frame_from_path(path: String):
 	
 	queue_update_frames()
 	return frame
+
+func save_spritesheet() -> void:
+	var frame_size: Vector2i = sprite_sheet_grid.get_child(0).size # Zapisywać to w spritesheecie i synchronizować we wszystkich klatkach
+	# W sumie można zamienić GridContainer na jakiś własny i wymuszać ten sam rozmiar
+	var saving_image := Image.create(frame_size.x * sprite_sheet_grid.columns, frame_size.y * (ceil(sprite_sheet_grid.get_child_count() / float(sprite_sheet_grid.columns))), false, Image.FORMAT_RGBA8)
+	
+	var idx: int
+	for frame in spritesheet.frames:
+		saving_image.blit_rect(frame.image, Rect2i(Vector2i(), frame_size), Vector2i(idx % sprite_sheet_grid.columns, idx / sprite_sheet_grid.columns) * frame_size)
+		idx += 1
+	
+	saving_image.save_png("Test.png")
