@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c6ce0mrlnw0ui"]
 
-[ext_resource type="Script" path="res://Rework/FrameContainer.gd" id="1_ed2o7"]
+[ext_resource type="Script" uid="uid://coxdruqfwxbxw" path="res://Rework/FrameContainer.gd" id="1_ed2o7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lf3nw"]
 bg_color = Color(1, 1, 1, 0.12549)
@@ -25,8 +25,14 @@ offset_right = 100.0
 offset_bottom = 100.0
 script = ExtResource("1_ed2o7")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Control" type="MarginContainer" parent="."]
 layout_mode = 2
+
+[node name="Texture" type="TextureRect" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="Panel" type="Panel" parent="."]

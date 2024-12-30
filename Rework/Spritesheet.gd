@@ -5,6 +5,7 @@ class Frame:
 	var source_image: Image # TODO
 	var image: Image
 	var texture: Texture
+	var offset: Vector2i
 	
 	func initialize():
 		if not source_image and file_path:

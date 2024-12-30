@@ -1,14 +1,14 @@
 [gd_scene load_steps=12 format=3 uid="uid://bf3b0i8scthbm"]
 
-[ext_resource type="Script" path="res://Source/Main.gd" id="1_uvcat"]
+[ext_resource type="Script" uid="uid://cf66vo2qqst70" path="res://Source/Main.gd" id="1_uvcat"]
 [ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Source/Tools.svg" id="2_6rwcx"]
-[ext_resource type="Script" path="res://Source/SpritesheetView.gd" id="2_eepvq"]
-[ext_resource type="Script" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
-[ext_resource type="Script" path="res://Source/ProcessDialog.gd" id="3_muoun"]
-[ext_resource type="Script" path="res://Source/SplitDialog.gd" id="3_sd37f"]
-[ext_resource type="Script" path="res://Source/Spritesheet.gd" id="3_svww0"]
-[ext_resource type="Script" path="res://Source/StashDialog.gd" id="7_phrwa"]
-[ext_resource type="Script" path="res://Source/SettingsDialog.gd" id="9_b44fi"]
+[ext_resource type="Script" uid="uid://cl3fvcild3jot" path="res://Source/SpritesheetView.gd" id="2_eepvq"]
+[ext_resource type="Script" uid="uid://bjyuymn4gi16v" path="res://Source/PreviewDialog.gd" id="3_bojkk"]
+[ext_resource type="Script" uid="uid://cotknqm22fwni" path="res://Source/ProcessDialog.gd" id="3_muoun"]
+[ext_resource type="Script" uid="uid://b7k54rhxlymgo" path="res://Source/SplitDialog.gd" id="3_sd37f"]
+[ext_resource type="Script" uid="uid://urmvk3vgj8n2" path="res://Source/Spritesheet.gd" id="3_svww0"]
+[ext_resource type="Script" uid="uid://cw1qs24l0ncta" path="res://Source/StashDialog.gd" id="7_phrwa"]
+[ext_resource type="Script" uid="uid://d1hv7jkwajfpo" path="res://Source/SettingsDialog.gd" id="9_b44fi"]
 
 [sub_resource type="StyleBoxFlat" id="5"]
 content_margin_left = 10.0

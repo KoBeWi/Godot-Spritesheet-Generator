@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://cmt0o8ktplo4k"]
 
-[ext_resource type="Script" path="res://Rework/Main.gd" id="1_2hksu"]
-[ext_resource type="Script" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
-[ext_resource type="Script" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
-[ext_resource type="Script" path="res://Rework/Repack.gd" id="3_jmhy2"]
+[ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Rework/Main.gd" id="1_2hksu"]
+[ext_resource type="Script" uid="uid://dr100b5wjmjp2" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
+[ext_resource type="Script" uid="uid://cwhcm72el5371" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
+[ext_resource type="Script" uid="uid://rvv4l0rd7dgc" path="res://Rework/Repack.gd" id="3_jmhy2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e06dd"]
 content_margin_top = 4.0
@@ -57,7 +57,9 @@ layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
 [node name="Tabs" type="TabContainer" parent="VBoxContainer/PanelContainer/MarginContainer"]
@@ -67,6 +69,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -112,7 +115,6 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -122,6 +124,41 @@ text = "Group Crop"
 
 [node name="TODO" type="Node" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Button5"]
 editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
+
+[node name="Label2" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+layout_mode = 2
+text = "Alpha Threshold"
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.9
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+layout_mode = 2
+text = "Columns"
+
+[node name="ColumnCount" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+editable = false
+
+[node name="AutoColumns" type="CheckBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Auto"
+
+[node name="Preview" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
 
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -371,6 +408,8 @@ Wheel: Zoom"
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/ColumnCount" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="update_columns" unbinds=1]
+[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/AutoColumns" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HBoxContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
