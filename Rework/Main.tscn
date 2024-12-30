@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://cmt0o8ktplo4k"]
+[gd_scene load_steps=16 format=3 uid="uid://cmt0o8ktplo4k"]
 
 [ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Rework/Main.gd" id="1_2hksu"]
 [ext_resource type="Script" uid="uid://c7avrf3pus5r" path="res://Rework/CropTool.gd" id="2_k8p4s"]
+[ext_resource type="Texture2D" uid="uid://cfqm8u5a0egpn" path="res://Rework/FileBrowse.svg" id="2_mgfer"]
+[ext_resource type="Texture2D" uid="uid://xbbbih1csjl2" path="res://Rework/Collapse.svg" id="2_nait6"]
 [ext_resource type="Script" uid="uid://dr100b5wjmjp2" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
 [ext_resource type="Script" uid="uid://cwhcm72el5371" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
 [ext_resource type="Script" uid="uid://rvv4l0rd7dgc" path="res://Rework/Repack.gd" id="3_jmhy2"]
@@ -17,6 +19,21 @@ func _validate_property(property: Dictionary) -> void:
 	if property[\"name\"] == \"current_tab\":
 		property[\"usage\"] = PROPERTY_USAGE_EDITOR
 "
+
+[sub_resource type="GDScript" id="GDScript_nait6"]
+script/source = "extends VBoxContainer
+
+@export var button_group: ButtonGroup
+
+func _ready() -> void:
+	for button in button_group.get_buttons():
+		var group: Control = get_node(str(button.name))
+		group.hide()
+		button.toggled.connect(group.set_visible)
+"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_nait6"]
+allow_unpress = true
 
 [sub_resource type="GDScript" id="GDScript_nn27c"]
 resource_name = "ZoomLabel"
@@ -46,7 +63,7 @@ resource_name = "Debug"
 script/source = "extends Button
 
 func _pressed() -> void:
-	$\"../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/Test.png\")
+	$\"../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
 	%RepackColumns.value = 3
 	$\"../Repack\"._confirm()
 "
@@ -80,7 +97,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -98,7 +114,7 @@ size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
-text = "[Pick]"
+icon = ExtResource("2_mgfer")
 
 [node name="Control" type="Control" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
@@ -126,7 +142,10 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
+script = SubResource("GDScript_nait6")
+button_group = SubResource("ButtonGroup_nait6")
 metadata/_tab_index = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
@@ -134,25 +153,31 @@ layout_mode = 2
 
 [node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
 layout_mode = 2
-text = "Select All"
+text = "Select All Frames"
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+
+[node name="Crop" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_nait6")
+text = "Crop"
+icon = ExtResource("2_nait6")
+
+[node name="Margins" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_nait6")
+text = "Margins"
+icon = ExtResource("2_nait6")
+
+[node name="Columns" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_nait6")
 text = "Columns"
-
-[node name="ColumnCount" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 1.0
-value = 1.0
-editable = false
-
-[node name="AutoColumns" type="CheckBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-button_pressed = true
-text = "Auto"
+icon = ExtResource("2_nait6")
 
 [node name="Crop" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
 layout_mode = 2
@@ -206,6 +231,27 @@ unique_name_in_owner = true
 layout_mode = 2
 max_value = 128.0
 value = 1.0
+
+[node name="Columns" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Columns"
+
+[node name="ColumnCount" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+editable = false
+
+[node name="AutoColumns" type="CheckBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Auto"
 
 [node name="Preview" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 visible = false
@@ -470,10 +516,10 @@ script = SubResource("GDScript_k8p4s")
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/ColumnCount" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="update_columns" unbinds=1]
-[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/AutoColumns" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="margin_changed"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="margin_changed"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="update_columns" unbinds=1]
+[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HBoxContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
