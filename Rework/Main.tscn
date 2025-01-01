@@ -116,17 +116,26 @@ metadata/_tab_index = 0
 layout_mode = 2
 text = "Create New"
 
-[node name="Button6" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="SaveButton" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 text = "Save"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="SavePath" type="LineEdit" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 icon = ExtResource("2_mgfer")
+
+[node name="SavePickDialog" type="FileDialog" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button"]
+unique_name_in_owner = true
+access = 2
+filters = PackedStringArray("*.png;SpriteSheet Image")
+use_native_dialog = true
 
 [node name="Control" type="Control" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
@@ -593,7 +602,10 @@ dialog_text = "Discard current SpriteSheet and create a new one?"
 dialog_autowrap = true
 
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="." method="_new_spritesheet"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button6" to="." method="save_spritesheet"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/SaveButton" to="." method="save_spritesheet"]
+[connection signal="text_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/SavePath" to="." method="update_save_button" unbinds=1]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button" to="." method="_pick_save_file"]
+[connection signal="file_selected" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button/SavePickDialog" to="." method="_on_file_picked"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button2" to="." method="_add_files"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]

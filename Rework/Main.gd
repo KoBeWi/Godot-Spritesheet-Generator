@@ -5,7 +5,11 @@ enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION}
 @onready var tabs: TabContainer = %Tabs
 @onready var repack: PanelContainer = $Repack
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
+
 @onready var confirm_new: ConfirmationDialog = $ConfirmNew
+@onready var save_path: LineEdit = %SavePath
+@onready var save_button: Button = %SaveButton
+@onready var save_pick_dialog: FileDialog = %SavePickDialog
 
 var filter_cache: PackedStringArray
 var update_pending: bool
@@ -114,4 +118,25 @@ func save_spritesheet() -> void:
 		saving_image.blit_rect(frame.image, Rect2i(Vector2i(), frame_size), Vector2i(idx % sprite_sheet_grid.columns, idx / sprite_sheet_grid.columns) * frame_size)
 		idx += 1
 	
-	saving_image.save_png("Test.png")
+	saving_image.save_png(save_path.text)
+
+func _pick_save_file() -> void:
+	save_pick_dialog.current_path = save_path.text
+	save_pick_dialog.popup_centered()
+
+func _on_file_picked(path: String) -> void:
+	save_path.text = path
+	update_save_button()
+
+func update_save_button() -> void:
+	var path := save_path.text
+	if path.is_empty():
+		save_button.tooltip_text = "Path is empty."
+	elif not path.is_absolute_path():
+		save_button.tooltip_text = "Path must be absolute."
+	elif path.get_extension() != "png":
+		save_button.tooltip_text = "Must be a PNG file."
+	else:
+		save_button.tooltip_text = ""
+	
+	save_button.disabled = not save_button.tooltip_text.is_empty()
