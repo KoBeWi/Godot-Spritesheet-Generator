@@ -4,6 +4,7 @@ const SCENE = preload("uid://c6ce0mrlnw0ui")
 
 @onready var texture: TextureRect = %Texture
 @onready var margins: MarginContainer = $Margins
+@onready var background: ColorRect = $Background
 
 var frame: SpriteSheet.Frame
 

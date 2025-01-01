@@ -24,11 +24,13 @@ func update_frame_list():
 		new_container.frame = frame
 		add_child(new_container)
 	
+	update_margins()
 	update_columns()
 
 func update_columns():
 	if not auto_columns.button_pressed:
 		columns = column_count.value
+		update_grid()
 		return
 	
 	var frame_count: int = column_count.max_value
@@ -45,6 +47,14 @@ func update_columns():
 			best_score = score
 	
 	columns = best_value
+	update_grid()
+
+func update_grid():
+	for container: FrameContainer in get_children():
+		var x: int = container.get_index() % columns
+		var y: int = container.get_index() / columns
+		var alt := (x % 2 == 0) != (y % 2 == 0)
+		container.background.color = Color.DARK_CYAN.darkened(0.1) if alt else Color.DARK_CYAN
 
 func on_columns_changed(value: float) -> void:
 	update_columns()
@@ -53,6 +63,6 @@ func on_auto_toggled(toggled_on: bool) -> void:
 	column_count.editable = not toggled_on
 	update_columns()
 
-func margin_changed(value: float) -> void:
+func update_margins() -> void:
 	for container: FrameContainer in get_children():
 		container.update_margins(horizontal_margin.value, vertical_margin.value)
