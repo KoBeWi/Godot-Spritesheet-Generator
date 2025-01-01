@@ -5,6 +5,7 @@ enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION, PREVIEW}
 @onready var tabs: TabContainer = %Tabs
 @onready var repack: PanelContainer = $Repack
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
+@onready var confirm_new: ConfirmationDialog = $ConfirmNew
 
 var filter_cache: PackedStringArray
 var update_pending: bool
@@ -24,12 +25,17 @@ func _ready() -> void:
 
 func _new_spritesheet() -> void:
 	if spritesheet:
-		pass # dialog warning
+		confirm_new.popup_centered()
 	else:
 		spritesheet = SpriteSheet.new()
 		
 		tabs.set_tab_disabled(Tab.FRAME_LIST, false)
 		tabs.current_tab = Tab.FRAME_LIST
+
+func _discard_spritesheet() -> void:
+	spritesheet = null
+	_new_spritesheet()
+	sprite_sheet_grid.update_frame_list()
 
 func _add_files() -> void:
 	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):

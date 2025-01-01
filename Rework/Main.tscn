@@ -263,12 +263,12 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="SpriteSheetView" type="Control" parent="VBoxContainer/VSplitContainer/HBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
+[node name="SpriteSheetView" type="Control" parent="VBoxContainer/VSplitContainer/HSplitContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -278,7 +278,7 @@ move_target = NodePath("SpriteSheetGrid")
 zoom_slider = NodePath("../../../PanelContainer2/Navigation/HBoxContainer/HSlider")
 recenter_button = NodePath("../../../PanelContainer2/Navigation/Button")
 
-[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView"]
+[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -296,17 +296,17 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 script = ExtResource("2_npgqu")
 
-[node name="Preview" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer"]
+[node name="Preview" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Preview"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Preview/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/VBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer/VSplitContainer/HBoxContainer/Preview/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Play"
 
@@ -510,18 +510,23 @@ size_flags_vertical = 0
 text = "Debug"
 script = SubResource("GDScript_k8p4s")
 
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="VBoxContainer" method="_new_spritesheet"]
+[node name="ConfirmNew" type="ConfirmationDialog" parent="."]
+size = Vector2i(300, 106)
+dialog_text = "Discard current SpriteSheet and create a new one?"
+dialog_autowrap = true
+
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="." method="_new_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button6" to="." method="save_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button2" to="." method="_add_files"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="margin_changed"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="margin_changed"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="update_columns" unbinds=1]
-[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HBoxContainer/SpriteSheetView/SpriteSheetGrid" method="on_auto_toggled"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/SpriteSheetGrid" method="margin_changed"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/SpriteSheetGrid" method="margin_changed"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/SpriteSheetGrid" method="update_columns" unbinds=1]
+[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
-[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HBoxContainer/Preview" method="set_visible"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
 [connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
@@ -529,3 +534,4 @@ script = SubResource("GDScript_k8p4s")
 [connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
 [connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
+[connection signal="confirmed" from="ConfirmNew" to="." method="_discard_spritesheet"]
