@@ -1,6 +1,6 @@
 extends Control
 
-enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION, PREVIEW}
+enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION}
 
 @onready var tabs: TabContainer = %Tabs
 @onready var repack: PanelContainer = $Repack
@@ -79,7 +79,6 @@ func queue_update_frames():
 	update_pending = true
 	
 	tabs.set_tab_disabled(Tab.CUSTOMIZATION, spritesheet.frames.size() + spritesheet.unused_frames.size() == 0)
-	tabs.set_tab_disabled(Tab.PREVIEW, spritesheet.frames.size() == 0)
 	
 	var updater := func():
 		sprite_sheet_grid.update_frame_list()
