@@ -2,6 +2,8 @@ extends Control
 
 enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION}
 
+const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
+
 @onready var tabs: TabContainer = %Tabs
 @onready var repack: PanelContainer = $Repack
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
@@ -19,13 +21,18 @@ var spritesheet: SpriteSheet
 func _ready() -> void:
 	for i in range(1, tabs.get_tab_count()):
 		tabs.set_tab_disabled(i, true)
+	get_window().files_dropped.connect(_on_files_dropped)
 	
-	var formats := ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
-	filter_cache = formats.map(func(format: String) -> String: return "*.%s" % format)
+	filter_cache = FORMATS.map(func(format: String) -> String: return "*.%s" % format)
 	var filter_string := ", ".join(filter_cache) + ";Image Files"
 	filter_cache = [filter_string]
 	
 	_new_spritesheet()
+	update_save_button()
+
+func add_directory(directory: String):
+	for file in DirAccess.get_files_at(directory):
+		create_frame_from_path(directory.path_join(file))
 
 func _new_spritesheet() -> void:
 	if spritesheet:
@@ -56,9 +63,7 @@ func _add_directory() -> void:
 		if not status:
 			return
 		
-		var base_path := selected_paths[0]
-		for file in DirAccess.get_files_at(base_path):
-			create_frame_from_path(base_path.path_join(file))
+		add_directory(selected_paths[0])
 	
 	DisplayServer.file_dialog_show("Select Directory", "", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], callback)
 
@@ -88,6 +93,7 @@ func queue_update_frames():
 		sprite_sheet_grid.update_frame_list()
 		update_pending = false
 	
+	update_save_button()
 	updater.call_deferred()
 
 func create_frame_from_image(image: Image):
@@ -136,7 +142,16 @@ func update_save_button() -> void:
 		save_button.tooltip_text = "Path must be absolute."
 	elif path.get_extension() != "png":
 		save_button.tooltip_text = "Must be a PNG file."
+	elif spritesheet.frames.is_empty():
+		save_button.tooltip_text = "SpriteSheet is empty."
 	else:
 		save_button.tooltip_text = ""
 	
 	save_button.disabled = not save_button.tooltip_text.is_empty()
+
+func _on_files_dropped(files: PackedStringArray):
+	for file in files:
+		if DirAccess.dir_exists_absolute(file):
+			add_directory(file)
+		else:
+			create_frame_from_path(file)
