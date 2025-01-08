@@ -1,4 +1,4 @@
-extends Button
+extends Control
 
 class CropData:
 	var min_x := 9999999
@@ -18,27 +18,36 @@ class CropData:
 @onready var threshold: SpinBox = %Threshold
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 
-var crop_data: CropData
+func crop_images() -> void:
+	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+		var crop_data := CropData.new()
+		crop_frame(frame, crop_data)
+		
+		var rect := crop_data.get_rect()
+		var new_image := Image.create(rect.size.x, rect.size.y, false, frame.source_image.get_format())
+		new_image.blit_rect(frame.source_image, rect, Vector2())
+		frame.texture = ImageTexture.create_from_image(new_image)
+	
+	sprite_sheet_grid.update_frame_list()
 
-func _pressed() -> void:
-	crop_images()
-
-func crop_images():
-	crop_data = CropData.new()
-	var cut := threshold.value
+func smart_crop_images():
+	var crop_data := CropData.new()
 	
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
-		var image := frame.source_image
-		for x in image.get_width():
-			for y in image.get_height():
-				if image.get_pixel(x, y).a >= cut:
-					crop_data.add_point(x, y)
+		crop_frame(frame, crop_data)
 	
 	var rect := crop_data.get_rect()
-	
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
 		var new_image := Image.create(rect.size.x, rect.size.y, false, frame.source_image.get_format())
 		new_image.blit_rect(frame.source_image, rect, Vector2())
 		frame.texture = ImageTexture.create_from_image(new_image)
 	
 	sprite_sheet_grid.update_frame_list()
+
+func crop_frame(frame: SpriteSheet.Frame, crop_data: CropData):
+	var cut := threshold.value
+	var image := frame.source_image
+	for x in image.get_width():
+		for y in image.get_height():
+			if image.get_pixel(x, y).a >= cut:
+				crop_data.add_point(x, y)

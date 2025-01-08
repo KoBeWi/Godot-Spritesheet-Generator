@@ -25,6 +25,7 @@ gdscript/warnings/unused_parameter=0
 
 window/size/viewport_width=1200
 window/size/viewport_height=800
+window/size/mode=2
 window/subwindows/embed_subwindows=false
 
 [editor]

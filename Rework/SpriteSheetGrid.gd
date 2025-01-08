@@ -48,6 +48,7 @@ func update_columns():
 	
 	columns = best_value
 	update_grid()
+	get_parent_control().reset_size()
 
 func update_grid():
 	for container: FrameContainer in get_children():

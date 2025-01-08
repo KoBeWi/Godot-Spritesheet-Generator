@@ -109,6 +109,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -163,7 +164,6 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -202,11 +202,11 @@ icon = ExtResource("2_nait6")
 
 [node name="Crop" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
 layout_mode = 2
+script = ExtResource("2_k8p4s")
 
 [node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 layout_mode = 2
 text = "Crop"
-script = ExtResource("2_k8p4s")
 
 [node name="TODO" type="Node" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5"]
 editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
@@ -214,9 +214,6 @@ editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
 [node name="Button6" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 layout_mode = 2
 text = "Smart Crop"
-
-[node name="TODO" type="Node" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6"]
-editor_description = "Dostępne jak jest zaznaczone kilka klatek"
 
 [node name="Label2" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 layout_mode = 2
@@ -230,7 +227,6 @@ step = 0.01
 value = 0.9
 
 [node name="Margins" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
-visible = false
 layout_mode = 2
 
 [node name="Label3" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
@@ -610,6 +606,8 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
