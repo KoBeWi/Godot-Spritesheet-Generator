@@ -106,6 +106,9 @@ func create_frame_from_image(image: Image):
 	return frame
 
 func create_frame_from_path(path: String):
+	if not path.get_extension() in FORMATS:
+		return
+	
 	var frame := SpriteSheet.Frame.new()
 	frame.file_path = path
 	frame.initialize()

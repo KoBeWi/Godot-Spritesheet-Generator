@@ -24,9 +24,13 @@ func _gui_input(event: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_MIDDLE:
 			panning = mb.pressed
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+			var center_position := move_target.position + move_target.size * 0.5 * move_target.scale
 			zoom_slider.value += zoom_delta
+			move_target.position = center_position - move_target.size * 0.5 * move_target.scale
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			var center_position := move_target.position + move_target.size * 0.5 * move_target.scale
 			zoom_slider.value -= zoom_delta
+			move_target.position = center_position - move_target.size * 0.5 * move_target.scale
 		
 		return
 	
