@@ -75,9 +75,10 @@ resource_name = "Debug"
 script/source = "extends Button
 
 func _pressed() -> void:
-	$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
-	%RepackColumns.value = 3
-	$\"../../Repack\"._confirm()
+	owner.add_directory(\"res://Media/fireballoga/red\")
+	#$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
+	#%RepackColumns.value = 3
+	#$\"../../Repack\"._confirm()
 "
 
 [node name="Main" type="MarginContainer"]
@@ -208,12 +209,12 @@ script = ExtResource("2_k8p4s")
 layout_mode = 2
 text = "Crop"
 
-[node name="TODO" type="Node" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5"]
-editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
-
 [node name="Button6" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 layout_mode = 2
 text = "Smart Crop"
+
+[node name="TODO" type="Node" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6"]
+editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
 
 [node name="Label2" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 layout_mode = 2
