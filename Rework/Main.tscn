@@ -41,10 +41,10 @@ allow_unpress = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t0fln"]
 draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.501961)
 
 [sub_resource type="GDScript" id="GDScript_nn27c"]
@@ -75,7 +75,8 @@ resource_name = "Debug"
 script/source = "extends Button
 
 func _pressed() -> void:
-	owner.add_directory(\"res://Media/fireballoga/red\")
+	owner.add_directory(\"res://Media/fireballoga/RunClubDown\")
+	#owner.add_directory(\"res://Media/fireballoga/red\")
 	#$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
 	#%RepackColumns.value = 3
 	#$\"../../Repack\"._confirm()

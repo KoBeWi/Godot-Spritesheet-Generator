@@ -48,7 +48,6 @@ func update_columns():
 	
 	columns = best_value
 	update_grid()
-	get_parent_control().reset_size()
 
 func update_grid():
 	for container: FrameContainer in get_children():
@@ -56,6 +55,11 @@ func update_grid():
 		var y: int = container.get_index() / columns
 		var alt := (x % 2 == 0) != (y % 2 == 0)
 		container.background.color = Color.DARK_CYAN.darkened(0.1) if alt else Color.DARK_CYAN
+	
+	var container := get_parent_control()
+	var center := container.get_rect().get_center()
+	container.reset_size()
+	container.position += center - container.get_rect().get_center()
 
 func on_columns_changed(value: float) -> void:
 	update_columns()
