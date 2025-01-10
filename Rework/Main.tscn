@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cmt0o8ktplo4k"]
+[gd_scene load_steps=22 format=3 uid="uid://cmt0o8ktplo4k"]
 
 [ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Rework/Main.gd" id="1_2hksu"]
 [ext_resource type="Script" uid="uid://c7avrf3pus5r" path="res://Rework/CropTool.gd" id="2_k8p4s"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dr100b5wjmjp2" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
 [ext_resource type="Script" uid="uid://cwhcm72el5371" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
 [ext_resource type="Script" uid="uid://rvv4l0rd7dgc" path="res://Rework/Repack.gd" id="3_jmhy2"]
+[ext_resource type="Script" uid="uid://bjo3ieb5ra2du" path="res://Rework/Transform.gd" id="5_n055s"]
 [ext_resource type="Script" uid="uid://dm151lay1qtov" path="res://Rework/Preview.gd" id="7_b5t4d"]
 [ext_resource type="PackedScene" uid="uid://c6ce0mrlnw0ui" path="res://Rework/FrameContainer.tscn" id="7_j10sb"]
 [ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Source/Tools.svg" id="8_t0fln"]
@@ -111,6 +112,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -165,7 +167,6 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -200,6 +201,13 @@ layout_mode = 2
 toggle_mode = true
 button_group = SubResource("ButtonGroup_nait6")
 text = "Columns"
+icon = ExtResource("2_nait6")
+
+[node name="Transform" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_nait6")
+text = "Transform"
 icon = ExtResource("2_nait6")
 
 [node name="Crop" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
@@ -271,6 +279,34 @@ unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Auto"
+
+[node name="Transform" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
+layout_mode = 2
+script = ExtResource("5_n055s")
+
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Mirror Horizontally"
+
+[node name="Button2" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Mirror Vertically"
+
+[node name="Button3" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Cycle Forward"
+
+[node name="Button4" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Cycle Backward"
+
+[node name="Button6" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Reverse"
+
+[node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Shuffe"
 
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer"]
 layout_mode = 2

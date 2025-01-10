@@ -9,8 +9,13 @@ const SCENE = preload("uid://c6ce0mrlnw0ui")
 var frame: SpriteSheet.Frame
 
 func _ready() -> void:
+	update()
+
+func update():
 	if frame:
 		texture.texture = frame.texture
+	else:
+		texture.texture = null
 
 func update_margins(horizontal: int, vertical: int):
 	margins.add_theme_constant_override(&"margin_left", horizontal + frame.offset.x)

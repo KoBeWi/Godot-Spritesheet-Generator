@@ -18,4 +18,4 @@ class Frame:
 
 var frames: Array[Frame]
 var unused_frames: Array[Frame]
-var file_path: String
+var file_path: String # używane?

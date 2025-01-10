@@ -21,8 +21,12 @@ func update_frame_list():
 	
 	for frame in missing_frames:
 		var new_container := FrameContainer.SCENE.instantiate()
-		new_container.frame = frame
 		add_child(new_container)
+	
+	var frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames
+	for i in frames.size():
+		get_child(i).frame = frames[i]
+		get_child(i).update()
 	
 	update_margins()
 	update_columns()
