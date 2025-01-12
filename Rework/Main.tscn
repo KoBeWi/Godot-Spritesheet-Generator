@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cmt0o8ktplo4k"]
+[gd_scene load_steps=23 format=3 uid="uid://cmt0o8ktplo4k"]
 
 [ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Rework/Main.gd" id="1_2hksu"]
 [ext_resource type="Script" uid="uid://c7avrf3pus5r" path="res://Rework/CropTool.gd" id="2_k8p4s"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://c6ce0mrlnw0ui" path="res://Rework/FrameContainer.tscn" id="7_j10sb"]
 [ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Source/Tools.svg" id="8_t0fln"]
 [ext_resource type="Texture2D" uid="uid://o4p3468prkxm" path="res://Rework/Play.svg" id="9_ajsf6"]
+[ext_resource type="Script" uid="uid://de521126vdx1m" path="res://Rework/Edit.gd" id="11_o0wax"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e06dd"]
 content_margin_top = 4.0
@@ -76,8 +77,8 @@ resource_name = "Debug"
 script/source = "extends Button
 
 func _pressed() -> void:
-	owner.add_directory(\"res://Media/fireballoga/RunClubDown\")
-	#owner.add_directory(\"res://Media/fireballoga/red\")
+	#owner.add_directory(\"res://Media/fireballoga/RunClubDown\")
+	owner.add_directory(\"res://Media/fireballoga/red\")
 	#$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
 	#%RepackColumns.value = 3
 	#$\"../../Repack\"._confirm()
@@ -112,7 +113,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -167,6 +167,7 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -420,7 +421,68 @@ button_pressed = true
 text = "Loop"
 
 [node name="Edit" type="PanelContainer" parent="VBoxContainer/VSplitContainer"]
-visible = false
+layout_mode = 2
+script = ExtResource("11_o0wax")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/Edit"]
+layout_mode = 2
+
+[node name="EditWarning" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/EditWarning"]
+layout_mode = 2
+text = "Select frame(s) to edit."
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/EditWarning"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Offset:"
+
+[node name="OffsetX" type="SpinBox" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+suffix = "px"
+
+[node name="OffsetY" type="SpinBox" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+suffix = "px"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+layout_mode = 2
+
+[node name="EditFlipX" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Flip Horizontally"
+
+[node name="EditFlipY" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Flip Vertically"
+
+[node name="EditTranspose" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Rotate"
+
+[node name="Label2" type="Label" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+layout_mode = 2
+text = "Active modifications:"
+
+[node name="ModList" type="Tree" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+hide_root = true
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
 layout_mode = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
@@ -653,6 +715,9 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_play_pause"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_fps_changed"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipX" to="VBoxContainer/VSplitContainer/Edit" method="_flip_x"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipY" to="VBoxContainer/VSplitContainer/Edit" method="_flip_y"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]

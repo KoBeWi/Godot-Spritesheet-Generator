@@ -134,7 +134,10 @@ func _pick_save_file() -> void:
 	save_pick_dialog.popup_centered()
 
 func _on_file_picked(path: String) -> void:
-	save_path.text = path
+	if path.get_extension().is_empty():
+		save_path.text = path + ".png"
+	else:
+		save_path.text = path
 	update_save_button()
 
 func update_save_button() -> void:

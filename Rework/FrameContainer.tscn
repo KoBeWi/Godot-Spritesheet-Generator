@@ -4,11 +4,15 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dq8w2"]
 draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(1, 0.821741, 0, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
 
 [sub_resource type="Gradient" id="Gradient_i7qgq"]
 
@@ -38,6 +42,7 @@ mouse_filter = 2
 
 [node name="Selection" type="Panel" parent="."]
 visible = false
+z_index = 1
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dq8w2")

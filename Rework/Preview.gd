@@ -11,6 +11,7 @@ var frame_progress: float
 
 func _ready() -> void:
 	preview_frame.texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	preview_frame.disable_input = true
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED:
