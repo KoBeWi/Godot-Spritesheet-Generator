@@ -75,3 +75,13 @@ func on_auto_toggled(toggled_on: bool) -> void:
 func update_margins() -> void:
 	for container: FrameContainer in get_children():
 		container.update_margins(horizontal_margin.value, vertical_margin.value)
+
+func _select_all() -> void:
+	var all_selected := true
+	for container: FrameContainer in get_children():
+		if not container.is_selected():
+			all_selected = false
+			break
+	
+	for container: FrameContainer in get_children():
+		container.selection.visible = not all_selected

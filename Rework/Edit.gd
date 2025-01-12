@@ -47,3 +47,5 @@ func _transpose() -> void:
 	for frame in selected_frames:
 		frame.modifiers.append(rotater)
 		frame.update_image()
+	
+	sprite_sheet_grid.update_grid()

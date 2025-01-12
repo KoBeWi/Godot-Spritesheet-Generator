@@ -113,6 +113,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -167,7 +168,6 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -706,6 +706,7 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="_select_all"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
