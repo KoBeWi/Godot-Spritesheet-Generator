@@ -116,19 +116,8 @@ func _save() -> void:
 	final.save_png(\"res://CutterTest.png\")
 "
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ti8je"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 0, 1)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gm1it"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1awiq"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0x4c1"]
 content_margin_left = 0.0
@@ -142,8 +131,19 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1awiq"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gm1it"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ti8je"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 1)
 
 [node name="CustomCutter" type="PanelContainer"]
 anchors_preset = 15
@@ -206,10 +206,10 @@ layout_mode = 2
 [node name="Button" type="Button" parent="."]
 visible = false
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxFlat_ti8je")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_gm1it")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_0x4c1")
 theme_override_styles/normal = SubResource("StyleBoxFlat_1awiq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0x4c1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gm1it")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ti8je")
 icon = ExtResource("1_ttl5q")
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_save"]
