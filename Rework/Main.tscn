@@ -526,8 +526,10 @@ layout_mode = 2
 toggle_mode = true
 text = "Edit"
 
-[node name="Button4" type="Button" parent="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2"]
+[node name="PreviewButton" type="Button" parent="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 toggle_mode = true
 text = "Preview"
 
@@ -723,7 +725,7 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipY" to="VBoxContainer/VSplitContainer/Edit" method="_flip_y"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
-[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button4" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/PreviewButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
 [connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]

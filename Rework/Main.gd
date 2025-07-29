@@ -8,6 +8,7 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var repack: PanelContainer = $Repack
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 @onready var preview: PanelContainer = %Preview
+@onready var preview_button: Button = %PreviewButton
 
 @onready var confirm_new: ConfirmationDialog = $ConfirmNew
 @onready var save_path: LineEdit = %SavePath
@@ -48,7 +49,7 @@ func _new_spritesheet() -> void:
 func _discard_spritesheet() -> void:
 	spritesheet = null
 	_new_spritesheet()
-	sprite_sheet_grid.update_frame_list()
+	queue_update_frames()
 
 func _add_files() -> void:
 	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
@@ -89,7 +90,11 @@ func queue_update_frames():
 		return
 	update_pending = true
 	
-	tabs.set_tab_disabled(Tab.CUSTOMIZATION, spritesheet.frames.size() + spritesheet.unused_frames.size() == 0)
+	var no_frames := spritesheet.frames.size() + spritesheet.unused_frames.size() == 0
+	tabs.set_tab_disabled(Tab.CUSTOMIZATION, no_frames)
+	preview_button.disabled = no_frames
+	if no_frames:
+		preview_button.button_pressed = false
 	
 	var updater := func():
 		sprite_sheet_grid.update_frame_list()
