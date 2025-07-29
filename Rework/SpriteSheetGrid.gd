@@ -17,13 +17,13 @@ func update_frame_list():
 	for container: FrameContainer in get_children():
 		var idx := missing_frames.find(container.frame)
 		if idx == -1:
-			container.queue_free()
+			container.free()
 		else:
 			missing_frames.remove_at(idx)
-			container.texture.texture = container.frame.texture
 	
 	for frame in missing_frames:
 		var new_container := FrameContainer.SCENE.instantiate()
+		new_container.spritesheet = owner.spritesheet
 		add_child(new_container)
 		new_container.selection_changed.connect(edit.update_frames)
 	
@@ -94,13 +94,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	var k := event as InputEventKey
 	if k:
 		if k.pressed and k.keycode == KEY_DELETE:
-			var last_deleted: FrameContainer
+			var was_deleted: bool
+			var spritesheet: SpriteSheet = owner.spritesheet
 			for container: FrameContainer in get_children():
 				if container.is_selected():
-					container.queue_free()
-					last_deleted = container
+					spritesheet.frames.erase(container.frame)
+					spritesheet.unused_frames.append(container.frame)
+					was_deleted = true
 			
-			if last_deleted:
-				await last_deleted.tree_exited
-				update_columns()
-				edit.update_frames()
+			if was_deleted:
+				update_frame_list()

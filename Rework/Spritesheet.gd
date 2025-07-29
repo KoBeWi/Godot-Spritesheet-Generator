@@ -26,6 +26,7 @@ class Frame:
 			modifier._apply(image)
 		
 		texture.set_image(image)
+		changed.emit()
 
 class FrameModifier:
 	var name: String
@@ -54,6 +55,6 @@ class Rotate extends FrameModifier:
 	func _apply(image: Image):
 		image.rotate_90(CLOCKWISE)
 
+var frame_size: Vector2i
 var frames: Array[Frame]
 var unused_frames: Array[Frame]
-var file_path: String # używane?

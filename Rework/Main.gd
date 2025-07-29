@@ -7,6 +7,7 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var tabs: TabContainer = %Tabs
 @onready var repack: PanelContainer = $Repack
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
+@onready var preview: PanelContainer = %Preview
 
 @onready var confirm_new: ConfirmationDialog = $ConfirmNew
 @onready var save_path: LineEdit = %SavePath
@@ -42,6 +43,7 @@ func _new_spritesheet() -> void:
 		
 		tabs.set_tab_disabled(Tab.FRAME_LIST, false)
 		tabs.current_tab = Tab.FRAME_LIST
+		preview.preview_frame.spritesheet = spritesheet
 
 func _discard_spritesheet() -> void:
 	spritesheet = null
@@ -102,6 +104,9 @@ func create_frame_from_image(image: Image):
 	frame.initialize()
 	spritesheet.frames.append(frame)
 	
+	if spritesheet.frame_size == Vector2i():
+		spritesheet.frame_size = frame.image.get_size()
+	
 	queue_update_frames()
 	return frame
 
@@ -113,6 +118,9 @@ func create_frame_from_path(path: String):
 	frame.file_path = path
 	frame.initialize()
 	spritesheet.frames.append(frame)
+	
+	if spritesheet.frame_size == Vector2i():
+		spritesheet.frame_size = frame.image.get_size()
 	
 	queue_update_frames()
 	return frame

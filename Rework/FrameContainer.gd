@@ -3,24 +3,41 @@ extends MarginContainer
 const SCENE = preload("uid://c6ce0mrlnw0ui")
 
 @onready var grid := get_parent() as GridContainer
-@onready var texture: TextureRect = %Texture
+@onready var texture: Control = %Texture
 @onready var margins: MarginContainer = $Margins
 @onready var background: ColorRect = $Background
 @onready var selection: Panel = $Selection
 
-var frame: SpriteSheet.Frame
+var spritesheet: SpriteSheet
+var frame: SpriteSheet.Frame:
+	set(f):
+		if frame == f:
+			return
+		
+		if frame:
+			frame.changed.disconnect(update)
+		
+		frame = f
+		frame.changed.connect(update)
+
 var disable_input: bool
+var maximum_size := Vector2.INF
+var draw_scale := 1.0
 
 signal selection_changed
 
-func _ready() -> void:
-	update()
-
 func update():
-	if frame:
-		texture.texture = frame.texture
+	if spritesheet.frame_size.x <= maximum_size.x and spritesheet.frame_size.y <= maximum_size.y:
+		draw_scale = 1.0
+		texture.custom_minimum_size = spritesheet.frame_size
+	elif spritesheet.frame_size.x > spritesheet.frame_size.y:
+		draw_scale = maximum_size.x / spritesheet.frame_size.x
+		texture.custom_minimum_size = Vector2(maximum_size.x, spritesheet.frame_size.y * draw_scale)
 	else:
-		texture.texture = null
+		draw_scale = maximum_size.y / spritesheet.frame_size.y
+		texture.custom_minimum_size = Vector2(maximum_size.x * draw_scale, spritesheet.frame_size.y)
+	
+	texture.queue_redraw()
 
 func update_margins(horizontal: int, vertical: int):
 	margins.begin_bulk_theme_override()
@@ -51,3 +68,9 @@ func _gui_input(event: InputEvent) -> void:
 
 func is_selected() -> bool:
 	return selection.visible
+
+func _on_texture_draw() -> void:
+	if not frame.texture:
+		return
+	
+	texture.draw_texture_rect(frame.texture, Rect2(Vector2(), frame.texture.get_size() * draw_scale), false)

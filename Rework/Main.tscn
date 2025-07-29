@@ -353,6 +353,7 @@ theme_override_constants/v_separation = 0
 script = ExtResource("2_npgqu")
 
 [node name="Preview" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 script = ExtResource("7_b5t4d")
@@ -368,15 +369,13 @@ alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_t0fln")
 
 [node name="PreviewFrame" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer" instance=ExtResource("7_j10sb")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="Texture" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer/PreviewFrame/Margins" index="0"]
-expand_mode = 4
-stretch_mode = 5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -733,5 +732,3 @@ dialog_autowrap = true
 [connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="confirmed" from="ConfirmNew" to="." method="_discard_spritesheet"]
-
-[editable path="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer/PreviewFrame"]

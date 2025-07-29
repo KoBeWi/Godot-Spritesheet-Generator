@@ -34,11 +34,12 @@ color = Color(0, 0.5, 0.5, 1)
 [node name="Margins" type="MarginContainer" parent="."]
 layout_mode = 2
 
-[node name="Texture" type="TextureRect" parent="Margins"]
+[node name="Texture" type="Control" parent="Margins"]
 unique_name_in_owner = true
 texture_filter = 1
+clip_contents = true
 layout_mode = 2
-stretch_mode = 2
+mouse_filter = 1
 
 [node name="Selection" type="Panel" parent="."]
 visible = false
@@ -60,3 +61,5 @@ editor_description = "Pokazuje, czy klatka jest oryginalna (nieprzycięta itp)
 Może niepotrzebne
 W sumie można reset/reload
 I dać original image w Frame??"
+
+[connection signal="draw" from="Margins/Texture" to="." method="_on_texture_draw"]

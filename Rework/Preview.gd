@@ -6,12 +6,12 @@ extends Control
 @onready var loop: CheckBox = %Loop
 @onready var play_button: Button = %PlayButton
 
-var frame_time: float = 1.0 / 30.0
+var frame_time: float = 1.0 / 12.0
 var frame_progress: float
 
 func _ready() -> void:
-	preview_frame.texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	preview_frame.disable_input = true
+	preview_frame.maximum_size = Vector2(256, 256)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED:
@@ -37,9 +37,8 @@ func update_settings():
 
 func update_frame():
 	preview_frame.frame = owner.spritesheet.frames[int(timeline.value)]
+	preview_frame.update()
 	timeline_frame.text = str(int(timeline.value))
-	preview_frame._ready()
-	preview_frame.custom_minimum_size = Vector2(256, 256).min(preview_frame.frame.texture.get_size())
 
 func _play_pause() -> void:
 	if not is_processing_internal() and timeline.value == timeline.max_value:
