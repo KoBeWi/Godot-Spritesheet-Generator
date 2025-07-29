@@ -2,10 +2,13 @@ extends GridContainer
 
 const FrameContainer = preload("res://Rework/FrameContainer.gd")
 
+@onready var edit: PanelContainer = %Edit
 @onready var column_count: SpinBox = %ColumnCount
 @onready var auto_columns: CheckBox = %AutoColumns
 @onready var horizontal_margin: SpinBox = %HorizontalMargin
 @onready var vertical_margin: SpinBox = %VerticalMargin
+
+var had_selection: bool
 
 func update_frame_list():
 	var missing_frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames.duplicate()
@@ -22,6 +25,7 @@ func update_frame_list():
 	for frame in missing_frames:
 		var new_container := FrameContainer.SCENE.instantiate()
 		add_child(new_container)
+		new_container.selection_changed.connect(edit.update_frames)
 	
 	var frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames
 	for i in frames.size():
@@ -85,3 +89,18 @@ func _select_all() -> void:
 	
 	for container: FrameContainer in get_children():
 		container.selection.visible = not all_selected
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	var k := event as InputEventKey
+	if k:
+		if k.pressed and k.keycode == KEY_DELETE:
+			var last_deleted: FrameContainer
+			for container: FrameContainer in get_children():
+				if container.is_selected():
+					container.queue_free()
+					last_deleted = container
+			
+			if last_deleted:
+				await last_deleted.tree_exited
+				update_columns()
+				edit.update_frames()

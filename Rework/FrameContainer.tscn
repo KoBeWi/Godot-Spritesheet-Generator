@@ -38,7 +38,7 @@ layout_mode = 2
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2
-mouse_filter = 2
+stretch_mode = 2
 
 [node name="Selection" type="Panel" parent="."]
 visible = false

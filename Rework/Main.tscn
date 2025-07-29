@@ -368,12 +368,15 @@ alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_t0fln")
 
 [node name="PreviewFrame" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer" instance=ExtResource("7_j10sb")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="Texture" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer/PreviewFrame/Margins" index="0"]
+expand_mode = 4
+stretch_mode = 5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -412,7 +415,7 @@ unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 max_value = 144.0
-value = 30.0
+value = 12.0
 
 [node name="Loop" type="CheckBox" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -421,6 +424,7 @@ button_pressed = true
 text = "Loop"
 
 [node name="Edit" type="PanelContainer" parent="VBoxContainer/VSplitContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("11_o0wax")
 
@@ -729,3 +733,5 @@ dialog_autowrap = true
 [connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="confirmed" from="ConfirmNew" to="." method="_discard_spritesheet"]
+
+[editable path="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer/PreviewFrame"]
