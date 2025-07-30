@@ -15,6 +15,8 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var save_button: Button = %SaveButton
 @onready var save_pick_dialog: FileDialog = %SavePickDialog
 
+var default_filename = "Spritesheet-inator.png"
+
 var filter_cache: PackedStringArray
 var update_pending: bool
 
@@ -35,6 +37,8 @@ func _ready() -> void:
 func add_directory(directory: String):
 	for file in DirAccess.get_files_at(directory):
 		create_frame_from_path(directory.path_join(file))
+	
+	assign_path(directory.path_join(default_filename))
 
 func _new_spritesheet() -> void:
 	if spritesheet:
@@ -130,14 +134,18 @@ func create_frame_from_path(path: String):
 	queue_update_frames()
 	return frame
 
+func assign_path(path: String):
+	if save_path.text.is_empty():
+		save_path.text = path
+		update_save_button()
+
 func save_spritesheet() -> void:
-	var frame_size: Vector2i = sprite_sheet_grid.get_child(0).size # Zapisywać to w spritesheecie i synchronizować we wszystkich klatkach
-	# W sumie można zamienić GridContainer na jakiś własny i wymuszać ten sam rozmiar
+	var frame_size: Vector2i = spritesheet.frame_size + spritesheet.margins * 2
 	var saving_image := Image.create(frame_size.x * sprite_sheet_grid.columns, frame_size.y * (ceil(sprite_sheet_grid.get_child_count() / float(sprite_sheet_grid.columns))), false, Image.FORMAT_RGBA8)
 	
 	var idx: int
 	for frame in spritesheet.frames:
-		saving_image.blit_rect(frame.image, Rect2i(Vector2i(), frame_size), Vector2i(idx % sprite_sheet_grid.columns, idx / sprite_sheet_grid.columns) * frame_size)
+		saving_image.blit_rect(frame.image, Rect2i(Vector2(), frame_size), Vector2i(idx % sprite_sheet_grid.columns, idx / sprite_sheet_grid.columns) * frame_size + Vector2i(spritesheet.margins + frame.offset))
 		idx += 1
 	
 	saving_image.save_png(save_path.text)
@@ -174,3 +182,4 @@ func _on_files_dropped(files: PackedStringArray):
 			add_directory(file)
 		else:
 			create_frame_from_path(file)
+			assign_path(file.get_base_dir().path_join(default_filename))

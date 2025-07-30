@@ -160,7 +160,7 @@ text = "Add Directory"
 
 [node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
 layout_mode = 2
-text = "Repack SpriteSheet"
+text = "Cut SpriteSheet"
 
 [node name="Button4" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
 layout_mode = 2
@@ -325,27 +325,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("3_fslw6")
-move_target = NodePath("PanelContainer")
+move_target = NodePath("CenterContainer")
 zoom_slider = NodePath("../../../PanelContainer2/Navigation/HBoxContainer/HSlider")
 recenter_button = NodePath("../../../PanelContainer2/Navigation/Button")
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView"]
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView"]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1.0
-offset_top = -1.0
-offset_right = 1.0
-offset_bottom = 1.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer"]
+layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_t0fln")
 
-[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer"]
+[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 0
@@ -541,7 +544,7 @@ text = "?"
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer2/Navigation/Button2"]
 visible = false
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -662,7 +665,7 @@ text = "?"
 [node name="PanelContainer" type="PanelContainer" parent="Repack/VBoxContainer/Navigation/Button2"]
 visible = false
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -711,13 +714,13 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="_select_all"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="_select_all"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
-[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/PanelContainer/SpriteSheetGrid" method="on_auto_toggled"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
+[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HSplitContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_play_pause"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_fps_changed"]

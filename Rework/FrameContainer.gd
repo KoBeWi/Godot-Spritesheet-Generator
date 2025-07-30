@@ -27,6 +27,7 @@ var draw_scale := 1.0
 signal selection_changed
 
 func update():
+	update_margins()
 	if spritesheet.frame_size.x <= maximum_size.x and spritesheet.frame_size.y <= maximum_size.y:
 		draw_scale = 1.0
 		texture.custom_minimum_size = spritesheet.frame_size
@@ -39,12 +40,12 @@ func update():
 	
 	texture.queue_redraw()
 
-func update_margins(horizontal: int, vertical: int):
+func update_margins():
 	margins.begin_bulk_theme_override()
-	margins.add_theme_constant_override(&"margin_left", horizontal + frame.offset.x)
-	margins.add_theme_constant_override(&"margin_right", horizontal)
-	margins.add_theme_constant_override(&"margin_top", vertical + frame.offset.y)
-	margins.add_theme_constant_override(&"margin_bottom", vertical)
+	margins.add_theme_constant_override(&"margin_left", spritesheet.margins.x + frame.offset.x)
+	margins.add_theme_constant_override(&"margin_right", spritesheet.margins.x)
+	margins.add_theme_constant_override(&"margin_top", spritesheet.margins.y + frame.offset.y)
+	margins.add_theme_constant_override(&"margin_bottom", spritesheet.margins.y)
 	margins.end_bulk_theme_override()
 
 func _gui_input(event: InputEvent) -> void:

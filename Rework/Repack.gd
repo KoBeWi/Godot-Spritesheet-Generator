@@ -5,11 +5,13 @@ extends Control
 @onready var repack_rows: SpinBox = %RepackRows
 
 var image: Image
+var base_path: String
 
 func _init() -> void:
 	hide()
 
 func repack_file(path: String):
+	base_path = path
 	image = Image.load_from_file(path)
 	if not image:
 		return
@@ -24,6 +26,7 @@ func _confirm() -> void:
 			var frame := image.get_region(Rect2i(Vector2i(x, y) * grid_step, grid_step))
 			owner.create_frame_from_image(frame)
 	
+	owner.assign_path(base_path.get_base_dir().path_join(owner.default_filename))
 	image = null
 	hide()
 

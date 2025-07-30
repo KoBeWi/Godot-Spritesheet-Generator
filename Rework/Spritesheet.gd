@@ -56,5 +56,6 @@ class Rotate extends FrameModifier:
 		image.rotate_90(CLOCKWISE)
 
 var frame_size: Vector2i
+var margins := Vector2i.ONE
 var frames: Array[Frame]
 var unused_frames: Array[Frame]

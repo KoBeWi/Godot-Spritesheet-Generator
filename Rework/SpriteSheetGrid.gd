@@ -77,18 +77,15 @@ func on_auto_toggled(toggled_on: bool) -> void:
 	update_columns()
 
 func update_margins() -> void:
+	owner.spritesheet.margins = Vector2i(horizontal_margin.value, vertical_margin.value)
 	for container: FrameContainer in get_children():
-		container.update_margins(horizontal_margin.value, vertical_margin.value)
+		container.update_margins()
 
 func _select_all() -> void:
-	var all_selected := true
-	for container: FrameContainer in get_children():
-		if not container.is_selected():
-			all_selected = false
-			break
-	
+	var all_selected := get_children().all(func(container: FrameContainer) -> bool: return container.is_selected())
 	for container: FrameContainer in get_children():
 		container.selection.visible = not all_selected
+	edit.update_frames()
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var k := event as InputEventKey
