@@ -81,6 +81,9 @@ func update_margins() -> void:
 	for container: FrameContainer in get_children():
 		container.update_margins()
 
+func get_rows() -> int:
+	return ceili(get_child_count() / float(columns))
+
 func _select_all() -> void:
 	var all_selected := get_children().all(func(container: FrameContainer) -> bool: return container.is_selected())
 	for container: FrameContainer in get_children():

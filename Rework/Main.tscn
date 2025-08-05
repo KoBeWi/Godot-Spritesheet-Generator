@@ -116,34 +116,69 @@ script = SubResource("GDScript_0amvt")
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2"]
 layout_mode = 2
 text = "Create New"
 
-[node name="SaveButton" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="SaveButton" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Save"
 
-[node name="SavePath" type="LineEdit" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="SavePath" type="LineEdit" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2"]
 layout_mode = 2
 icon = ExtResource("2_mgfer")
 
-[node name="SavePickDialog" type="FileDialog" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button"]
+[node name="SavePickDialog" type="FileDialog" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button"]
 unique_name_in_owner = true
 access = 2
 filters = PackedStringArray("*.png;SpriteSheet Image")
 use_native_dialog = true
 
-[node name="Control" type="Control" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer"]
+layout_mode = 2
+text = "Frame Size:"
+
+[node name="FrameWidth" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 2048.0
+value = 1.0
+
+[node name="Label3" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer"]
+layout_mode = 2
+text = "×"
+
+[node name="FrameHeight" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 2048.0
+value = 1.0
+
+[node name="SizeLabel" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Total Size: %d × %d"
+horizontal_alignment = 1
 
 [node name="Import Frames" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 visible = false
@@ -705,11 +740,11 @@ size = Vector2i(300, 106)
 dialog_text = "Discard current SpriteSheet and create a new one?"
 dialog_autowrap = true
 
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button5" to="." method="_new_spritesheet"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/SaveButton" to="." method="save_spritesheet"]
-[connection signal="text_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/SavePath" to="." method="update_save_button" unbinds=1]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button" to="." method="_pick_save_file"]
-[connection signal="file_selected" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/Button/SavePickDialog" to="." method="_on_file_picked"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button5" to="." method="_new_spritesheet"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/SaveButton" to="." method="save_spritesheet"]
+[connection signal="text_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/SavePath" to="." method="update_save_button" unbinds=1]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button" to="." method="_pick_save_file"]
+[connection signal="file_selected" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button/SavePickDialog" to="." method="_on_file_picked"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button2" to="." method="_add_files"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
@@ -724,6 +759,8 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_play_pause"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_fps_changed"]
+[connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetX" to="VBoxContainer/VSplitContainer/Edit" method="offset_x_changed"]
+[connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetY" to="VBoxContainer/VSplitContainer/Edit" method="offset_y_changed"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipX" to="VBoxContainer/VSplitContainer/Edit" method="_flip_x"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipY" to="VBoxContainer/VSplitContainer/Edit" method="_flip_y"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]

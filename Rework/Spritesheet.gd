@@ -55,7 +55,14 @@ class Rotate extends FrameModifier:
 	func _apply(image: Image):
 		image.rotate_90(CLOCKWISE)
 
-var frame_size: Vector2i
+var frame_size: Vector2i:
+	set(fs):
+		if frame_size != fs:
+			frame_size = fs
+			changed.emit()
+
 var margins := Vector2i.ONE
 var frames: Array[Frame]
 var unused_frames: Array[Frame]
+
+signal changed

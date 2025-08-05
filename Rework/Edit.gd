@@ -49,3 +49,13 @@ func _transpose() -> void:
 		frame.update_image()
 	
 	sprite_sheet_grid.update_grid()
+
+func offset_x_changed(value: float) -> void:
+	for frame in selected_frames:
+		frame.offset.x = value
+		frame.changed.emit()
+
+func offset_y_changed(value: float) -> void:
+	for frame in selected_frames:
+		frame.offset.y = value
+		frame.changed.emit()

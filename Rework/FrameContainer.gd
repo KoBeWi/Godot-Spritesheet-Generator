@@ -42,9 +42,9 @@ func update():
 
 func update_margins():
 	margins.begin_bulk_theme_override()
-	margins.add_theme_constant_override(&"margin_left", spritesheet.margins.x + frame.offset.x)
+	margins.add_theme_constant_override(&"margin_left", spritesheet.margins.x)
 	margins.add_theme_constant_override(&"margin_right", spritesheet.margins.x)
-	margins.add_theme_constant_override(&"margin_top", spritesheet.margins.y + frame.offset.y)
+	margins.add_theme_constant_override(&"margin_top", spritesheet.margins.y)
 	margins.add_theme_constant_override(&"margin_bottom", spritesheet.margins.y)
 	margins.end_bulk_theme_override()
 
@@ -74,4 +74,4 @@ func _on_texture_draw() -> void:
 	if not frame.texture:
 		return
 	
-	texture.draw_texture_rect(frame.texture, Rect2(Vector2(), frame.texture.get_size() * draw_scale), false)
+	texture.draw_texture_rect(frame.texture, Rect2(frame.offset, frame.texture.get_size() * draw_scale), false)

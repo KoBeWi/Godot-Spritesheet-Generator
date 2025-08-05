@@ -10,6 +10,11 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var preview: PanelContainer = %Preview
 @onready var preview_button: Button = %PreviewButton
 
+@onready var frame_width: SpinBox = %FrameWidth
+@onready var frame_height: SpinBox = %FrameHeight
+@onready var size_label: Label = %SizeLabel
+@onready var size_format := size_label.text
+
 @onready var confirm_new: ConfirmationDialog = $ConfirmNew
 @onready var save_path: LineEdit = %SavePath
 @onready var save_button: Button = %SaveButton
@@ -49,6 +54,9 @@ func _new_spritesheet() -> void:
 		tabs.set_tab_disabled(Tab.FRAME_LIST, false)
 		tabs.current_tab = Tab.FRAME_LIST
 		preview.preview_frame.spritesheet = spritesheet
+	
+	update_size()
+	spritesheet.changed.connect(update_size)
 
 func _discard_spritesheet() -> void:
 	spritesheet = null
@@ -102,6 +110,7 @@ func queue_update_frames():
 	
 	var updater := func():
 		sprite_sheet_grid.update_frame_list()
+		update_size()
 		update_pending = false
 	
 	update_save_button()
@@ -141,7 +150,7 @@ func assign_path(path: String):
 
 func save_spritesheet() -> void:
 	var frame_size: Vector2i = spritesheet.frame_size + spritesheet.margins * 2
-	var saving_image := Image.create(frame_size.x * sprite_sheet_grid.columns, frame_size.y * (ceil(sprite_sheet_grid.get_child_count() / float(sprite_sheet_grid.columns))), false, Image.FORMAT_RGBA8)
+	var saving_image := Image.create(frame_size.x * sprite_sheet_grid.columns, frame_size.y * sprite_sheet_grid.get_rows(), false, Image.FORMAT_RGBA8)
 	
 	var idx: int
 	for frame in spritesheet.frames:
@@ -149,6 +158,15 @@ func save_spritesheet() -> void:
 		idx += 1
 	
 	saving_image.save_png(save_path.text)
+
+func update_size():
+	frame_width.set_value_no_signal(spritesheet.frame_size.x)
+	frame_height.set_value_no_signal(spritesheet.frame_size.y)
+	
+	var frame_size: Vector2i = spritesheet.frame_size + spritesheet.margins * 2
+	frame_size.x *= sprite_sheet_grid.columns
+	frame_size.y *= sprite_sheet_grid.get_rows()
+	size_label.text = size_format % [frame_size.x, frame_size.y]
 
 func _pick_save_file() -> void:
 	save_pick_dialog.current_path = save_path.text
