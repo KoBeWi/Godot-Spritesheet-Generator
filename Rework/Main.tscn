@@ -515,14 +515,17 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Rotate"
 
-[node name="Label2" type="Label" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+[node name="ModParent" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/ModParent"]
 layout_mode = 2
 text = "Active modifications:"
 
-[node name="ModList" type="Tree" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
+[node name="ModList" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/ModParent"]
 unique_name_in_owner = true
 layout_mode = 2
-hide_root = true
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
 layout_mode = 2

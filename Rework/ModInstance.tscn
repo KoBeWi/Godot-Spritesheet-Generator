@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://42kwe3m2hgqd"]
+
+[ext_resource type="Script" uid="uid://cw0itqvmedjyl" path="res://Rework/ModInstance.gd" id="1_xty0c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xty0c"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.5019608, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+
+[node name="ModInstance" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_xty0c")
+script = ExtResource("1_xty0c")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ModName"

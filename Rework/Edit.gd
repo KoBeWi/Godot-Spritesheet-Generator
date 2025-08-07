@@ -6,7 +6,8 @@ extends PanelContainer
 @onready var offset_x: SpinBox = %OffsetX
 @onready var offset_y: SpinBox = %OffsetY
 @onready var buttons: Array[Button] = [%EditFlipX, %EditFlipY, %EditTranspose]
-@onready var mod_list: Tree = %ModList
+@onready var mod_parent: VBoxContainer = %ModParent
+@onready var mod_list: Control = %ModList
 
 var selected_frames: Array[SpriteSheet.Frame]
 
@@ -29,26 +30,44 @@ func update_frames():
 	offset_y.editable = enabled
 	for button in buttons:
 		button.disabled = not enabled
+	
+	mod_parent.visible = selected_frames.size() == 1 and not selected_frames[0].modifiers.is_empty()
+	if not mod_parent.visible:
+		return
+	
+	for node in mod_list.get_children():
+		node.free()
+	
+	for moder in selected_frames[0].modifiers:
+		var instance := preload("uid://42kwe3m2hgqd").instantiate()
+		instance.set_modifier(moder)
+		mod_list.add_child(instance)
 
 func _flip_x() -> void:
 	var flipper := SpriteSheet.FlipX.new()
 	for frame in selected_frames:
-		frame.modifiers.append(flipper)
-		frame.update_image()
+		frame.add_modifier(flipper)
+	
+	if selected_frames.size() == 1:
+		update_frames()
 
 func _flip_y() -> void:
 	var flipper := SpriteSheet.FlipY.new()
 	for frame in selected_frames:
-		frame.modifiers.append(flipper)
-		frame.update_image()
+		frame.add_modifier(flipper)
+	
+	if selected_frames.size() == 1:
+		update_frames()
 
 func _transpose() -> void:
-	var rotater := SpriteSheet.Rotate.new()
 	for frame in selected_frames:
-		frame.modifiers.append(rotater)
-		frame.update_image()
+		var rotater := SpriteSheet.Rotate.new()
+		frame.add_modifier(rotater)
 	
-	sprite_sheet_grid.update_grid()
+	# TODO: fix frame size?
+	
+	if selected_frames.size() == 1:
+		update_frames()
 
 func offset_x_changed(value: float) -> void:
 	for frame in selected_frames:
