@@ -43,6 +43,10 @@ func add_directory(directory: String):
 	for file in DirAccess.get_files_at(directory):
 		create_frame_from_path(directory.path_join(file))
 	
+	if spritesheet.frame_size == Vector2i():
+		for frame in spritesheet.frames:
+			spritesheet.frame_size = spritesheet.frame_size.max(frame.image.get_size())
+	
 	assign_path(directory.path_join(default_filename))
 
 func _new_spritesheet() -> void:
@@ -137,8 +141,8 @@ func create_frame_from_path(path: String):
 	frame.initialize()
 	spritesheet.frames.append(frame)
 	
-	if spritesheet.frame_size == Vector2i():
-		spritesheet.frame_size = frame.image.get_size()
+	#if spritesheet.frame_size == Vector2i(): # źle
+		#spritesheet.frame_size = frame.image.get_size()
 	
 	queue_update_frames()
 	return frame

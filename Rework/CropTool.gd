@@ -19,29 +19,31 @@ class CropData:
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 
 func crop_images() -> void:
+	var max_size := Vector2i()
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
-		var crop_data := CropData.new()
-		crop_frame(frame, crop_data)
-		
-		var rect := crop_data.get_rect()
-		var new_image := Image.create(rect.size.x, rect.size.y, false, frame.source_image.get_format())
-		new_image.blit_rect(frame.source_image, rect, Vector2())
-		frame.texture = ImageTexture.create_from_image(new_image)
+		var crop := get_crop_data(frame.image, threshold.value, null)
+		var cropper := SpriteSheet.Crop.new()
+		cropper.rect = crop.get_rect()
+		frame.modifiers.append(cropper)
+		frame.update_image()
+		max_size = max_size.max(frame.image.get_size())
 	
+	owner.spritesheet.frame_size = max_size
 	sprite_sheet_grid.update_frame_list()
 
 func smart_crop_images():
 	var crop_data := CropData.new()
-	
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
-		crop_frame(frame, crop_data)
+		get_crop_data(frame.image, threshold.value, crop_data)
 	
 	var rect := crop_data.get_rect()
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
-		var new_image := Image.create(rect.size.x, rect.size.y, false, frame.source_image.get_format())
-		new_image.blit_rect(frame.source_image, rect, Vector2())
-		frame.texture = ImageTexture.create_from_image(new_image)
+		var cropper := SpriteSheet.Crop.new()
+		cropper.rect = rect
+		frame.modifiers.append(cropper)
+		frame.update_image()
 	
+	owner.spritesheet.frame_size = rect.size
 	sprite_sheet_grid.update_frame_list()
 
 func crop_frame(frame: SpriteSheet.Frame, crop_data: CropData):
@@ -51,3 +53,12 @@ func crop_frame(frame: SpriteSheet.Frame, crop_data: CropData):
 		for y in image.get_height():
 			if image.get_pixel(x, y).a >= cut:
 				crop_data.add_point(x, y)
+
+static func get_crop_data(image: Image, alpha_threshold: float, base_crop: CropData) -> CropData:
+	var crop_data := base_crop if base_crop else CropData.new()
+	for x in image.get_width():
+		for y in image.get_height():
+			if image.get_pixel(x, y).a >= alpha_threshold:
+				crop_data.add_point(x, y)
+	
+	return crop_data

@@ -1,5 +1,17 @@
 class_name SpriteSheet
 
+var frame_size: Vector2i:
+	set(fs):
+		if frame_size != fs:
+			frame_size = fs
+			changed.emit()
+
+var margins := Vector2i.ONE
+var frames: Array[Frame]
+var unused_frames: Array[Frame]
+
+signal changed
+
 class Frame:
 	var file_path: String
 	var source_image: Image
@@ -55,14 +67,13 @@ class Rotate extends FrameModifier:
 	func _apply(image: Image):
 		image.rotate_90(CLOCKWISE)
 
-var frame_size: Vector2i:
-	set(fs):
-		if frame_size != fs:
-			frame_size = fs
-			changed.emit()
-
-var margins := Vector2i.ONE
-var frames: Array[Frame]
-var unused_frames: Array[Frame]
-
-signal changed
+class Crop extends FrameModifier:
+	var rect: Rect2i
+	
+	func _init() -> void:
+		name = "Crop"
+	
+	func _apply(image: Image):
+		var new_image := Image.create(rect.size.x, rect.size.y, false, image.get_format())
+		new_image.blit_rect(image, rect, Vector2())
+		image.set_data(new_image.get_width(), new_image.get_height(), false, new_image.get_format(), new_image.get_data())
