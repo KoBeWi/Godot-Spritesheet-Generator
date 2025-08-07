@@ -8,9 +8,13 @@ var frame_size: Vector2i:
 
 var margins := Vector2i.ONE
 var frames: Array[Frame]
-var unused_frames: Array[Frame]
+var all_frames: Array[Frame]
 
 signal changed
+
+func add_frame(frame: Frame):
+	frames.append(frame)
+	all_frames.append(frame)
 
 class Frame:
 	var file_path: String

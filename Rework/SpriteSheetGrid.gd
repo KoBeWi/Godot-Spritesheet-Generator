@@ -99,7 +99,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			for container: FrameContainer in get_children():
 				if container.is_selected():
 					spritesheet.frames.erase(container.frame)
-					spritesheet.unused_frames.append(container.frame)
 					was_deleted = true
 			
 			if was_deleted:

@@ -54,13 +54,13 @@ func _new_spritesheet() -> void:
 		confirm_new.popup_centered()
 	else:
 		spritesheet = SpriteSheet.new()
+		spritesheet.changed.connect(update_size)
 		
 		tabs.set_tab_disabled(Tab.FRAME_LIST, false)
 		tabs.current_tab = Tab.FRAME_LIST
 		preview.preview_frame.spritesheet = spritesheet
 	
 	update_size()
-	spritesheet.changed.connect(update_size)
 
 func _discard_spritesheet() -> void:
 	spritesheet = null
@@ -106,7 +106,7 @@ func queue_update_frames():
 		return
 	update_pending = true
 	
-	var no_frames := spritesheet.frames.size() + spritesheet.unused_frames.size() == 0
+	var no_frames := spritesheet.all_frames.is_empty()
 	tabs.set_tab_disabled(Tab.CUSTOMIZATION, no_frames)
 	preview_button.disabled = no_frames
 	if no_frames:
@@ -124,7 +124,7 @@ func create_frame_from_image(image: Image):
 	var frame := SpriteSheet.Frame.new()
 	frame.source_image = image
 	frame.initialize()
-	spritesheet.frames.append(frame)
+	spritesheet.add_frame(frame)
 	
 	if spritesheet.frame_size == Vector2i():
 		spritesheet.frame_size = frame.image.get_size()
@@ -139,7 +139,7 @@ func create_frame_from_path(path: String):
 	var frame := SpriteSheet.Frame.new()
 	frame.file_path = path
 	frame.initialize()
-	spritesheet.frames.append(frame)
+	spritesheet.add_frame(frame)
 	
 	#if spritesheet.frame_size == Vector2i(): # źle
 		#spritesheet.frame_size = frame.image.get_size()
