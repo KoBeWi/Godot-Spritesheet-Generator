@@ -40,7 +40,8 @@ func update_frames():
 	
 	for moder in selected_frames[0].modifiers:
 		var instance := preload("uid://42kwe3m2hgqd").instantiate()
-		instance.set_modifier(moder)
+		instance.frame = selected_frames[0]
+		instance.modifier = moder
 		mod_list.add_child(instance)
 
 func _flip_x() -> void:
@@ -65,6 +66,14 @@ func _transpose() -> void:
 		frame.add_modifier(rotater)
 	
 	# TODO: fix frame size?
+	
+	if selected_frames.size() == 1:
+		update_frames()
+
+func _modulate() -> void:
+	for frame in selected_frames:
+		var modulater := SpriteSheet.Modulate.new()
+		frame.add_modifier(modulater)
 	
 	if selected_frames.size() == 1:
 		update_frames()

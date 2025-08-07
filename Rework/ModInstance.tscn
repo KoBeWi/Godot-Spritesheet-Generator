@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://42kwe3m2hgqd"]
+[gd_scene load_steps=4 format=3 uid="uid://42kwe3m2hgqd"]
 
 [ext_resource type="Script" uid="uid://cw0itqvmedjyl" path="res://Rework/ModInstance.gd" id="1_xty0c"]
+[ext_resource type="Texture2D" uid="uid://bp2odtdd6puad" path="res://Rework/Close.svg" id="2_i7rcl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xty0c"]
 content_margin_left = 8.0
@@ -18,10 +19,17 @@ corner_detail = 5
 theme_override_styles/panel = SubResource("StyleBoxFlat_xty0c")
 script = ExtResource("1_xty0c")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="Container" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="Container"]
+layout_mode = 2
+icon = ExtResource("2_i7rcl")
+
+[node name="NameLabel" type="Label" parent="Container"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "ModName"
+
+[connection signal="pressed" from="Container/Button" to="." method="delete"]

@@ -54,6 +54,9 @@ class FrameModifier:
 	
 	func _apply(image: Image):
 		pass
+	
+	func _get_options() -> Array:
+		return []
 
 class FlipX extends FrameModifier:
 	func _init() -> void:
@@ -70,11 +73,49 @@ class FlipY extends FrameModifier:
 		image.flip_y()
 
 class Rotate extends FrameModifier:
+	var rotation: int
+	
 	func _init() -> void:
 		name = "Rotate"
 	
 	func _apply(image: Image):
-		image.rotate_90(CLOCKWISE)
+		match rotation:
+			0:
+				image.rotate_90(CLOCKWISE)
+			1:
+				image.rotate_180()
+			2:
+				image.rotate_90(COUNTERCLOCKWISE)
+	
+	func _get_options() -> Array:
+		var combo := OptionButton.new()
+		combo.add_item("90")
+		combo.add_item("180")
+		combo.add_item("270")
+		return ["Rotation", combo, &"selected", &"rotation"]
+
+class Modulate extends FrameModifier:
+	var color := Color.WHITE
+	
+	func _init() -> void:
+		name = "Modulate"
+	
+	func _apply(image: Image):
+		image.convert(Image.FORMAT_RGBA8)
+		var data := image.get_data()
+		
+		for i in data.size() / 4:
+			data[i * 4] *= color.r
+			data[i * 4 + 1] *= color.g
+			data[i * 4 + 2] *= color.b
+		
+		image.set_data(image.get_width(), image.get_height(), false, image.get_format(), data)
+	
+	func _get_options() -> Array:
+		var colorer := ColorPickerButton.new()
+		colorer.edit_alpha = false
+		colorer.custom_minimum_size.x = 24
+		return ["Color", colorer, &"color", &"color"]
 
 class Crop extends FrameModifier:
 	var rect: Rect2i
