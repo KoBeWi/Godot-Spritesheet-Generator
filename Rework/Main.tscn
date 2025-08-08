@@ -754,6 +754,8 @@ dialog_autowrap = true
 [connection signal="text_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/SavePath" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button" to="." method="_pick_save_file"]
 [connection signal="file_selected" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button/SavePickDialog" to="." method="_on_file_picked"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer/FrameWidth" to="." method="set_frame_width"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer/FrameHeight" to="." method="set_frame_height"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button2" to="." method="_add_files"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]

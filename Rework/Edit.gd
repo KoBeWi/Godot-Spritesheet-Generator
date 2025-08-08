@@ -31,6 +31,12 @@ func update_frames():
 	for button in buttons:
 		button.disabled = not enabled
 	
+	if enabled:
+		var ref := selected_frames[0]
+		var frame_size: Vector2i = owner.spritesheet.frame_size
+		offset_x.max_value = frame_size.x - ref.image.get_width()
+		offset_y.max_value = frame_size.y - ref.image.get_height()
+	
 	mod_parent.visible = selected_frames.size() == 1 and not selected_frames[0].modifiers.is_empty()
 	if not mod_parent.visible:
 		return

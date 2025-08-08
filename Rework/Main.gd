@@ -205,3 +205,15 @@ func _on_files_dropped(files: PackedStringArray):
 		else:
 			create_frame_from_path(file)
 			assign_path(file.get_base_dir().path_join(default_filename))
+
+func set_frame_width(value: float) -> void:
+	if spritesheet.frame_size.x == value:
+		return
+	spritesheet.frame_size.x = value
+	queue_update_frames()
+
+func set_frame_height(value: float) -> void:
+	if spritesheet.frame_size.y == value:
+		return
+	spritesheet.frame_size.y = value
+	queue_update_frames()
