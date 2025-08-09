@@ -10,8 +10,12 @@ var frame_time: float = 1.0 / 12.0
 var frame_progress: float
 
 func _ready() -> void:
+	Settings.subscribe(update_size)
+	update_size.call_deferred()
 	preview_frame.disable_input = true
-	preview_frame.maximum_size = Vector2(256, 256)
+
+func update_size():
+	preview_frame.maximum_size = Settings.settings.preview_size
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED:

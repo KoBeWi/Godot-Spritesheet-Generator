@@ -10,6 +10,9 @@ const FrameContainer = preload("res://Rework/FrameContainer.gd")
 
 var had_selection: bool
 
+func _ready() -> void:
+	Settings.subscribe(update_grid)
+
 func update_frame_list():
 	var missing_frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames.duplicate()
 	column_count.max_value = missing_frames.size()
@@ -61,8 +64,8 @@ func update_grid():
 	for container: FrameContainer in get_children():
 		var x: int = container.get_index() % columns
 		var y: int = container.get_index() / columns
-		var alt := (x % 2 == 0) != (y % 2 == 0)
-		container.background.color = Color.DARK_CYAN.darkened(0.1) if alt else Color.DARK_CYAN
+		var alt: bool = Settings.settings.show_grid and (x % 2 == 0) != (y % 2 == 0)
+		container.background.color = Settings.settings.grid_color2 if alt else Settings.settings.grid_color1
 	
 	var container := get_parent_control()
 	var center := container.get_rect().get_center()
@@ -103,3 +106,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			
 			if was_deleted:
 				update_frame_list()
+
+func update_settings() -> void:
+	update_grid()

@@ -20,8 +20,6 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var save_button: Button = %SaveButton
 @onready var save_pick_dialog: FileDialog = %SavePickDialog
 
-var default_filename = "Spritesheet-inator.png"
-
 var filter_cache: PackedStringArray
 var update_pending: bool
 
@@ -47,7 +45,7 @@ func add_directory(directory: String):
 		for frame in spritesheet.frames:
 			spritesheet.frame_size = spritesheet.frame_size.max(frame.image.get_size())
 	
-	assign_path(directory.path_join(default_filename))
+	assign_path(directory.path_join(Settings.settings.default_file_name + ".png"))
 
 func _new_spritesheet() -> void:
 	if spritesheet:
@@ -204,7 +202,7 @@ func _on_files_dropped(files: PackedStringArray):
 			add_directory(file)
 		else:
 			create_frame_from_path(file)
-			assign_path(file.get_base_dir().path_join(default_filename))
+			assign_path(file.get_base_dir().path_join(Settings.settings.default_file_name + ".png"))
 
 func set_frame_width(value: float) -> void:
 	if spritesheet.frame_size.x == value:

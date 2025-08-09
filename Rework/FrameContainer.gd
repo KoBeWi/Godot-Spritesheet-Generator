@@ -21,10 +21,18 @@ var frame: SpriteSheet.Frame:
 		frame.changed.connect(update)
 
 var disable_input: bool
-var maximum_size := Vector2.INF
+var maximum_size := Vector2.INF:
+	set(ms):
+		if maximum_size == ms:
+			return
+		maximum_size = ms
+		update()
 var draw_scale := 1.0
 
 signal selection_changed
+
+func _ready() -> void:
+	Settings.subscribe(texture.queue_redraw)
 
 func update():
 	update_margins()
@@ -36,7 +44,7 @@ func update():
 		texture.custom_minimum_size = Vector2(maximum_size.x, spritesheet.frame_size.y * draw_scale)
 	else:
 		draw_scale = maximum_size.y / spritesheet.frame_size.y
-		texture.custom_minimum_size = Vector2(maximum_size.x * draw_scale, spritesheet.frame_size.y)
+		texture.custom_minimum_size = Vector2(spritesheet.frame_size.x * draw_scale, maximum_size.y)
 	
 	texture.queue_redraw()
 
@@ -74,4 +82,7 @@ func _on_texture_draw() -> void:
 	if not frame.texture:
 		return
 	
-	texture.draw_texture_rect(frame.texture, Rect2(frame.offset, frame.texture.get_size() * draw_scale), false)
+	var rect := Rect2(frame.offset, frame.texture.get_size() * draw_scale)
+	if not disable_input and Settings.settings.show_outline:
+		texture.draw_rect(rect, Settings.settings.outline_color, false)
+	texture.draw_texture_rect(frame.texture, rect, false)
