@@ -36,6 +36,18 @@ func _gui_input(event: InputEvent) -> void:
 	var mm := event as InputEventMouseMotion
 	if mm:
 		if panning:
-			move_target.position += mm.relative
+			if mm.position.x >= size.x:
+				warp_mouse(mm.position - Vector2(size.x, 0))
+			elif mm.position.x < 0:
+				warp_mouse(mm.position + Vector2(size.x, 0))
+			elif absf(mm.relative.x) < size.x * 0.5:
+				move_target.position.x += mm.relative.x
+			
+			if mm.position.y >= size.y:
+				warp_mouse(mm.position - Vector2(0, size.y))
+			elif mm.position.y < 0:
+				warp_mouse(mm.position + Vector2(0, size.y))
+			elif absf(mm.relative.y) < size.y * 0.5:
+				move_target.position.y += mm.relative.y
 		
 		return
