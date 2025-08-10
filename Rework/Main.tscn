@@ -32,11 +32,23 @@ script/source = "extends VBoxContainer
 
 @export var button_group: ButtonGroup
 
+@onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
+
 func _ready() -> void:
 	for button in button_group.get_buttons():
 		var group: Control = get_node(str(button.name))
 		group.hide()
 		button.toggled.connect(group.set_visible)
+
+func autosize() -> void:
+	var sh: SpriteSheet = owner.spritesheet
+	var sz: Vector2
+	
+	for frame in sh.frames:
+		sz = sz.max(frame.offset + frame.image.get_size())
+	
+	sh.frame_size = sz
+	owner.queue_update_frames()
 "
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_nait6"]
@@ -115,6 +127,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -177,7 +190,6 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -250,6 +262,10 @@ value = 0.9
 [node name="Margins" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
 layout_mode = 2
 
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
+layout_mode = 2
+text = "Auto Size"
+
 [node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
 text = "Width"
@@ -271,6 +287,9 @@ layout_mode = 2
 min_value = 1.0
 max_value = 2048.0
 value = 1.0
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
+layout_mode = 2
 
 [node name="Label3" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
@@ -882,6 +901,7 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="_select_all"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize" method="autosize"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameWidth" to="." method="set_frame_width"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameHeight" to="." method="set_frame_height"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
