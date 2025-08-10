@@ -35,7 +35,9 @@ func update_frames():
 		var ref := selected_frames[0]
 		var frame_size: Vector2i = owner.spritesheet.frame_size
 		offset_x.max_value = frame_size.x - ref.image.get_width()
+		offset_x.set_value_no_signal(ref.offset.x)
 		offset_y.max_value = frame_size.y - ref.image.get_height()
+		offset_y.set_value_no_signal(ref.offset.y)
 	
 	mod_parent.visible = selected_frames.size() == 1 and not selected_frames[0].modifiers.is_empty()
 	if not mod_parent.visible:
@@ -93,3 +95,16 @@ func offset_y_changed(value: float) -> void:
 	for frame in selected_frames:
 		frame.offset.y = value
 		frame.changed.emit()
+
+func center_image() -> void:
+	var sz: Vector2i = owner.spritesheet.frame_size
+	for frame in selected_frames:
+		var ims := frame.image.get_size()
+		if ims.x < sz.x:
+			offset_x.value = (sz.x - ims.x) / 2
+		else:
+			offset_x.value = 0
+		if ims.y < sz.y:
+			offset_y.value = (sz.y - ims.y) / 2
+		else:
+			offset_y.value = 0

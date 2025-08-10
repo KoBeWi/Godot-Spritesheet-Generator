@@ -42,7 +42,7 @@ func _ready() -> void:
 
 func autosize() -> void:
 	var sh: SpriteSheet = owner.spritesheet
-	var sz: Vector2
+	var sz: Vector2i
 	
 	for frame in sh.frames:
 		sz = sz.max(frame.offset + frame.image.get_size())
@@ -250,7 +250,7 @@ editor_description = "Warning jak różny rozmiar i opcja auto wyboru"
 
 [node name="Label2" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 layout_mode = 2
-text = "Alpha Threshold"
+text = "Alpha Threshold:"
 
 [node name="Threshold" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop"]
 unique_name_in_owner = true
@@ -262,13 +262,9 @@ value = 0.9
 [node name="Margins" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
-layout_mode = 2
-text = "Auto Size"
-
 [node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
-text = "Width"
+text = "Width:"
 
 [node name="FrameWidth" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 unique_name_in_owner = true
@@ -279,7 +275,7 @@ value = 1.0
 
 [node name="Label5" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
-text = "Height"
+text = "Height:"
 
 [node name="FrameHeight" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 unique_name_in_owner = true
@@ -288,12 +284,16 @@ min_value = 1.0
 max_value = 2048.0
 value = 1.0
 
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
+layout_mode = 2
+text = "Auto Size"
+
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
 
 [node name="Label3" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
-text = "Horizontal Margin"
+text = "Horizontal Margin:"
 
 [node name="HorizontalMargin" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 unique_name_in_owner = true
@@ -303,7 +303,7 @@ value = 1.0
 
 [node name="Label4" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 layout_mode = 2
-text = "Vertical Margin"
+text = "Vertical Margin:"
 
 [node name="VerticalMargin" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins"]
 unique_name_in_owner = true
@@ -317,7 +317,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns"]
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Columns"
+text = "Columns:"
 
 [node name="ColumnCount" type="SpinBox" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns"]
 unique_name_in_owner = true
@@ -630,11 +630,17 @@ text = "Offset:"
 unique_name_in_owner = true
 layout_mode = 2
 suffix = "px"
+select_all_on_focus = true
 
 [node name="OffsetY" type="SpinBox" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 suffix = "px"
+select_all_on_focus = true
+
+[node name="Button" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Center Image"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
 layout_mode = 2
@@ -901,9 +907,9 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="_select_all"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize" method="autosize"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameWidth" to="." method="set_frame_width"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameHeight" to="." method="set_frame_height"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize" method="autosize"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
@@ -923,6 +929,7 @@ dialog_autowrap = true
 [connection signal="timeout" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/SaveTimer" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="_on_save_timer_timeout"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetX" to="VBoxContainer/VSplitContainer/Edit" method="offset_x_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetY" to="VBoxContainer/VSplitContainer/Edit" method="offset_y_changed"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/Button" to="VBoxContainer/VSplitContainer/Edit" method="center_image"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipX" to="VBoxContainer/VSplitContainer/Edit" method="_flip_x"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipY" to="VBoxContainer/VSplitContainer/Edit" method="_flip_y"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]
