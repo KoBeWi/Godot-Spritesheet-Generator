@@ -127,7 +127,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -190,6 +189,7 @@ layout_mode = 2
 text = "Paste From Clipboard"
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -751,7 +751,6 @@ text = "MMB: Move around
 Wheel: Zoom"
 
 [node name="Repack" type="PanelContainer" parent="."]
-visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pq08m")
 script = ExtResource("3_jmhy2")
@@ -763,35 +762,106 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Label" type="Label" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="Repack/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Columns"
+columns = 8
 
-[node name="RepackColumns" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Columns:"
+
+[node name="RepackColumns" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 value = 1.0
+select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Rows"
+text = "Rows:"
 
-[node name="RepackRows" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="RepackRows" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 value = 1.0
+select_all_on_focus = true
 
-[node name="Control" type="VSeparator" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="Label3" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Frame Width:"
+
+[node name="RepackWidth" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 2048.0
+select_all_on_focus = true
+
+[node name="Label6" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Frame Height:"
+
+[node name="RepackHeight" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 2048.0
+select_all_on_focus = true
+
+[node name="Label5" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Offset X:"
+
+[node name="RepackOffsetX" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+select_all_on_focus = true
+
+[node name="Label4" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Offset Y:"
+
+[node name="RepackOffsetY" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+select_all_on_focus = true
+
+[node name="Label7" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Spacing X:"
+
+[node name="RepackSpacingX" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+select_all_on_focus = true
+
+[node name="Label8" type="Label" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Spacing Y:"
+
+[node name="RepackSpacingY" type="SpinBox" parent="Repack/VBoxContainer/HBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+select_all_on_focus = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Repack/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="Repack/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+text = "Auto Size"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Repack/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
 text = "Confirm"
 
-[node name="Button2" type="Button" parent="Repack/VBoxContainer/HBoxContainer"]
+[node name="Button2" type="Button" parent="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 text = "Cancel"
 
 [node name="Control" type="Control" parent="Repack/VBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
@@ -814,6 +884,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8iort")
 
 [node name="RepackPreview" type="TextureRect" parent="Repack/VBoxContainer/Control/MarginContainer"]
 unique_name_in_owner = true
+texture_filter = 1
 layout_mode = 2
 
 [node name="Navigation" type="HBoxContainer" parent="Repack/VBoxContainer"]
@@ -937,10 +1008,17 @@ dialog_autowrap = true
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/PreviewButton" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/Button" to="Repack" method="_confirm"]
-[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackWidth" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackHeight" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackOffsetX" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackOffsetY" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackSpacingX" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackSpacingY" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/Button" to="Repack" method="auto_size"]
+[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="Repack" method="_confirm"]
+[connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
 [connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="toggled" from="Toolbar/Button" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="set_visible"]
