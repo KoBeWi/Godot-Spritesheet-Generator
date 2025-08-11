@@ -31,7 +31,7 @@ func _ready() -> void:
 	get_window().files_dropped.connect(_on_files_dropped)
 	
 	filter_cache = FORMATS.map(func(format: String) -> String: return "*.%s" % format)
-	var filter_string := ", ".join(filter_cache) + ";Image Files"
+	var filter_string := ", ".join(filter_cache) + ";Image File"
 	filter_cache = [filter_string]
 	
 	_new_spritesheet()
@@ -70,28 +70,31 @@ func _add_files() -> void:
 		if not status:
 			return
 		
+		save_last_folder(selected_paths[0].get_base_dir())
 		for path in selected_paths:
 			create_frame_from_path(path)
 	
-	DisplayServer.file_dialog_show("Select Images", "", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES, filter_cache, callback)
+	DisplayServer.file_dialog_show("Select Images", Settings.settings.last_folder, "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES, filter_cache, callback)
 
 func _add_directory() -> void:
 	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
 		if not status:
 			return
 		
+		save_last_folder(selected_paths[0])
 		add_directory(selected_paths[0])
 	
-	DisplayServer.file_dialog_show("Select Directory", "", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], callback)
+	DisplayServer.file_dialog_show("Select Directory", Settings.settings.last_folder, "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], callback)
 
 func _repack_spritesheet() -> void:
 	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
 		if not status:
 			return
 		
+		save_last_folder(selected_paths[0].get_base_dir())
 		repack.repack_file(selected_paths[0])
 	
-	DisplayServer.file_dialog_show("Select Image", "", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, filter_cache, callback)
+	DisplayServer.file_dialog_show("Select Image", Settings.settings.last_folder, "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, filter_cache, callback)
 
 func _paste_image_from_clipboard() -> void:
 	if not DisplayServer.clipboard_has_image():
@@ -215,3 +218,7 @@ func set_frame_height(value: float) -> void:
 		return
 	spritesheet.frame_size.y = value
 	queue_update_frames()
+
+func save_last_folder(folder: String):
+	Settings.settings.last_folder = folder
+	Settings.node.save_timer.start()

@@ -60,6 +60,9 @@ func apply_defaults():
 	settings.grid_color2 = Color.DARK_CYAN.darkened(0.1)
 	settings.show_outline = true
 	settings.outline_color = Color(Color.CYAN, 0.2)
+	
+	if not &"last_folder" in settings:
+		settings.last_folder = ""
 
 func reset_settings() -> void:
 	apply_defaults()
