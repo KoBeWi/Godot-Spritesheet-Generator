@@ -9,6 +9,8 @@ class_name Settings extends Control
 @onready var show_outline: CheckBox = %ShowOutline
 @onready var outline_color: ColorPickerButton = %OutlineColor
 @onready var save_timer: Timer = %SaveTimer
+@onready var cut_mode_grid: ColorPickerButton = %CutModeGrid
+@onready var cut_mode_fade: ColorPickerButton = %CutModeFade
 
 static var node: Settings
 static var settings: Dictionary[StringName, Variant]
@@ -35,6 +37,8 @@ func _ready() -> void:
 	grid_color_2.color = settings.grid_color2
 	show_outline.set_pressed_no_signal(settings.show_outline)
 	outline_color.color = settings.outline_color
+	cut_mode_grid.color = settings.cut_mode_grid
+	cut_mode_fade.color = settings.cut_mode_fade
 
 func queue_update_settings(...args):
 	settings.default_file_name = default_name.text
@@ -45,6 +49,8 @@ func queue_update_settings(...args):
 	settings.grid_color2 = grid_color_2.color
 	settings.show_outline = show_outline.button_pressed
 	settings.outline_color = outline_color.color
+	settings.cut_mode_grid = cut_mode_grid.color
+	settings.cut_mode_fade = cut_mode_fade.color
 	
 	settings_changed.emit()
 	save_timer.start()
@@ -61,6 +67,8 @@ func apply_defaults():
 	settings.grid_color2 = Color.DARK_CYAN.darkened(0.1)
 	settings.show_outline = true
 	settings.outline_color = Color(Color.CYAN, 0.2)
+	settings.cut_mode_grid = Color.WHITE
+	settings.cut_mode_fade = Color(0, 0, 0, 0.7)
 
 func reset_settings() -> void:
 	apply_defaults()

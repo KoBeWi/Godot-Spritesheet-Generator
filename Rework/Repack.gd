@@ -16,6 +16,9 @@ var base_path: String
 func _init() -> void:
 	hide()
 
+func _ready() -> void:
+	Settings.subscribe(repack_preview.queue_redraw)
+
 func repack_file(path: String):
 	base_path = path
 	image = Image.load_from_file(path)
@@ -60,22 +63,32 @@ func _draw_grid() -> void:
 	var spacing := Vector2i(repack_spacing_x.value, repack_spacing_y.value)
 	var grid_step := frame_size + spacing
 	var full_size := grid_step * Vector2i(repack_columns.value, repack_rows.value) - spacing
-	
 	var offset := Vector2i(repack_offset_x.value, repack_offset_y.value)
+	
+	var grid_color: Color = Settings.settings.cut_mode_grid
+	var fade_color: Color = Settings.settings.cut_mode_fade
 	for x in range(1, int(repack_columns.value)):
-		# TODO: setting for color
-		repack_preview.draw_line(offset + Vector2i(x * grid_step.x, 0), offset + Vector2i(x * grid_step.x, full_size.y), Color.WHITE)
 		if repack_spacing_x.value > 0:
-			repack_preview.draw_line(offset + Vector2i(x * grid_step.x - repack_spacing_x.value, 0), offset + Vector2i(x * grid_step.x - repack_spacing_x.value, full_size.y), Color.WHITE)
+			repack_preview.draw_rect(Rect2(offset + Vector2i(x * grid_step.x - spacing.x, 0), Vector2(spacing.x, full_size.y)), fade_color)
+			repack_preview.draw_line(offset + Vector2i(x * grid_step.x - spacing.x, 0), offset + Vector2i(x * grid_step.x - spacing.x, full_size.y), grid_color)
+		
+		repack_preview.draw_line(offset + Vector2i(x * grid_step.x, 0), offset + Vector2i(x * grid_step.x, full_size.y), grid_color)
 	
 	for y in range(1, int(repack_rows.value)):
-		repack_preview.draw_line(offset + Vector2i(0, y * grid_step.y), offset + Vector2i(full_size.x, y * grid_step.y), Color.WHITE)
 		if repack_spacing_y.value > 0:
-			repack_preview.draw_line(offset + Vector2i(0, y * grid_step.y - repack_spacing_y.value), offset + Vector2i(full_size.x, y * grid_step.y - repack_spacing_y.value), Color.WHITE)
+			repack_preview.draw_rect(Rect2(offset + Vector2i(0, y * grid_step.y - spacing.y), Vector2(full_size.x, spacing.y)), fade_color)
+			repack_preview.draw_line(offset + Vector2i(0, y * grid_step.y - spacing.y), offset + Vector2i(full_size.x, y * grid_step.y - spacing.y), grid_color)
+		
+		repack_preview.draw_line(offset + Vector2i(0, y * grid_step.y), offset + Vector2i(full_size.x, y * grid_step.y), grid_color)
 	
+	var need_outline: bool
 	if full_size.x < repack_preview.size.x:
-		repack_preview.draw_rect(Rect2(offset + Vector2i(full_size.x, 0), Vector2(repack_preview.size.x - full_size.x, full_size.y)), Color(0, 0, 0, 0.7))
-	if full_size.y < repack_preview.size.y:
-		repack_preview.draw_rect(Rect2(offset + Vector2i(0, full_size.y), Vector2(repack_preview.size.x, repack_preview.size.y - full_size.y)), Color(0, 0, 0, 0.7))
+		repack_preview.draw_rect(Rect2(offset + Vector2i(full_size.x, 0), Vector2(repack_preview.size.x - full_size.x, full_size.y)), fade_color)
+		need_outline = true
 	
-	repack_preview.draw_rect(Rect2(offset, full_size), Color.WHITE, false)
+	if full_size.y < repack_preview.size.y:
+		repack_preview.draw_rect(Rect2(offset + Vector2i(0, full_size.y), Vector2(repack_preview.size.x, repack_preview.size.y - full_size.y)), fade_color)
+		need_outline = true
+	
+	if need_outline:
+		repack_preview.draw_rect(Rect2(offset, full_size), grid_color, false)

@@ -365,37 +365,33 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Control" type="ColorRect" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer"]
+[node name="Control" type="ColorRect" parent="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer"]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="SpriteSheetView" type="Control" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
+[node name="SpriteSheetView" type="Control" parent="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("3_fslw6")
 move_target = NodePath("CenterContainer")
-zoom_slider = NodePath("../../../../../PanelContainer2/Navigation/HBoxContainer/HSlider")
-recenter_button = NodePath("../../../../../PanelContainer2/Navigation/Button")
+zoom_slider = NodePath("../../../../PanelContainer2/Navigation/HBoxContainer/HSlider")
+recenter_button = NodePath("../../../../PanelContainer2/Navigation/Button")
 
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView"]
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -409,60 +405,60 @@ offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_t0fln")
 
-[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer"]
+[node name="SpriteSheetGrid" type="GridContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 script = ExtResource("2_npgqu")
 
-[node name="Preview" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer"]
+[node name="Preview" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 script = ExtResource("7_b5t4d")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_t0fln")
 
-[node name="PreviewFrame" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer" instance=ExtResource("7_j10sb")]
+[node name="PreviewFrame" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/PanelContainer" instance=ExtResource("7_j10sb")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="PlayButton" type="Button" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="PlayButton" type="Button" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 icon = ExtResource("9_ajsf6")
 
-[node name="Timeline" type="HSlider" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Timeline" type="HSlider" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 ticks_on_borders = true
 
-[node name="TimelineFrame" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="TimelineFrame" type="Label" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
@@ -471,134 +467,25 @@ text = "999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "FPS"
 
-[node name="SpinBox" type="SpinBox" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 max_value = 144.0
 value = 12.0
 
-[node name="Loop" type="CheckBox" parent="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Loop" type="CheckBox" parent="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 button_pressed = true
 text = "Loop"
-
-[node name="Settings" type="PanelContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("11_rjar1")
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_right = 4
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Default File Name"
-
-[node name="DefaultName" type="LineEdit" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Max Preview Size"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="PreviewWidth" type="SpinBox" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 16.0
-max_value = 320.0
-value = 256.0
-
-[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "×"
-
-[node name="PreviewHeight" type="SpinBox" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 16.0
-max_value = 320.0
-value = 256.0
-
-[node name="ShowGrid" type="CheckBox" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Show Grid"
-
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-columns = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-text = "Grid Color 1"
-
-[node name="GridColor1" type="ColorPickerButton" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/GridContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-text = "Grid Color 2"
-
-[node name="GridColor2" type="ColorPickerButton" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/GridContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-
-[node name="ShowOutline" type="CheckBox" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Show Outline"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Outline Color"
-
-[node name="OutlineColor" type="ColorPickerButton" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Reset to Defaults"
-
-[node name="SaveTimer" type="Timer" parent="VBoxContainer/VSplitContainer/HBoxContainer/Settings"]
-unique_name_in_owner = true
-one_shot = true
 
 [node name="Edit" type="PanelContainer" parent="VBoxContainer/VSplitContainer"]
 unique_name_in_owner = true
@@ -751,6 +638,7 @@ text = "MMB: Move around
 Wheel: Zoom"
 
 [node name="Repack" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pq08m")
 script = ExtResource("3_jmhy2")
@@ -942,24 +830,167 @@ layout_mode = 2
 text = "MMB: Move around
 Wheel: Zoom"
 
-[node name="Toolbar" type="HBoxContainer" parent="."]
+[node name="Toolbar" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Toolbar"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 alignment = 2
 
-[node name="Debug" type="Button" parent="Toolbar"]
+[node name="Debug" type="Button" parent="Toolbar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 text = "Debug"
 script = SubResource("GDScript_k8p4s")
 
-[node name="Button" type="Button" parent="Toolbar"]
+[node name="Button" type="Button" parent="Toolbar/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "Settings"
 icon = ExtResource("8_t0fln")
+
+[node name="Settings" type="PanelContainer" parent="Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+script = ExtResource("11_rjar1")
+
+[node name="MarginContainer" type="MarginContainer" parent="Toolbar/Settings"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Toolbar/Settings/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Default File Name"
+
+[node name="DefaultName" type="LineEdit" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Max Preview Size"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PreviewWidth" type="SpinBox" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 16.0
+max_value = 320.0
+value = 256.0
+
+[node name="Label" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "×"
+
+[node name="PreviewHeight" type="SpinBox" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 16.0
+max_value = 320.0
+value = 256.0
+
+[node name="ShowGrid" type="CheckBox" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Show Grid"
+
+[node name="GridContainer" type="GridContainer" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 2
+
+[node name="Label" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Grid Color 1"
+
+[node name="GridColor1" type="ColorPickerButton" parent="Toolbar/Settings/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Grid Color 2"
+
+[node name="GridColor2" type="ColorPickerButton" parent="Toolbar/Settings/MarginContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="ShowOutline" type="CheckBox" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Show Outline"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Outline Color"
+
+[node name="OutlineColor" type="ColorPickerButton" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cut Mode Grid"
+
+[node name="CutModeGrid" type="ColorPickerButton" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cut Mode Fade"
+
+[node name="CutModeFade" type="ColorPickerButton" parent="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Toolbar/Settings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Reset to Defaults"
+
+[node name="SaveTimer" type="Timer" parent="Toolbar/Settings"]
+unique_name_in_owner = true
+one_shot = true
 
 [node name="ConfirmNew" type="ConfirmationDialog" parent="."]
 size = Vector2i(300, 106)
@@ -975,29 +1006,19 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="_select_all"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="_select_all"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameWidth" to="." method="set_frame_width"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameHeight" to="." method="set_frame_height"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize" method="autosize"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
-[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="on_auto_toggled"]
-[connection signal="pressed" from="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview" method="_play_pause"]
-[connection signal="value_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview" method="_on_fps_changed"]
-[connection signal="text_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/DefaultName" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="value_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer2/PreviewWidth" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="value_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer2/PreviewHeight" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="pressed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/ShowGrid" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="color_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/GridContainer/GridColor1" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="color_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/GridContainer/GridColor2" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="pressed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/ShowOutline" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="color_changed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/HBoxContainer/OutlineColor" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="queue_update_settings"]
-[connection signal="pressed" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/MarginContainer/VBoxContainer/Button" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="reset_settings"]
-[connection signal="timeout" from="VBoxContainer/VSplitContainer/HBoxContainer/Settings/SaveTimer" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="_on_save_timer_timeout"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
+[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="on_auto_toggled"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_play_pause"]
+[connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_fps_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetX" to="VBoxContainer/VSplitContainer/Edit" method="offset_x_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetY" to="VBoxContainer/VSplitContainer/Edit" method="offset_y_changed"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/Button" to="VBoxContainer/VSplitContainer/Edit" method="center_image"]
@@ -1006,7 +1027,7 @@ dialog_autowrap = true
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditModulate" to="VBoxContainer/VSplitContainer/Edit" method="_modulate"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
-[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/PreviewButton" to="VBoxContainer/VSplitContainer/HBoxContainer/HSplitContainer/Preview" method="set_visible"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/PreviewButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
 [connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
@@ -1021,5 +1042,17 @@ dialog_autowrap = true
 [connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
 [connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
-[connection signal="toggled" from="Toolbar/Button" to="VBoxContainer/VSplitContainer/HBoxContainer/Settings" method="set_visible"]
+[connection signal="toggled" from="Toolbar/HBoxContainer/Button" to="Toolbar/Settings" method="set_visible"]
+[connection signal="text_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/DefaultName" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="value_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2/PreviewWidth" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="value_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2/PreviewHeight" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="pressed" from="Toolbar/Settings/MarginContainer/VBoxContainer/ShowGrid" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="color_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/GridContainer/GridColor1" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="color_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/GridContainer/GridColor2" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="pressed" from="Toolbar/Settings/MarginContainer/VBoxContainer/ShowOutline" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="color_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer/OutlineColor" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="color_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer3/CutModeGrid" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="color_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer4/CutModeFade" to="Toolbar/Settings" method="queue_update_settings"]
+[connection signal="pressed" from="Toolbar/Settings/MarginContainer/VBoxContainer/Button" to="Toolbar/Settings" method="reset_settings"]
+[connection signal="timeout" from="Toolbar/Settings/SaveTimer" to="Toolbar/Settings" method="_on_save_timer_timeout"]
 [connection signal="confirmed" from="ConfirmNew" to="." method="_discard_spritesheet"]
