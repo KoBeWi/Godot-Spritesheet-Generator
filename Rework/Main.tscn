@@ -171,6 +171,7 @@ text = "Total Size: %d × %d"
 horizontal_alignment = 1
 
 [node name="Import Frames" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("3_tsi6q")
 metadata/_tab_index = 1
@@ -219,7 +220,8 @@ size_flags_horizontal = 3
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames/ScrollContainer"]
+[node name="FrameContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames/ScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -561,7 +563,8 @@ layout_mode = 2
 suffix = "px"
 select_all_on_focus = true
 
-[node name="Button" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
+[node name="CenterImage" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Center Image"
 
@@ -1066,7 +1069,7 @@ title = "Error!"
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_fps_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetX" to="VBoxContainer/VSplitContainer/Edit" method="offset_x_changed"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/OffsetY" to="VBoxContainer/VSplitContainer/Edit" method="offset_y_changed"]
-[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/Button" to="VBoxContainer/VSplitContainer/Edit" method="center_image"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer2/CenterImage" to="VBoxContainer/VSplitContainer/Edit" method="center_image"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipX" to="VBoxContainer/VSplitContainer/Edit" method="_flip_x"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipY" to="VBoxContainer/VSplitContainer/Edit" method="_flip_y"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]

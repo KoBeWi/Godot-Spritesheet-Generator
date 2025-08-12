@@ -5,7 +5,7 @@ extends PanelContainer
 
 @onready var offset_x: SpinBox = %OffsetX
 @onready var offset_y: SpinBox = %OffsetY
-@onready var buttons: Array[Button] = [%EditFlipX, %EditFlipY, %EditTranspose]
+@onready var buttons: Array[Button] = [%CenterImage, %EditFlipX, %EditFlipY, %EditTranspose, %EditModulate]
 @onready var mod_parent: VBoxContainer = %ModParent
 @onready var mod_list: Control = %ModList
 

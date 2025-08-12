@@ -4,6 +4,7 @@ enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION}
 
 @onready var tabs: TabContainer = %Tabs
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
+@onready var import_frames: VBoxContainer = %"Import Frames"
 @onready var preview: PanelContainer = %Preview
 @onready var preview_button: Button = %PreviewButton
 
@@ -46,6 +47,7 @@ func _new_spritesheet() -> void:
 
 func _discard_spritesheet() -> void:
 	spritesheet = null
+	save_path.text = ""
 	_new_spritesheet()
 	queue_update_frames()
 
@@ -59,6 +61,7 @@ func queue_update_frames():
 	
 	var updater := func():
 		sprite_sheet_grid.update_frame_list()
+		import_frames.update_all_frames()
 		update_size()
 		update_pending = false
 	

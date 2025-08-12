@@ -9,13 +9,17 @@ const FrameContainer = preload("res://Rework/FrameContainer.gd")
 @onready var horizontal_margin: SpinBox = %HorizontalMargin
 @onready var vertical_margin: SpinBox = %VerticalMargin
 
+var spritesheet: SpriteSheet:
+	get:
+		return owner.spritesheet
+
 var had_selection: bool
 
 func _ready() -> void:
 	Settings.subscribe(update_grid)
 
 func update_frame_list():
-	var missing_frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames.duplicate()
+	var missing_frames: Array[SpriteSheet.Frame] = spritesheet.frames.duplicate()
 	column_count.max_value = missing_frames.size()
 	
 	for container: FrameContainer in get_children():
@@ -27,11 +31,11 @@ func update_frame_list():
 	
 	for frame in missing_frames:
 		var new_container := FrameContainer.SCENE.instantiate()
-		new_container.spritesheet = owner.spritesheet
+		new_container.spritesheet = spritesheet
 		add_child(new_container)
 		new_container.selection_changed.connect(edit.update_frames)
 	
-	var frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames
+	var frames: Array[SpriteSheet.Frame] = spritesheet.frames
 	for i in frames.size():
 		get_child(i).frame = frames[i]
 		get_child(i).update()
@@ -84,7 +88,7 @@ func on_auto_toggled(toggled_on: bool) -> void:
 	update_columns()
 
 func update_margins() -> void:
-	owner.spritesheet.margins = Vector2i(horizontal_margin.value, vertical_margin.value)
+	spritesheet.margins = Vector2i(horizontal_margin.value, vertical_margin.value)
 	for container: FrameContainer in get_children():
 		container.update_margins()
 
@@ -102,7 +106,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if k:
 		if k.pressed and k.keycode == KEY_DELETE:
 			var was_deleted: bool
-			var spritesheet: SpriteSheet = owner.spritesheet
 			for container: FrameContainer in get_children():
 				if container.is_selected():
 					spritesheet.frames.erase(container.frame)

@@ -3,6 +3,7 @@ extends Control
 const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
 
 @onready var repack: PanelContainer = %Repack
+@onready var frame_container: HBoxContainer = %FrameContainer
 
 var filter_cache: PackedStringArray
 var spritesheet: SpriteSheet:
@@ -15,6 +16,8 @@ func _ready() -> void:
 	filter_cache = FORMATS.map(func(format: String) -> String: return "*.%s" % format)
 	var filter_string := ", ".join(filter_cache) + ";Image File"
 	filter_cache = [filter_string]
+	
+	owner.ready.connect(update_all_frames)
 
 func _on_files_dropped(files: PackedStringArray):
 	for file in files:
@@ -105,3 +108,34 @@ func save_last_folder(folder: String):
 
 func ensure_size(s: Vector2i):
 	spritesheet.frame_size = spritesheet.frame_size.max(s)
+
+func update_all_frames():
+	for frame in frame_container.get_children():
+		frame.free()
+	
+	if spritesheet.all_frames.is_empty():
+		var label := Label.new()
+		label.text = "None"
+		frame_container.add_child(label)
+		return
+	
+	frame_container.add_child(VSeparator.new())
+	for frame in spritesheet.all_frames:
+		if frame.image.get_size() == Vector2i(1, 1):
+			continue
+		
+		var trect := TextureRect.new()
+		trect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		trect.mouse_filter = Control.MOUSE_FILTER_STOP
+		trect.texture = frame.texture
+		frame_container.add_child(trect)
+		
+		trect.gui_input.connect(add_deleted_frame.bind(frame))
+		
+		frame_container.add_child(VSeparator.new())
+
+func add_deleted_frame(event: InputEvent, frame: SpriteSheet.Frame):
+	var mb := event as InputEventMouseButton
+	if mb and mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+		spritesheet.frames.append(frame)
+		owner.queue_update_frames() # TODO: This will reload the frame_container, which is not ideal.
