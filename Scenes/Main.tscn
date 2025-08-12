@@ -1,21 +1,21 @@
-[gd_scene load_steps=26 format=3 uid="uid://cmt0o8ktplo4k"]
+[gd_scene load_steps=25 format=3 uid="uid://cmt0o8ktplo4k"]
 
-[ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Rework/Main.gd" id="1_2hksu"]
-[ext_resource type="Script" uid="uid://c7avrf3pus5r" path="res://Rework/CropTool.gd" id="2_k8p4s"]
-[ext_resource type="Texture2D" uid="uid://cfqm8u5a0egpn" path="res://Rework/FileBrowse.svg" id="2_mgfer"]
-[ext_resource type="Texture2D" uid="uid://xbbbih1csjl2" path="res://Rework/Collapse.svg" id="2_nait6"]
-[ext_resource type="Script" uid="uid://dr100b5wjmjp2" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
-[ext_resource type="Texture2D" uid="uid://xgelcjtfc6tb" path="res://Rework/Add.svg" id="3_7s4wt"]
-[ext_resource type="Script" uid="uid://cwhcm72el5371" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
-[ext_resource type="Script" uid="uid://rvv4l0rd7dgc" path="res://Rework/Repack.gd" id="3_jmhy2"]
-[ext_resource type="Script" uid="uid://wjng7f8bgk2v" path="res://Rework/ImportFrames.gd" id="3_tsi6q"]
-[ext_resource type="Script" uid="uid://bjo3ieb5ra2du" path="res://Rework/Transform.gd" id="5_n055s"]
-[ext_resource type="Script" uid="uid://dm151lay1qtov" path="res://Rework/Preview.gd" id="7_b5t4d"]
-[ext_resource type="PackedScene" uid="uid://c6ce0mrlnw0ui" path="res://Rework/FrameContainer.tscn" id="7_j10sb"]
-[ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Rework/Tools.svg" id="8_t0fln"]
-[ext_resource type="Texture2D" uid="uid://o4p3468prkxm" path="res://Rework/Play.svg" id="9_ajsf6"]
-[ext_resource type="Script" uid="uid://de521126vdx1m" path="res://Rework/Edit.gd" id="11_o0wax"]
-[ext_resource type="Script" uid="uid://dv6e7gi372e2b" path="res://Rework/Settings.gd" id="11_rjar1"]
+[ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Scripts/Main.gd" id="1_2hksu"]
+[ext_resource type="Script" uid="uid://c7avrf3pus5r" path="res://Scripts/CropTool.gd" id="2_k8p4s"]
+[ext_resource type="Texture2D" uid="uid://cfqm8u5a0egpn" path="res://Icons/FileBrowse.svg" id="2_mgfer"]
+[ext_resource type="Texture2D" uid="uid://xbbbih1csjl2" path="res://Icons/Collapse.svg" id="2_nait6"]
+[ext_resource type="Script" uid="uid://dr100b5wjmjp2" path="res://Scripts/SpriteSheetGrid.gd" id="2_npgqu"]
+[ext_resource type="Texture2D" uid="uid://xgelcjtfc6tb" path="res://Icons/Add.svg" id="3_7s4wt"]
+[ext_resource type="Script" uid="uid://cwhcm72el5371" path="res://Scripts/NavigationArea.gd" id="3_fslw6"]
+[ext_resource type="Script" uid="uid://rvv4l0rd7dgc" path="res://Scripts/Repack.gd" id="3_jmhy2"]
+[ext_resource type="Script" uid="uid://wjng7f8bgk2v" path="res://Scripts/ImportFrames.gd" id="3_tsi6q"]
+[ext_resource type="Script" uid="uid://bjo3ieb5ra2du" path="res://Scripts/Transform.gd" id="5_n055s"]
+[ext_resource type="Script" uid="uid://dm151lay1qtov" path="res://Scripts/Preview.gd" id="7_b5t4d"]
+[ext_resource type="PackedScene" uid="uid://c6ce0mrlnw0ui" path="res://Scenes/FrameContainer.tscn" id="7_j10sb"]
+[ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Icons/Tools.svg" id="8_t0fln"]
+[ext_resource type="Texture2D" uid="uid://o4p3468prkxm" path="res://Icons/Play.svg" id="9_ajsf6"]
+[ext_resource type="Script" uid="uid://de521126vdx1m" path="res://Scripts/Edit.gd" id="11_o0wax"]
+[ext_resource type="Script" uid="uid://dv6e7gi372e2b" path="res://Scripts/Settings.gd" id="11_rjar1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e06dd"]
 content_margin_top = 4.0
@@ -87,19 +87,6 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 
-[sub_resource type="GDScript" id="GDScript_k8p4s"]
-resource_name = "Debug"
-script/source = "extends Button
-
-func _pressed() -> void:
-	#owner.add_directory(\"res://Media/fireballoga/RunClubDown\")
-	#owner.add_directory(\"res://Media/fireballoga/red\")
-	$\"../../../VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames\".add_directory(\"res://Ignored/Numbers\")
-	#$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
-	#%RepackColumns.value = 3
-	#$\"../../Repack\"._confirm()
-"
-
 [node name="Main" type="MarginContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -129,7 +116,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -172,6 +158,7 @@ horizontal_alignment = 1
 
 [node name="Import Frames" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 script = ExtResource("3_tsi6q")
 metadata/_tab_index = 1
@@ -876,21 +863,9 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Toolbar"]
+[node name="Button" type="Button" parent="Toolbar"]
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
-alignment = 2
-
-[node name="Debug" type="Button" parent="Toolbar/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-text = "Debug"
-script = SubResource("GDScript_k8p4s")
-
-[node name="Button" type="Button" parent="Toolbar/HBoxContainer"]
-layout_mode = 2
 toggle_mode = true
 text = "Settings"
 icon = ExtResource("8_t0fln")
@@ -1090,7 +1065,7 @@ title = "Error!"
 [connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
 [connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
-[connection signal="toggled" from="Toolbar/HBoxContainer/Button" to="Toolbar/Settings" method="set_visible"]
+[connection signal="toggled" from="Toolbar/Button" to="Toolbar/Settings" method="set_visible"]
 [connection signal="text_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/DefaultName" to="Toolbar/Settings" method="queue_update_settings"]
 [connection signal="value_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2/PreviewWidth" to="Toolbar/Settings" method="queue_update_settings"]
 [connection signal="value_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/HBoxContainer2/PreviewHeight" to="Toolbar/Settings" method="queue_update_settings"]

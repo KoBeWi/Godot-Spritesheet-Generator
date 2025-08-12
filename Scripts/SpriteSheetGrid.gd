@@ -1,6 +1,6 @@
 extends GridContainer
 
-const FrameContainer = preload("res://Rework/FrameContainer.gd")
+const FrameContainer = preload("uid://coxdruqfwxbxw")
 
 @onready var edit: PanelContainer = %Edit
 @onready var preview: PanelContainer = %Preview

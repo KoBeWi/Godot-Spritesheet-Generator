@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xbbbih1csjl2"
-path="res://.godot/imported/Collapse.svg-78216b7c595595b501115fd510a10be5.ctex"
+uid="uid://do1032o0c7fx6"
+path="res://.godot/imported/Tools.svg-0a0d42758bae0827a795391a856cd993.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Rework/Collapse.svg"
-dest_files=["res://.godot/imported/Collapse.svg-78216b7c595595b501115fd510a10be5.ctex"]
+source_file="res://Icons/Tools.svg"
+dest_files=["res://.godot/imported/Tools.svg-0a0d42758bae0827a795391a856cd993.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c6ce0mrlnw0ui"]
 
-[ext_resource type="Script" uid="uid://coxdruqfwxbxw" path="res://Rework/FrameContainer.gd" id="1_ed2o7"]
+[ext_resource type="Script" uid="uid://coxdruqfwxbxw" path="res://Scripts/FrameContainer.gd" id="1_civnp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dq8w2"]
 draw_center = false
@@ -22,9 +22,10 @@ width = 8
 height = 8
 
 [node name="FrameContainer" type="MarginContainer"]
+anchors_preset = -1
 offset_right = 100.0
 offset_bottom = 100.0
-script = ExtResource("1_ed2o7")
+script = ExtResource("1_civnp")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 2

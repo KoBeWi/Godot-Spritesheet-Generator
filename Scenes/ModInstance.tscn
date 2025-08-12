@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://42kwe3m2hgqd"]
 
-[ext_resource type="Script" uid="uid://cw0itqvmedjyl" path="res://Rework/ModInstance.gd" id="1_xty0c"]
-[ext_resource type="Texture2D" uid="uid://bp2odtdd6puad" path="res://Rework/Close.svg" id="2_i7rcl"]
+[ext_resource type="Script" uid="uid://cw0itqvmedjyl" path="res://Scripts/ModInstance.gd" id="1_xty0c"]
+[ext_resource type="Texture2D" uid="uid://bp2odtdd6puad" path="res://Icons/Close.svg" id="2_i7rcl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xty0c"]
 content_margin_left = 8.0

@@ -66,6 +66,6 @@ func _on_fps_changed(value: float) -> void:
 	frame_time = 1.0 / value
 
 func update_play_button():
-	const PLAY = preload("res://Rework/Play.svg")
-	const PAUSE = preload("res://Rework/Pause.svg")
+	const PLAY = preload("uid://o4p3468prkxm")
+	const PAUSE = preload("uid://dnwtqj2a61hat")
 	play_button.icon = PAUSE if is_processing_internal() else PLAY
