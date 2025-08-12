@@ -34,6 +34,8 @@ func update_frame_list():
 		new_container.spritesheet = spritesheet
 		add_child(new_container)
 		new_container.selection_changed.connect(edit.update_frames)
+		
+		new_container.set_drag_forwarding(get_drag_data_fw.bind(new_container), can_drop_data_fw, drop_data_fw.bind(new_container))
 	
 	var frames: Array[SpriteSheet.Frame] = spritesheet.frames
 	for i in frames.size():
@@ -117,3 +119,42 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func update_settings() -> void:
 	update_grid()
+
+func get_drag_data_fw(at_position: Vector2, container: FrameContainer) -> Variant:
+	var prevw := VBoxContainer.new()
+	
+	var trect := TextureRect.new()
+	trect.custom_minimum_size = Vector2(64, 64)
+	trect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	trect.texture = container.frame.texture
+	prevw.add_child(trect)
+	
+	var label := Label.new()
+	label.text = "Hold Shift to swap."
+	prevw.add_child(label)
+	
+	set_drag_preview(prevw)
+	
+	container.selection.hide()
+	
+	var data: Dictionary
+	data["type"] = "spritesheet_frame"
+	data["frame"] = container.frame
+	data["index"] = container.get_index()
+	return data
+
+func can_drop_data_fw(at_position: Vector2, data: Variant) -> bool:
+	return data is Dictionary and data.get("type", "") == "spritesheet_frame"
+
+func drop_data_fw(at_position: Vector2, data: Variant, container: FrameContainer) -> void:
+	var other_frame: SpriteSheet.Frame = data["frame"]
+	if other_frame == container.frame:
+		return
+	
+	var index: int = data["index"]
+	spritesheet.frames.remove_at(index)
+	if Input.is_key_pressed(KEY_SHIFT):
+		spritesheet.frames.insert(index, container.frame)
+		spritesheet.frames.remove_at(container.get_index())
+	spritesheet.frames.insert(container.get_index(), other_frame)
+	update_frame_list()

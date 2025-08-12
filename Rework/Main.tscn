@@ -94,7 +94,7 @@ script/source = "extends Button
 func _pressed() -> void:
 	#owner.add_directory(\"res://Media/fireballoga/RunClubDown\")
 	#owner.add_directory(\"res://Media/fireballoga/red\")
-	$\"../../../VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames\".add_directory(\"res://Ignored/Bird\")
+	$\"../../../VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames\".add_directory(\"res://Ignored/Numbers\")
 	#$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
 	#%RepackColumns.value = 3
 	#$\"../../Repack\"._confirm()
