@@ -82,7 +82,7 @@ func _on_texture_draw() -> void:
 	if not frame or not frame.texture:
 		return
 	
-	var rect := Rect2(frame.offset, frame.texture.get_size() * draw_scale)
+	var rect := Rect2(frame.offset * draw_scale, frame.texture.get_size() * draw_scale)
 	if not disable_input and Settings.settings.show_outline:
 		texture.draw_rect(rect, Settings.settings.outline_color, false)
 	texture.draw_texture_rect(frame.texture, rect, false)
