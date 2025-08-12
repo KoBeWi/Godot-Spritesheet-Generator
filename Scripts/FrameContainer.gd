@@ -69,6 +69,8 @@ func _gui_input(event: InputEvent) -> void:
 					if node != self:
 						disabled = disabled or node.selection.visible
 						node.selection.visible = false
+				
+				selection_changed.emit()
 			
 			if not disabled or not selection.visible:
 				selection.visible = not selection.visible
