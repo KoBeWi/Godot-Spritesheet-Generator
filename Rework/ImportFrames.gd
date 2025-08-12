@@ -71,8 +71,7 @@ func create_frame_from_image(image: Image):
 	frame.initialize()
 	spritesheet.add_frame(frame)
 	
-	if spritesheet.frame_size == Vector2i():
-		spritesheet.frame_size = frame.image.get_size()
+	ensure_size(frame.image.get_size())
 	
 	owner.queue_update_frames()
 	return frame
@@ -86,8 +85,7 @@ func create_frame_from_path(path: String):
 	frame.initialize()
 	spritesheet.add_frame(frame)
 	
-	#if spritesheet.frame_size == Vector2i(): # źle
-		#spritesheet.frame_size = frame.image.get_size()
+	ensure_size(frame.image.get_size())
 	
 	owner.queue_update_frames()
 	return frame
@@ -96,12 +94,14 @@ func add_directory(directory: String):
 	for file in DirAccess.get_files_at(directory):
 		create_frame_from_path(directory.path_join(file))
 	
-	if spritesheet.frame_size == Vector2i():
-		for frame in spritesheet.frames:
-			spritesheet.frame_size = spritesheet.frame_size.max(frame.image.get_size())
+	for frame in spritesheet.frames:
+		ensure_size(frame.image.get_size())
 	
 	owner.assign_path(directory.path_join(Settings.settings.default_file_name + ".png"))
 
 func save_last_folder(folder: String):
 	Settings.settings.last_folder = folder
 	Settings.node.save_timer.start()
+
+func ensure_size(s: Vector2i):
+	spritesheet.frame_size = spritesheet.frame_size.max(s)

@@ -110,6 +110,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			
 			if was_deleted:
 				update_frame_list()
+				owner.update_save_button()
 
 func update_settings() -> void:
 	update_grid()
