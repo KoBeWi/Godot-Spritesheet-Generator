@@ -48,7 +48,7 @@ func _confirm() -> void:
 	for y in repack_rows.value:
 		for x in repack_columns.value:
 			var frame := image.get_region(Rect2i(offset + Vector2i(x, y) * grid_step, frame_size))
-			owner.create_frame_from_image(frame)
+			owner.import_frames.create_frame_from_image(frame)
 	
 	owner.assign_path(base_path.get_base_dir().path_join(Settings.settings.default_file_name + ".png"))
 	image = null

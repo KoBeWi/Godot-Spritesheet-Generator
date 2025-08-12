@@ -5,7 +5,7 @@ extends PanelContainer
 
 @onready var offset_x: SpinBox = %OffsetX
 @onready var offset_y: SpinBox = %OffsetY
-@onready var buttons: Array[Button] = [%CenterImage, %EditFlipX, %EditFlipY, %EditTranspose, %EditModulate]
+@onready var buttons: Array[Button] = [%CenterImage, %EditFlipX, %EditFlipY, %EditTranspose, %EditModulate, %EditRemoveColor]
 @onready var mod_parent: VBoxContainer = %ModParent
 @onready var mod_list: Control = %ModList
 
@@ -39,52 +39,79 @@ func update_frames():
 		offset_y.max_value = frame_size.y - ref.image.get_height()
 		offset_y.set_value_no_signal(ref.offset.y)
 	
-	mod_parent.visible = selected_frames.size() == 1 and not selected_frames[0].modifiers.is_empty()
-	if not mod_parent.visible:
+	update_modifiers()
+
+func update_modifiers():
+	if selected_frames.is_empty():
+		mod_parent.hide()
 		return
 	
 	for node in mod_list.get_children():
 		node.free()
 	
+	var common_mods: Array[SpriteSheet.FrameModifier]
 	for moder in selected_frames[0].modifiers:
+		if selected_frames.all(func(sf: SpriteSheet.Frame) -> bool: return moder in sf.modifiers):
+			common_mods.append(moder)
+	
+	if common_mods.is_empty():
+		mod_parent.hide()
+		return
+	else:
+		mod_parent.show()
+	
+	for moder in common_mods:
 		var instance := preload("uid://42kwe3m2hgqd").instantiate()
-		instance.frame = selected_frames[0]
+		instance.frames = selected_frames
 		instance.modifier = moder
+		instance.deleted.connect(update_modifier_visibility)
 		mod_list.add_child(instance)
+
+func update_modifier_visibility():
+	var common_mods: Array[SpriteSheet.FrameModifier]
+	if not selected_frames.is_empty():
+		for moder in selected_frames[0].modifiers:
+			if selected_frames.all(func(sf: SpriteSheet.Frame) -> bool: return moder in sf.modifiers):
+				common_mods.append(moder)
+	
+	mod_parent.visible = not common_mods.is_empty()
 
 func _flip_x() -> void:
 	var flipper := SpriteSheet.FlipX.new()
 	for frame in selected_frames:
 		frame.add_modifier(flipper)
 	
-	if selected_frames.size() == 1:
-		update_frames()
+	update_modifiers()
 
 func _flip_y() -> void:
 	var flipper := SpriteSheet.FlipY.new()
 	for frame in selected_frames:
 		frame.add_modifier(flipper)
 	
-	if selected_frames.size() == 1:
-		update_frames()
+	update_modifiers()
 
 func _transpose() -> void:
+	var rotater := SpriteSheet.Rotate.new()
 	for frame in selected_frames:
-		var rotater := SpriteSheet.Rotate.new()
 		frame.add_modifier(rotater)
 	
 	# TODO: fix frame size?
 	
-	if selected_frames.size() == 1:
-		update_frames()
+	update_modifiers()
 
 func _modulate() -> void:
+	var modulater := SpriteSheet.Modulate.new()
 	for frame in selected_frames:
-		var modulater := SpriteSheet.Modulate.new()
 		frame.add_modifier(modulater)
 	
-	if selected_frames.size() == 1:
-		update_frames()
+	update_modifiers()
+
+func _remove_color() -> void:
+	var remover := SpriteSheet.RemoveColor.new()
+	for frame in selected_frames:
+		frame.add_modifier(remover)
+	
+	update_modifiers()
 
 func offset_x_changed(value: float) -> void:
 	for frame in selected_frames:

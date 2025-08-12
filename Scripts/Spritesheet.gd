@@ -109,9 +109,38 @@ class Modulate extends FrameModifier:
 		var data := image.get_data()
 		
 		for i in data.size() / 4:
+			if data[i * 4 + 3] == 0:
+				continue
+			
 			data[i * 4] *= color.r
 			data[i * 4 + 1] *= color.g
 			data[i * 4 + 2] *= color.b
+		
+		image.set_data(image.get_width(), image.get_height(), false, image.get_format(), data)
+	
+	func _get_options() -> Array:
+		var colorer := ColorPickerButton.new()
+		colorer.edit_alpha = false
+		colorer.custom_minimum_size.x = 24
+		return ["Color", colorer, &"color", &"color"]
+
+class RemoveColor extends FrameModifier:
+	var color := Color.MAGENTA
+	
+	func _init() -> void:
+		name = "Remove Color"
+	
+	func _apply(image: Image):
+		image.convert(Image.FORMAT_RGBA8)
+		var data := image.get_data()
+		
+		var test_r: int = color.r * 255
+		var test_g: int = color.g * 255
+		var test_b: int = color.b * 255
+		
+		for i in data.size() / 4:
+			if data[i * 4] == test_r and data[i * 4 + 1] == test_g and data[i * 4 + 2] == test_b:
+				data[i * 4 + 3] = 0
 		
 		image.set_data(image.get_width(), image.get_height(), false, image.get_format(), data)
 	

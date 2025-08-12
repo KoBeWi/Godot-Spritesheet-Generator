@@ -578,6 +578,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Modulate"
 
+[node name="EditRemoveColor" type="Button" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Remove Color"
+
 [node name="ModParent" type="VBoxContainer" parent="VBoxContainer/VSplitContainer/Edit/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -1035,9 +1040,6 @@ title = "Error!"
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameWidth" to="." method="set_frame_width"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameHeight" to="." method="set_frame_height"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize" method="autosize"]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/HorizontalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/VerticalMargin" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_margins" unbinds=1]
-[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_columns" unbinds=1]
 [connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_play_pause"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]
@@ -1049,6 +1051,7 @@ title = "Error!"
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditFlipY" to="VBoxContainer/VSplitContainer/Edit" method="_flip_y"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditTranspose" to="VBoxContainer/VSplitContainer/Edit" method="_transpose"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditModulate" to="VBoxContainer/VSplitContainer/Edit" method="_modulate"]
+[connection signal="pressed" from="VBoxContainer/VSplitContainer/Edit/VBoxContainer/HBoxContainer/EditRemoveColor" to="VBoxContainer/VSplitContainer/Edit" method="_remove_color"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/PreviewButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]

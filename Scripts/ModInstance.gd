@@ -3,9 +3,11 @@ extends Control
 @onready var name_label: Label = %NameLabel
 @onready var container: HBoxContainer = %Container
 
-var frame: SpriteSheet.Frame
+var frames: Array[SpriteSheet.Frame]
 var modifier: SpriteSheet.FrameModifier
 var monitors: Array[MonitoredProperty]
+
+signal deleted
 
 func _ready() -> void:
 	name_label.text = modifier.name
@@ -44,11 +46,16 @@ func _physics_process(delta: float) -> void:
 		if current != monitor.last_value:
 			monitor.last_value = current
 			modifier.set(monitor.parameter, current)
-			frame.update_image()
+			
+			for frame in frames:
+				frame.update_image()
 
 func delete() -> void:
-	frame.modifiers.erase(modifier)
-	frame.update_image()
+	for frame in frames:
+		frame.modifiers.erase(modifier)
+		frame.update_image()
+	
+	deleted.emit()
 	queue_free()
 
 class MonitoredProperty:
