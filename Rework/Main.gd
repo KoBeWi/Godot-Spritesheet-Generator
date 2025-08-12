@@ -16,6 +16,7 @@ enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION}
 @onready var save_path: LineEdit = %SavePath
 @onready var save_button: Button = %SaveButton
 @onready var save_pick_dialog: FileDialog = %SavePickDialog
+@onready var error_dialog: AcceptDialog = %ErrorDialog
 
 var update_pending: bool
 
@@ -78,7 +79,14 @@ func save_spritesheet() -> void:
 		saving_image.blit_rect(frame.image, Rect2i(Vector2(), frame_size), Vector2i(idx % sprite_sheet_grid.columns, idx / sprite_sheet_grid.columns) * frame_size + Vector2i(spritesheet.margins + frame.offset))
 		idx += 1
 	
-	saving_image.save_png(save_path.text)
+	var err := saving_image.save_png(save_path.text)
+	if err != OK:
+		match err:
+			ERR_FILE_CANT_OPEN:
+				error_dialog.dialog_text = "Could not save spritesheet: Can't open file."
+			_:
+				error_dialog.dialog_text = "Could not save spritesheet: Error %d." % err
+		error_dialog.popup_centered()
 
 func update_size():
 	frame_width.set_value_no_signal(spritesheet.frame_size.x)
@@ -87,6 +95,9 @@ func update_size():
 	var frame_size: Vector2i = spritesheet.frame_size + spritesheet.margins * 2
 	frame_size.x *= sprite_sheet_grid.columns
 	frame_size.y *= sprite_sheet_grid.get_rows()
+	if spritesheet.frames.is_empty():
+		frame_size = Vector2i()
+	
 	size_label.text = size_format % [frame_size.x, frame_size.y]
 
 func _pick_save_file() -> void:

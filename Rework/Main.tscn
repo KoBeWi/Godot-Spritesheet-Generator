@@ -1036,6 +1036,10 @@ size = Vector2i(300, 106)
 dialog_text = "Discard current SpriteSheet and create a new one?"
 dialog_autowrap = true
 
+[node name="ErrorDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+title = "Error!"
+
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button5" to="." method="_new_spritesheet"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/SaveButton" to="." method="save_spritesheet"]
 [connection signal="text_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/SavePath" to="." method="update_save_button" unbinds=1]
