@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://bjo3ieb5ra2du" path="res://Rework/Transform.gd" id="5_n055s"]
 [ext_resource type="Script" uid="uid://dm151lay1qtov" path="res://Rework/Preview.gd" id="7_b5t4d"]
 [ext_resource type="PackedScene" uid="uid://c6ce0mrlnw0ui" path="res://Rework/FrameContainer.tscn" id="7_j10sb"]
-[ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Source/Tools.svg" id="8_t0fln"]
+[ext_resource type="Texture2D" uid="uid://do1032o0c7fx6" path="res://Rework/Tools.svg" id="8_t0fln"]
 [ext_resource type="Texture2D" uid="uid://o4p3468prkxm" path="res://Rework/Play.svg" id="9_ajsf6"]
 [ext_resource type="Script" uid="uid://de521126vdx1m" path="res://Rework/Edit.gd" id="11_o0wax"]
 [ext_resource type="Script" uid="uid://dv6e7gi372e2b" path="res://Rework/Settings.gd" id="11_rjar1"]
