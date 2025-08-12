@@ -9,7 +9,6 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 @onready var preview: PanelContainer = %Preview
 @onready var preview_button: Button = %PreviewButton
-@onready var edit: PanelContainer = %Edit
 
 @onready var frame_width: SpinBox = %FrameWidth
 @onready var frame_height: SpinBox = %FrameHeight
@@ -116,7 +115,6 @@ func queue_update_frames():
 	
 	var updater := func():
 		sprite_sheet_grid.update_frame_list()
-		edit.update_frames()
 		update_size()
 		update_pending = false
 	

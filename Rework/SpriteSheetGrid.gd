@@ -3,6 +3,7 @@ extends GridContainer
 const FrameContainer = preload("res://Rework/FrameContainer.gd")
 
 @onready var edit: PanelContainer = %Edit
+@onready var preview: PanelContainer = %Preview
 @onready var column_count: SpinBox = %ColumnCount
 @onready var auto_columns: CheckBox = %AutoColumns
 @onready var horizontal_margin: SpinBox = %HorizontalMargin
@@ -37,6 +38,8 @@ func update_frame_list():
 	
 	update_margins()
 	update_columns()
+	edit.update_frames()
+	preview.update_settings()
 
 func update_columns():
 	if not auto_columns.button_pressed:
