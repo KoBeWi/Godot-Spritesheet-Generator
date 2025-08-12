@@ -35,11 +35,18 @@ func _notification(what: int) -> void:
 				timeline.value += 1
 
 func update_settings():
+	if not visible:
+		return
+	
 	timeline.max_value = owner.spritesheet.frames.size() - 1
 	timeline.tick_count = timeline.max_value + 1
 	update_frame()
 
 func update_frame():
+	if owner.spritesheet.frames.is_empty():
+		set_process_internal(false)
+		return
+	
 	preview_frame.frame = owner.spritesheet.frames[int(timeline.value)]
 	preview_frame.update()
 	timeline_frame.text = str(int(timeline.value))

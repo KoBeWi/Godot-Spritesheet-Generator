@@ -40,6 +40,7 @@ func update_frame_list():
 	update_columns()
 	edit.update_frames()
 	preview.update_settings()
+	owner.update_preview_button()
 
 func update_columns():
 	if not auto_columns.button_pressed:

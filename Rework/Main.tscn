@@ -1,12 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://cmt0o8ktplo4k"]
+[gd_scene load_steps=26 format=3 uid="uid://cmt0o8ktplo4k"]
 
 [ext_resource type="Script" uid="uid://608ekexaotwp" path="res://Rework/Main.gd" id="1_2hksu"]
 [ext_resource type="Script" uid="uid://c7avrf3pus5r" path="res://Rework/CropTool.gd" id="2_k8p4s"]
 [ext_resource type="Texture2D" uid="uid://cfqm8u5a0egpn" path="res://Rework/FileBrowse.svg" id="2_mgfer"]
 [ext_resource type="Texture2D" uid="uid://xbbbih1csjl2" path="res://Rework/Collapse.svg" id="2_nait6"]
 [ext_resource type="Script" uid="uid://dr100b5wjmjp2" path="res://Rework/SpriteSheetGrid.gd" id="2_npgqu"]
+[ext_resource type="Texture2D" uid="uid://xgelcjtfc6tb" path="res://Rework/Add.svg" id="3_7s4wt"]
 [ext_resource type="Script" uid="uid://cwhcm72el5371" path="res://Rework/NavigationArea.gd" id="3_fslw6"]
 [ext_resource type="Script" uid="uid://rvv4l0rd7dgc" path="res://Rework/Repack.gd" id="3_jmhy2"]
+[ext_resource type="Script" uid="uid://wjng7f8bgk2v" path="res://Rework/ImportFrames.gd" id="3_tsi6q"]
 [ext_resource type="Script" uid="uid://bjo3ieb5ra2du" path="res://Rework/Transform.gd" id="5_n055s"]
 [ext_resource type="Script" uid="uid://dm151lay1qtov" path="res://Rework/Preview.gd" id="7_b5t4d"]
 [ext_resource type="PackedScene" uid="uid://c6ce0mrlnw0ui" path="res://Rework/FrameContainer.tscn" id="7_j10sb"]
@@ -92,7 +94,7 @@ script/source = "extends Button
 func _pressed() -> void:
 	#owner.add_directory(\"res://Media/fireballoga/RunClubDown\")
 	#owner.add_directory(\"res://Media/fireballoga/red\")
-	owner.add_directory(\"res://Ignored/Bird\")
+	$\"../../../VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames\".add_directory(\"res://Ignored/Bird\")
 	#$\"../../Repack\".repack_file(\"X:/Godot/Assets/SpriteShitter/CutterTest.png\")
 	#%RepackColumns.value = 3
 	#$\"../../Repack\"._confirm()
@@ -127,6 +129,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -167,26 +170,59 @@ size_flags_horizontal = 3
 text = "Total Size: %d × %d"
 horizontal_alignment = 1
 
-[node name="Import Frames" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
+[node name="Import Frames" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 layout_mode = 2
+script = ExtResource("3_tsi6q")
 metadata/_tab_index = 1
 
-[node name="Button2" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer"]
 layout_mode = 2
 text = "Add Files"
 
-[node name="Button3" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
+[node name="Button3" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer"]
 layout_mode = 2
 text = "Add Directory"
 
-[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer"]
 layout_mode = 2
 text = "Cut SpriteSheet"
 
-[node name="Button4" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
+[node name="Button5" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer"]
 layout_mode = 2
-text = "Paste From Clipboard"
+toggle_mode = true
+text = "Insert Frames"
+
+[node name="InsertFrames" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button4" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames"]
+layout_mode = 2
+text = "From Clipboard"
+icon = ExtResource("3_7s4wt")
+
+[node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames"]
+layout_mode = 2
+text = "Empty Frame"
+icon = ExtResource("3_7s4wt")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames"]
+layout_mode = 2
+text = "All Frames:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
 visible = false
@@ -638,6 +674,7 @@ text = "MMB: Move around
 Wheel: Zoom"
 
 [node name="Repack" type="PanelContainer" parent="."]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pq08m")
@@ -1004,10 +1041,12 @@ dialog_autowrap = true
 [connection signal="text_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/SavePath" to="." method="update_save_button" unbinds=1]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button" to="." method="_pick_save_file"]
 [connection signal="file_selected" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/SpriteSheet/HBoxContainer2/Button/SavePickDialog" to="." method="_on_file_picked"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button2" to="." method="_add_files"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button3" to="." method="_add_directory"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button" to="." method="_repack_spritesheet"]
-[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/Button4" to="." method="_paste_image_from_clipboard"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer/Button2" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames" method="_add_files"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer/Button3" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames" method="_add_directory"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames" method="_repack_spritesheet"]
+[connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/HBoxContainer/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames" method="set_visible"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames/Button4" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames" method="_paste_image_from_clipboard"]
+[connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames/InsertFrames/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Import Frames" method="_add_empty_frame"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/HBoxContainer/Button" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="_select_all"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button5" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="crop_images"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop/Button6" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Crop" method="smart_crop_images"]

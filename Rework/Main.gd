@@ -2,10 +2,7 @@ extends Control
 
 enum Tab {SPRITESHEET, FRAME_LIST, CUSTOMIZATION}
 
-const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg", "svgz", "webp"]
-
 @onready var tabs: TabContainer = %Tabs
-@onready var repack: PanelContainer = $Repack
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 @onready var preview: PanelContainer = %Preview
 @onready var preview_button: Button = %PreviewButton
@@ -20,32 +17,18 @@ const FORMATS = ["bmp", "dds", "exr", "hdr", "jpg", "jpeg", "png", "tga", "svg",
 @onready var save_button: Button = %SaveButton
 @onready var save_pick_dialog: FileDialog = %SavePickDialog
 
-var filter_cache: PackedStringArray
 var update_pending: bool
 
 var spritesheet: SpriteSheet
 
 func _ready() -> void:
+	%InsertFrames.hide()
+	
 	for i in range(1, tabs.get_tab_count()):
 		tabs.set_tab_disabled(i, true)
-	get_window().files_dropped.connect(_on_files_dropped)
-	
-	filter_cache = FORMATS.map(func(format: String) -> String: return "*.%s" % format)
-	var filter_string := ", ".join(filter_cache) + ";Image File"
-	filter_cache = [filter_string]
 	
 	_new_spritesheet()
 	update_save_button()
-
-func add_directory(directory: String):
-	for file in DirAccess.get_files_at(directory):
-		create_frame_from_path(directory.path_join(file))
-	
-	if spritesheet.frame_size == Vector2i():
-		for frame in spritesheet.frames:
-			spritesheet.frame_size = spritesheet.frame_size.max(frame.image.get_size())
-	
-	assign_path(directory.path_join(Settings.settings.default_file_name + ".png"))
 
 func _new_spritesheet() -> void:
 	if spritesheet:
@@ -65,43 +48,6 @@ func _discard_spritesheet() -> void:
 	_new_spritesheet()
 	queue_update_frames()
 
-func _add_files() -> void:
-	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
-		if not status:
-			return
-		
-		save_last_folder(selected_paths[0].get_base_dir())
-		for path in selected_paths:
-			create_frame_from_path(path)
-	
-	DisplayServer.file_dialog_show("Select Images", Settings.settings.last_folder, "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILES, filter_cache, callback)
-
-func _add_directory() -> void:
-	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
-		if not status:
-			return
-		
-		save_last_folder(selected_paths[0])
-		add_directory(selected_paths[0])
-	
-	DisplayServer.file_dialog_show("Select Directory", Settings.settings.last_folder, "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, [], callback)
-
-func _repack_spritesheet() -> void:
-	var callback := func(status: bool, selected_paths: PackedStringArray, selected_filter_index: int):
-		if not status:
-			return
-		
-		save_last_folder(selected_paths[0].get_base_dir())
-		repack.repack_file(selected_paths[0])
-	
-	DisplayServer.file_dialog_show("Select Image", Settings.settings.last_folder, "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, filter_cache, callback)
-
-func _paste_image_from_clipboard() -> void:
-	if not DisplayServer.clipboard_has_image():
-		return
-	
-	create_frame_from_image(DisplayServer.clipboard_get_image())
-
 func queue_update_frames():
 	if update_pending:
 		return
@@ -109,9 +55,6 @@ func queue_update_frames():
 	
 	var no_frames := spritesheet.all_frames.is_empty()
 	tabs.set_tab_disabled(Tab.CUSTOMIZATION, no_frames)
-	preview_button.disabled = no_frames
-	if no_frames:
-		preview_button.button_pressed = false
 	
 	var updater := func():
 		sprite_sheet_grid.update_frame_list()
@@ -120,33 +63,6 @@ func queue_update_frames():
 	
 	update_save_button()
 	updater.call_deferred()
-
-func create_frame_from_image(image: Image):
-	var frame := SpriteSheet.Frame.new()
-	frame.source_image = image
-	frame.initialize()
-	spritesheet.add_frame(frame)
-	
-	if spritesheet.frame_size == Vector2i():
-		spritesheet.frame_size = frame.image.get_size()
-	
-	queue_update_frames()
-	return frame
-
-func create_frame_from_path(path: String):
-	if not path.get_extension() in FORMATS:
-		return
-	
-	var frame := SpriteSheet.Frame.new()
-	frame.file_path = path
-	frame.initialize()
-	spritesheet.add_frame(frame)
-	
-	#if spritesheet.frame_size == Vector2i(): # źle
-		#spritesheet.frame_size = frame.image.get_size()
-	
-	queue_update_frames()
-	return frame
 
 func assign_path(path: String):
 	if save_path.text.is_empty():
@@ -199,14 +115,6 @@ func update_save_button() -> void:
 	
 	save_button.disabled = not save_button.tooltip_text.is_empty()
 
-func _on_files_dropped(files: PackedStringArray):
-	for file in files:
-		if DirAccess.dir_exists_absolute(file):
-			add_directory(file)
-		else:
-			create_frame_from_path(file)
-			assign_path(file.get_base_dir().path_join(Settings.settings.default_file_name + ".png"))
-
 func set_frame_width(value: float) -> void:
 	if spritesheet.frame_size.x == value:
 		return
@@ -219,6 +127,8 @@ func set_frame_height(value: float) -> void:
 	spritesheet.frame_size.y = value
 	queue_update_frames()
 
-func save_last_folder(folder: String):
-	Settings.settings.last_folder = folder
-	Settings.node.save_timer.start()
+func update_preview_button():
+	var no_frames := spritesheet.frames.is_empty()
+	preview_button.disabled = no_frames
+	if no_frames:
+		preview_button.button_pressed = false

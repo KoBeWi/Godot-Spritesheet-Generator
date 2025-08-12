@@ -79,7 +79,7 @@ func is_selected() -> bool:
 	return selection.visible
 
 func _on_texture_draw() -> void:
-	if not frame.texture:
+	if not frame or not frame.texture:
 		return
 	
 	var rect := Rect2(frame.offset, frame.texture.get_size() * draw_scale)
