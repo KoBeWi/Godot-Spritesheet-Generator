@@ -832,6 +832,8 @@ Wheel: Zoom"
 
 [node name="Toolbar" type="VBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Toolbar"]
