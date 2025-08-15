@@ -128,10 +128,16 @@ func center_image() -> void:
 	for frame in selected_frames:
 		var ims := frame.image.get_size()
 		if ims.x < sz.x:
-			offset_x.value = (sz.x - ims.x) / 2
+			offset_x.set_value_no_signal((sz.x - ims.x) / 2)
+			frame.offset.x = (sz.x - ims.x) / 2
 		else:
-			offset_x.value = 0
+			offset_x.set_value_no_signal(0)
+			frame.offset.x = 0
+		
 		if ims.y < sz.y:
-			offset_y.value = (sz.y - ims.y) / 2
+			offset_y.set_value_no_signal((sz.y - ims.y) / 2)
+			frame.offset.y = (sz.y - ims.y) / 2
 		else:
-			offset_y.value = 0
+			offset_y.set_value_no_signal(0)
+			frame.offset.y = 0
+		frame.changed.emit()

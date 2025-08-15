@@ -59,6 +59,12 @@ You can use middle mouse button to pan and zoom the view. The Preview option at 
 
 Once you are satisfied with the spritesheet, you can save it in the SpriteSheet tab. The sections below explain each feature in more details.
 
+#### Spritesheet View
+
+The view section shows the frames added to the spritesheet, organized in a grid. The transparent area is filled with a solid color, alternating in a checkerboard pattern. If frame's size is smaller than spritesheet's defined frame size, an outline will be displayed that shows the true image's size.
+
+![](Media/FrameOutline.webp)
+
 ### Import Frames
 
 The Import Frames tab allows to add frames to the spritesheet. You can add individual files, whole directories or cut an existing spritesheet into individual frames. Supported image formats to import are `bmp`, `dds`, `exr`, `hdr`, `jpg`, `jpeg`, `png`, `tga`, `svg`, `svgz`, and `webp`.
@@ -71,6 +77,10 @@ You can insert a new frame from system's clipboard, insert an empty frame, or in
 
 Whenever a new frame is added to the spritesheet, the frame size is updated.
 
+#### Cut SpriteSheet
+
+TODO
+
 ### Customize
 
 The customize tab is divided into multiple sub-tabs. They have various options for modifying the spritesheet. There is also a button for selecting or deselecting all frames at once.
@@ -80,6 +90,22 @@ The customize tab is divided into multiple sub-tabs. They have various options f
 ![](Media/TabCrop.webp)
 
 This tab allows you to crop the frames. Cropping will remove extraneous transparent borders from each image. You can do either regular crop or the so-called smart crop; the difference is explained above. Alpha Threshold parameter specifies the minimum alpha value for a pixel to be considered transparent.
+
+#### Frame Size
+
+![](Media/TabFrameSize.webp)
+
+This tab allows you to adjust the size of spritesheet frame. By default the frame size is set to the biggest added frame, but you can make it smaller (which may cut some images) or bigger. In case the frame size is wrong, you can use Auto Size to adjust it.
+
+Each frame also has a margin; it's an extra space on each side of the frame. The default margin value is 1, which is to avoid texture interpolation problems (i.e. frames leaking to other frames when displayed in the engine).
+
+#### Columns
+
+![](Media/TabColumns.webp)
+
+This tab allows you to set the number of columns in the spritesheet. For the most part you don't need to touch it, because when Auto option is enabled, the editor will automatically set an optimal number of columns. The algorithm makes sure that there's the least number of holes and the image layout is as close to square as possible, favoring vertical size over horizontal.
+
+
 
 ## Origin
 
