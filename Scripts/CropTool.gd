@@ -6,6 +6,9 @@ extends Control
 func crop_images() -> void:
 	var max_size := Vector2i()
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+		if frame.delete_modifier("Crop"):
+			frame.update_image()
+		
 		var crop := get_crop_data(frame.image, threshold.value, null)
 		var cropper := SpriteSheet.Crop.new()
 		cropper.rect = crop.get_rect()
@@ -19,6 +22,9 @@ func crop_images() -> void:
 func smart_crop_images():
 	var crop_data := CropData.new()
 	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+		if frame.delete_modifier("Crop"):
+			frame.update_image()
+		
 		get_crop_data(frame.image, threshold.value, crop_data)
 	
 	var rect := crop_data.get_rect()

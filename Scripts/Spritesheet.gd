@@ -36,13 +36,16 @@ class Frame:
 		texture = ImageTexture.create_from_image(image)
 	
 	func add_modifier(modifier: FrameModifier):
-		for modo in modifiers:
-			if modo.name == modifier.name:
-				modifiers.erase(modo)
-				break
-		
+		delete_modifier(modifier.name)
 		modifiers.append(modifier)
 		update_image()
+	
+	func delete_modifier(name: String) -> bool:
+		for modifier in modifiers:
+			if modifier.name == name:
+				modifiers.erase(modifier)
+				return true
+		return false
 	
 	func update_image():
 		image.copy_from(source_image)
