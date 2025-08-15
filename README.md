@@ -1,6 +1,6 @@
-# <img src="https://github.com/KoBeWi/Godot-Spritesheet-Generator/blob/master/Media/Icon.png" width="64" height="64"> Godot Spritesheet Generator
+# <img src="https://github.com/KoBeWi/Godot-Spritesheet-Generator/blob/master/Media/Icon.png" width="64" height="64"> Spritesheet-inator
 
-An app for creating and editing spritesheets. It can join multiple images into a spritesheet and allows cropping and basic editing of frames.
+An app for creating and editing spritesheets. It can join multiple images into a spritesheet and allows cropping and basic editing of frames. Made in Godot Engine.
 
 ## Functionality Overview
 
@@ -43,9 +43,43 @@ The final image is neatly cut and has transparent background:
 
 ## Usage
 
+### Basics
+
+This is the program's main screen that shows after you run it:
+
 ![](Media/MainScreen.webp)
 
-TODO
+The interface is divided into 3 sections: top panel with tabs, spritesheet view, and bottom panel with navigation options and some menus.
+
+To do anything, you need to first add frames to your spritesheet. You can do so in Import Frames tab. Once frames are added, the spritesheet view will show a preview of the spritesheet.
+
+![](Media/BasicSpritesheet.webp)
+
+You can use middle mouse button to pan and zoom the view. The Preview option at the bottom allows you to preview the spritesheet's frames in motion (i.e. preview the animation). You can select frames with LMB and reorganize or delete them. The Edit button at the bottom opens editing panel that allows changing selected frames. The Customize tab at the top has various options for manipulating the whole spritesheet.
+
+Once you are satisfied with the spritesheet, you can save it in the SpriteSheet tab. The sections below explain each feature in more details.
+
+### Import Frames
+
+The Import Frames tab allows to add frames to the spritesheet. You can add individual files, whole directories or cut an existing spritesheet into individual frames. Supported image formats to import are `bmp`, `dds`, `exr`, `hdr`, `jpg`, `jpeg`, `png`, `tga`, `svg`, `svgz`, and `webp`.
+
+The Insert Frames button reveals a few more options.
+
+![](Media/InsertFrames.webp)
+
+You can insert a new frame from system's clipboard, insert an empty frame, or insert any previously imported frame, including frames deleted from the spritesheet.
+
+Whenever a new frame is added to the spritesheet, the frame size is updated.
+
+### Customize
+
+The customize tab is divided into multiple sub-tabs. They have various options for modifying the spritesheet. There is also a button for selecting or deselecting all frames at once.
+
+#### Crop
+
+![](Media/TabCrop.webp)
+
+This tab allows you to crop the frames. Cropping will remove extraneous transparent borders from each image. You can do either regular crop or the so-called smart crop; the difference is explained above. Alpha Threshold parameter specifies the minimum alpha value for a pixel to be considered transparent.
 
 ## Origin
 
