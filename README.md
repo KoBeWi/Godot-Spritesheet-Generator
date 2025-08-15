@@ -65,6 +65,16 @@ The view section shows the frames added to the spritesheet, organized in a grid.
 
 ![](Media/FrameOutline.webp)
 
+You can use the slider at the bottom to set precise zoom. The Reset View button will reset zoom and position (especially useful if your spritesheet moves out of view).
+
+### SpriteSheet
+
+![](Media/TabSpriteSheet.webp)
+
+Here you can manage the spritesheet itself. The Create New button discards all frames and creates a fresh spritesheet, the Save button will save the spritesheet under the given path. There is also a label that shows the final size of the saved spritesheet.
+
+The image path is set automatically when you import frames. By default the new spritesheet will be created in the same directory as the source files. The only supported save format is PNG.
+
 ### Import Frames
 
 The Import Frames tab allows to add frames to the spritesheet. You can add individual files, whole directories or cut an existing spritesheet into individual frames. Supported image formats to import are `bmp`, `dds`, `exr`, `hdr`, `jpg`, `jpeg`, `png`, `tga`, `svg`, `svgz`, and `webp`.
@@ -79,7 +89,15 @@ Whenever a new frame is added to the spritesheet, the frame size is updated.
 
 #### Cut SpriteSheet
 
-TODO
+Selecting this option will prompt you to select a file and then open a special editor for cutting the spritesheet.
+
+![](Media/Repack.webp)
+
+You can customize how much columns and rows to cut into, the offset of the spritesheet and spacing between frames (which will be removed). The editor will draw outlines of the new frames and dim out areas of the spritesheet that will be removed.
+
+![](Media/RepackPreview.webp)
+
+The frame size is determined by default from dividing the spritesheet size by columns and rows. You can also specify the size manually. By default, size of 0 means that the frames will have automatic size, but you can use Auto Size button to apply this size explicitly, which then you can adjust. Confirming the operation will cut the base image into frames and add them to your spritesheet.
 
 ### Customize
 
@@ -105,7 +123,47 @@ Each frame also has a margin; it's an extra space on each side of the frame. The
 
 This tab allows you to set the number of columns in the spritesheet. For the most part you don't need to touch it, because when Auto option is enabled, the editor will automatically set an optimal number of columns. The algorithm makes sure that there's the least number of holes and the image layout is as close to square as possible, favoring vertical size over horizontal.
 
+#### Transform
 
+![](Media/TabTransform.webp)
+
+This tab allows performing some operations that modify the whole spritesheet, and especially its frame order. The Mirror options will flip the frames around the spritesheet's global center, the Cycle options will shift all frames by 1 position. The Reverse will reverse the order of frames and Shuffle will randomize the order.
+
+### Edit
+
+The Edit panel can be access with the button at the bottom.
+
+![](Media/EditPanel.webp)
+
+It's only usable when you have selected at least one frame. THere you can edit images's offset within the frame (if it's smaller than frame size), including option for centering it. Note that offset field might show incorrect value if multiple frames are selected, but you can still set it for many frames.
+
+There are also various modifications that you can apply to your frame. Apply a modification by pressing the button with its name and remove it by pressing X button in the modifications list. Each modification can be applied only once for each frame, trying to add it again will replace the old instance.
+
+You can apply a modification to multiple frames at once. This makes every frame share its parameters, so you can e.g. remove a color in every frame. The Crop is a special modification that can't be applied from Edit menu, but it can be deleted from there (though for single frame at a time).
+
+#### Flip
+
+Flips the image horizontally or vertically.
+
+#### Rotate
+
+Rotates the image. You can set the rotation degress: 90, 180, or 270. Note that changing frame's orientation may make the image go out of bounds.
+
+#### Modulate
+
+Modulates (multiplies) the image's color by the given color.
+
+#### Remove Color
+
+Removes the specified color from the frame. This is useful for removing non-transparent backgrounds.
+
+### Preview
+
+TODO
+
+### Settings
+
+TODO
 
 ## Origin
 

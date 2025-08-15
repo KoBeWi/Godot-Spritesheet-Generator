@@ -1,5 +1,6 @@
 extends Control
 
+@onready var repack_view: Control = %RepackView
 @onready var repack_preview: TextureRect = %RepackPreview
 @onready var repack_columns: SpinBox = %RepackColumns
 @onready var repack_rows: SpinBox = %RepackRows
@@ -29,6 +30,8 @@ func repack_file(path: String):
 	image.convert(Image.FORMAT_RGBA8)
 	repack_preview.texture = ImageTexture.create_from_image(image)
 	show()
+	
+	repack_view.recenter.call_deferred()
 
 func get_frame_size() -> Vector2i:
 	if repack_width.value > 0 and repack_height.value > 0:
@@ -37,8 +40,8 @@ func get_frame_size() -> Vector2i:
 		return image.get_size() / Vector2i(repack_columns.value, repack_rows.value)
 
 func auto_size() -> void:
-	repack_width.set_value_no_signal(image.get_width() / repack_columns.value)
-	repack_height.set_value_no_signal(image.get_height() / repack_rows.value)
+	repack_width.value = image.get_width() / repack_columns.value
+	repack_height.value = image.get_height() / repack_rows.value
 
 func _confirm() -> void:
 	var frame_size := get_frame_size()

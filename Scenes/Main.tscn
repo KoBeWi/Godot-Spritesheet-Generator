@@ -784,7 +784,8 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "Cancel"
 
-[node name="Control" type="Control" parent="Repack/VBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
+[node name="RepackView" type="Control" parent="Repack/VBoxContainer" node_paths=PackedStringArray("move_target", "zoom_slider", "recenter_button")]
+unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -793,7 +794,7 @@ move_target = NodePath("MarginContainer")
 zoom_slider = NodePath("../Navigation/HBoxContainer/HSlider")
 recenter_button = NodePath("../Navigation/Button")
 
-[node name="MarginContainer" type="PanelContainer" parent="Repack/VBoxContainer/Control"]
+[node name="MarginContainer" type="PanelContainer" parent="Repack/VBoxContainer/RepackView"]
 layout_mode = 0
 offset_left = 580.0
 offset_top = 345.0
@@ -802,7 +803,7 @@ offset_bottom = 385.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_8iort")
 
-[node name="RepackPreview" type="TextureRect" parent="Repack/VBoxContainer/Control/MarginContainer"]
+[node name="RepackPreview" type="TextureRect" parent="Repack/VBoxContainer/RepackView/MarginContainer"]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2
@@ -1055,18 +1056,18 @@ title = "Error!"
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/Button3" to="VBoxContainer/VSplitContainer/Edit" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/HBoxContainer2/PreviewButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="set_visible"]
 [connection signal="toggled" from="VBoxContainer/PanelContainer2/Navigation/Button2" to="VBoxContainer/PanelContainer2/Navigation/Button2/PanelContainer" method="set_visible"]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackColumns" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackRows" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackWidth" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackHeight" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackOffsetX" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackOffsetY" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackSpacingX" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
-[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackSpacingY" to="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackColumns" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackRows" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackWidth" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackHeight" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackOffsetX" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackOffsetY" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackSpacingX" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
+[connection signal="value_changed" from="Repack/VBoxContainer/HBoxContainer/GridContainer/RepackSpacingY" to="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" method="queue_redraw" unbinds=1]
 [connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/Button" to="Repack" method="auto_size"]
 [connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="Repack" method="_confirm"]
 [connection signal="pressed" from="Repack/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Button2" to="Repack" method="_cancel"]
-[connection signal="draw" from="Repack/VBoxContainer/Control/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
+[connection signal="draw" from="Repack/VBoxContainer/RepackView/MarginContainer/RepackPreview" to="Repack" method="_draw_grid"]
 [connection signal="toggled" from="Repack/VBoxContainer/Navigation/Button2" to="Repack/VBoxContainer/Navigation/Button2/PanelContainer" method="set_visible"]
 [connection signal="toggled" from="Toolbar/Button" to="Toolbar/Settings" method="set_visible"]
 [connection signal="text_changed" from="Toolbar/Settings/MarginContainer/VBoxContainer/DefaultName" to="Toolbar/Settings" method="queue_update_settings"]
