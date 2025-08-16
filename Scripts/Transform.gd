@@ -27,10 +27,16 @@ func make_transform(id: int):
 			for i in frames.size():
 				var x := i % columns
 				var y := i / columns
-				x = columns - x
-				new_frames[i] = frames[mini(y * columns + x, frames.size() -1)]
+				x = columns - x -1
+				new_frames[i] = frames[mini(y * columns + x, frames.size() - 1)]
 			
-			# TODO: also flip
+			var flip := SpriteSheet.FlipX.new()
+			for frame in frames:
+				if frame.delete_modifier("Flip X"):
+					frame.update_image()
+				else:
+					frame.add_modifier(flip)
+			
 			frames.assign(new_frames)
 		
 		MIRROR_V:
@@ -42,8 +48,15 @@ func make_transform(id: int):
 			for i in frames.size():
 				var x := i % columns
 				var y := i / columns
-				y = rows - y
-				new_frames[i] = frames[mini(y * columns + x, frames.size() -1)]
+				y = rows - y - 1
+				new_frames[i] = frames[mini(y * columns + x, frames.size() - 1)]
+			
+			var flip := SpriteSheet.FlipY.new()
+			for frame in frames:
+				if frame.delete_modifier("Flip Y"):
+					frame.update_image()
+				else:
+					frame.add_modifier(flip)
 			
 			frames.assign(new_frames)
 		

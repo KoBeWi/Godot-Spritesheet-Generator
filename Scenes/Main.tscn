@@ -1048,6 +1048,7 @@ title = "Error!"
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameWidth" to="." method="set_frame_width"]
 [connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/FrameHeight" to="." method="set_frame_height"]
 [connection signal="pressed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Margins/Button" to="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize" method="autosize"]
+[connection signal="value_changed" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/ColumnCount" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="update_frame_list" unbinds=1]
 [connection signal="toggled" from="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Columns/AutoColumns" to="VBoxContainer/VSplitContainer/HSplitContainer/HBoxContainer/SpriteSheetView/CenterContainer/PanelContainer/SpriteSheetGrid" method="on_auto_toggled"]
 [connection signal="pressed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/PlayButton" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_play_pause"]
 [connection signal="value_changed" from="VBoxContainer/VSplitContainer/HSplitContainer/Preview/MarginContainer/VBoxContainer/HBoxContainer2/Timeline" to="VBoxContainer/VSplitContainer/HSplitContainer/Preview" method="_on_timeline_value_changed"]

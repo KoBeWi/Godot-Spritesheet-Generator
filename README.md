@@ -65,6 +65,10 @@ The view section shows the frames added to the spritesheet, organized in a grid.
 
 ![](Media/FrameOutline.webp)
 
+If the spritesheet has holes (parts without assigned frame), they will show as the background color.
+
+![](Media/SpritesheetHole.webp)
+
 You can use the slider at the bottom to set precise zoom. The Reset View button will reset zoom and position (especially useful if your spritesheet moves out of view).
 
 ### SpriteSheet
@@ -127,7 +131,7 @@ This tab allows you to set the number of columns in the spritesheet. For the mos
 
 ![](Media/TabTransform.webp)
 
-This tab allows performing some operations that modify the whole spritesheet, and especially its frame order. The Mirror options will flip the frames around the spritesheet's global center, the Cycle options will shift all frames by 1 position. The Reverse will reverse the order of frames and Shuffle will randomize the order.
+This tab allows performing some operations that modify the whole spritesheet, and especially its frame order. The Mirror options will flip the frames around the spritesheet's global center, the Cycle options will shift all frames by 1 position. The Reverse will reverse the order of frames and Shuffle will randomize the order. Note that Mirror will not work correctly if the spritesheet has holes.
 
 The Reset Frames button will reset all frames to their original state, including order and missing frames.
 
