@@ -43,6 +43,10 @@ The final image is neatly cut and has transparent background:
 
 ## Usage
 
+### Running
+
+To run Spritesheet-inator, either download an executable from [https://github.com/KoBeWi/Godot-Spritesheet-Generator/releases](Releases) or download the project and run using Godot Engine (requires 4.5 or newer). 
+
 ### Basics
 
 This is the program's main screen that shows after you run it:
