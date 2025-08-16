@@ -159,11 +159,30 @@ Removes the specified color from the frame. This is useful for removing non-tran
 
 ### Preview
 
-TODO
+The Preview button in bottom-right opens the preview panel:
+
+![](Media/PreviewPanel.webp)
+
+It allows to preview the spritesheet as animation. It will cycle between each frame of the spritesheet with the given FPS, with optional looping. The play button (triangle) will play or pause the animation. You can also seek manually using the slider.
+
+![](Media/PreviewAnimation.webp)
 
 ### Settings
 
-TODO
+The Settings panel can be opened in the top-right:
+
+![](Media/Settings.webp)
+
+It allows customizing the appearance of Spritesheet-inator.
+- **Default File Name:** The filename when path is auto-assigned after importing files.
+- **Max Preview Size:** Maximum size of the preview in the preview panel. Bigger images will be scaled down proportionally.
+- **Show Grid:** Toggles the checkerboard pattern.
+- **Grid Color 1:** First color of the checkerboard pattern.
+- **Grid Color 2:** Second color of the checkerboard pattern. Only used when grid option is enabled.
+- **Show Outline:** Toggles the image size outline (when images are smaller than frame size).
+- **Outline Color:** Color of the aforementioned outline.
+- **Cut Mode Grid:** Color of the frame outlines when cutting spritesheet.
+- **Cut Mode Fade:** Color of the dimming applied to discarded image areas when cutting spritesheet.
 
 ## Origin
 
