@@ -107,7 +107,7 @@ The customize tab is divided into multiple sub-tabs. They have various options f
 
 ![](Media/TabCrop.webp)
 
-This tab allows you to crop the frames. Cropping will remove extraneous transparent borders from each image. You can do either regular crop or the so-called smart crop; the difference is explained above. Alpha Threshold parameter specifies the minimum alpha value for a pixel to be considered transparent.
+This tab allows you to crop the frames. Cropping will remove extraneous transparent borders from each image. You can do either regular crop or the so-called smart crop; the difference is explained above. Crop will additionally center frame images. Alpha Threshold parameter specifies the minimum alpha value for a pixel to be considered transparent.
 
 #### Frame Size
 

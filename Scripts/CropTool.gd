@@ -3,9 +3,13 @@ extends Control
 @onready var threshold: SpinBox = %Threshold
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 
+var spritesheet: SpriteSheet:
+	get:
+		return owner.spritesheet
+
 func crop_images() -> void:
 	var max_size := Vector2i()
-	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+	for frame: SpriteSheet.Frame in spritesheet.frames:
 		if frame.delete_modifier("Crop"):
 			frame.update_image()
 		
@@ -16,12 +20,19 @@ func crop_images() -> void:
 		frame.update_image()
 		max_size = max_size.max(frame.image.get_size())
 	
-	owner.spritesheet.frame_size = max_size
+	for frame in spritesheet.frames:
+		var image_size := frame.image.get_size()
+		if image_size.x < max_size.x:
+			frame.offset.x = (max_size.x - image_size.x) / 2
+		if image_size.y < max_size.y:
+			frame.offset.y = (max_size.y - image_size.y) / 2
+	
+	spritesheet.frame_size = max_size
 	sprite_sheet_grid.update_frame_list()
 
 func smart_crop_images():
 	var crop_data := CropData.new()
-	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+	for frame in spritesheet.frames:
 		if frame.delete_modifier("Crop"):
 			frame.update_image()
 		
@@ -31,11 +42,11 @@ func smart_crop_images():
 	var cropper := SpriteSheet.Crop.new()
 	cropper.rect = rect
 	
-	for frame: SpriteSheet.Frame in owner.spritesheet.frames:
+	for frame in spritesheet.frames:
 		frame.add_modifier(cropper)
 		frame.update_image()
 	
-	owner.spritesheet.frame_size = rect.size
+	spritesheet.frame_size = rect.size
 	sprite_sheet_grid.update_frame_list()
 
 static func get_crop_data(image: Image, alpha_threshold: float, base_crop: CropData) -> CropData:
