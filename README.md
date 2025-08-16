@@ -129,6 +129,8 @@ This tab allows you to set the number of columns in the spritesheet. For the mos
 
 This tab allows performing some operations that modify the whole spritesheet, and especially its frame order. The Mirror options will flip the frames around the spritesheet's global center, the Cycle options will shift all frames by 1 position. The Reverse will reverse the order of frames and Shuffle will randomize the order.
 
+The Reset Frames button will reset all frames to their original state, including order and missing frames.
+
 ### Edit
 
 The Edit panel can be access with the button at the bottom.

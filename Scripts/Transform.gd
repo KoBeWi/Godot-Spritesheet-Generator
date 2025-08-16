@@ -1,17 +1,24 @@
 extends HBoxContainer
 
-enum {MIRROR_H, MIRROR_V, CYCLE_RIGHT, CYCLE_LEFT, REVERSE, SHUFFLE}
+enum { RESET, MIRROR_H = 2, MIRROR_V, CYCLE_RIGHT, CYCLE_LEFT, REVERSE, SHUFFLE }
 
 @onready var sprite_sheet_grid: GridContainer = %SpriteSheetGrid
 
 func _ready() -> void:
-	for button: Button in get_children():
-		button.pressed.connect(make_transform.bind(button.get_index()))
+	for node in get_children():
+		if node is Button:
+			node.pressed.connect(make_transform.bind(node.get_index()))
 
 func make_transform(id: int):
 	var frames: Array[SpriteSheet.Frame] = owner.spritesheet.frames
 	
 	match id:
+		RESET:
+			frames.assign(owner.spritesheet.all_frames)
+			for frame in frames:
+				frame.modifiers.clear()
+				frame.update_image()
+		
 		MIRROR_H:
 			var columns := sprite_sheet_grid.columns
 			var new_frames: Array[SpriteSheet.Frame]

@@ -116,6 +116,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e06dd")
 script = SubResource("GDScript_0amvt")
 
 [node name="SpriteSheet" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -214,7 +215,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Customize" type="VBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs"]
-visible = false
 layout_mode = 2
 script = SubResource("GDScript_nait6")
 button_group = SubResource("ButtonGroup_nait6")
@@ -360,6 +360,13 @@ text = "Auto"
 [node name="Transform" type="HBoxContainer" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize"]
 layout_mode = 2
 script = ExtResource("5_n055s")
+
+[node name="Button7" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
+text = "Reset Frames"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
+layout_mode = 2
 
 [node name="Button" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/Tabs/Customize/Transform"]
 layout_mode = 2
