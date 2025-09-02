@@ -29,7 +29,9 @@ class Frame:
 	func initialize():
 		if not source_image and file_path:
 			source_image = Image.load_from_file(file_path)
-			if not source_image:
+			if source_image:
+				source_image.convert(Image.FORMAT_RGBA8)
+			else:
 				source_image = Image.create(1, 1, false, Image.FORMAT_RGBA8) # TODO placeholder
 		
 		image = source_image.duplicate()
@@ -108,7 +110,6 @@ class Modulate extends FrameModifier:
 		name = "Modulate"
 	
 	func _apply(image: Image):
-		image.convert(Image.FORMAT_RGBA8)
 		var data := image.get_data()
 		
 		for i in data.size() / 4:
@@ -134,7 +135,6 @@ class RemoveColor extends FrameModifier:
 		name = "Remove Color"
 	
 	func _apply(image: Image):
-		image.convert(Image.FORMAT_RGBA8)
 		var data := image.get_data()
 		
 		var test_r: int = color.r * 255

@@ -33,6 +33,7 @@ func _add_files() -> void:
 			return
 		
 		save_last_folder(selected_paths[0].get_base_dir())
+		owner.assign_path(selected_paths[0].get_base_dir().path_join(Settings.settings.default_file_name + ".png"))
 		for path in selected_paths:
 			create_frame_from_path(path)
 	
@@ -69,6 +70,8 @@ func _add_empty_frame() -> void:
 	create_frame_from_image(image)
 
 func create_frame_from_image(image: Image):
+	image.convert(Image.FORMAT_RGBA8)
+	
 	var frame := SpriteSheet.Frame.new()
 	frame.source_image = image
 	frame.initialize()
@@ -79,7 +82,7 @@ func create_frame_from_image(image: Image):
 	owner.queue_update_frames()
 	return frame
 
-func create_frame_from_path(path: String):
+func create_frame_from_path(path: String) -> SpriteSheet.Frame:
 	if not path.get_extension() in FORMATS:
 		return
 	
